@@ -1,0 +1,5 @@
+package cards;
+
+class Card {
+
+}
