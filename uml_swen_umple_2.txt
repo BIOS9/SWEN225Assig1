@@ -1,0 +1,101 @@
+//Unable to update umple code due to error at [2,0]
+//Unable to update umple code due to error at [1,0]
+//Unable to update umple code due to error at [3,9]
+class Game{
+   1 -- * Card cards;  
+  1 -- 3..6 Player players;
+  
+  public static void main(String ... args){
+    new Game().play();
+}
+}
+
+class Cell{
+  Room room;
+  Cell north;
+  Cell south;
+  Cell east;
+  Cell west;
+  
+  1 -- 1 Player occupied;
+  
+  
+}
+
+class Card{
+  
+}
+
+class Weapon{
+  isA Card;
+  String name;
+}
+
+class Character{
+  isA Card;
+  
+  String name;
+  Cell location;
+  Boolean hasGuessed;
+  
+  1 -- 0..1 Player;
+}
+
+class Room{
+  isA Card;
+  String name;
+  Cell centre;
+}
+
+class Player{
+  0..1 -- * Card hand;
+}
+
+//$?[End_of_model]$?
+
+class Cell
+{
+  position 33 377 134 144;
+  position.association Cell__Game 54,0 51,39;
+  position.association Cell__Player:occupied 132,0 12,58;
+}
+
+class Weapon
+{
+  position 482 396 112 76;
+}
+
+class Character
+{
+  position 274 399 168 110;
+  position.association Character__Player 0,3 69,39;
+}
+
+class Room
+{
+  position 637 388 112 93;
+}
+
+class Player
+{
+  position 117 217 133 58;
+  position.association Card:hand__Player 133,25 0,12;
+}
+
+class Game
+{
+  position.association Card__Game 0,11 110,2;
+    position.association Card:cards__Game 97,39 4,0;
+  position.association Game__Player:players 11,76 131,0;
+position 285 0 109 39;
+}
+
+class Game
+{
+  position 285 0 109 39;
+}
+
+class Card
+{
+  position 464 208 109 58;
+}
