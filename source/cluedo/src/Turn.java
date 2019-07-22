@@ -12,7 +12,9 @@ class Turn {
      * @return
      */
     public boolean isValid() {
-
+        // Checks if physical move is valid, number of cells moved, is stepping over other player, are cells conencted, etc
+        // Checks if player can make suggestion/accusation eg hasAccused
+        // Checks if suggestion/accusation is valid
     }
 
     /**
