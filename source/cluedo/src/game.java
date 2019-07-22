@@ -10,6 +10,7 @@ class Game {
     public static final DICE_SIDES = 6;
 
     int playerTurnIndex = 0; // Whos turn it is
+    List<Character> characters;
 
     /**
      * Entry point
