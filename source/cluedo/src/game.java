@@ -6,9 +6,6 @@
  *
  */
 class Game {
-    public static final DICE_COUNT = 2;
-    public static final DICE_SIDES = 6;
-
     int playerTurnIndex = 0; // Whos turn it is
     List<Character> characters;
 
@@ -38,15 +35,4 @@ class Game {
         // Shuffle remaining cars into one stack
         // Deal cards to players
     }
-
-    /**
-     * Uses dice constants to generate a random number.
-     * @return integer value representing dice roll
-     */
-    public int rollDice() {
-        // Use dice constants to generate random dice roll
-    }
-
-
-
 }
