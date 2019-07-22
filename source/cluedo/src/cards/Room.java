@@ -9,6 +9,6 @@ package cards;
  * @author abbey
  *
  */
-class Room extends Card {
+class Room implements Card {
 
 }

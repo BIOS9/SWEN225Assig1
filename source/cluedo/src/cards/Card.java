@@ -7,6 +7,6 @@ package cards;
  * @author abbey
  *
  */
-class Card {
+interface Card {
 
 }

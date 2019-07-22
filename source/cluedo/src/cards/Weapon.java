@@ -6,6 +6,6 @@ package cards;
  * @author abbey
  *
  */
-class Weapon extends Card {
+class Weapon implements Card {
 
 }
