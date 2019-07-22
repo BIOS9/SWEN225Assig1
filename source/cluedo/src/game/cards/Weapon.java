@@ -1,11 +1,11 @@
-package cards;
+package game.cards;
 /**
  * Responsible for representing the weapon objects in the game.
  * 
- * Colaborates directly with Card.
+ * Collaborates directly with Card.
  * @author abbey
  *
  */
-class Weapon implements Card {
+public class Weapon implements Card {
 
 }

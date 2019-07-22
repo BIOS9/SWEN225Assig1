@@ -1,3 +1,7 @@
+package game;
+
+import java.util.List;
+
 /**
  * Responsible for running the game and managing the active game objects.
  * 
@@ -5,7 +9,7 @@
  * @author abbey
  *
  */
-class Game {
+class CluedoGame {
     int playerTurnIndex = 0; // Whos turn it is
     List<Character> characters;
 

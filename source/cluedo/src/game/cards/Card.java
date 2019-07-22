@@ -1,4 +1,4 @@
-package cards;
+package game.cards;
 
 /**
  * Responsible for managing the various types of cards for use within the game.

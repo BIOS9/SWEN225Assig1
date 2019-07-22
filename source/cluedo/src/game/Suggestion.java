@@ -1,3 +1,5 @@
+package game;
+
 /**
  * Responsible for managing the suggestions/acusations made by players. 
  * 
@@ -7,7 +9,7 @@
  *
  */
 public class Suggestion {
-    private Room room;
-    private Character character;
-    private Weapon weapon;
+    private game.cards.Room room;
+    private game.cards.Character character;
+    private game.cards.Weapon weapon;
 }

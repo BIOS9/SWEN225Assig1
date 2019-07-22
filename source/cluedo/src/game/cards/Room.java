@@ -1,4 +1,4 @@
-package cards;
+package game.cards;
 /**
  * Class representing the Room cards.
  * 
@@ -9,6 +9,6 @@ package cards;
  * @author abbey
  *
  */
-class Room implements Card {
+public class Room implements Card {
 
 }
