@@ -7,5 +7,7 @@
  *
  */
 public class Suggestion {
-
+    private Room room;
+    private Character character;
+    private Weapon weapon;
 }
