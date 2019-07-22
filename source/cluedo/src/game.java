@@ -6,6 +6,46 @@
  *
  */
 class Game {
-	
+    public static final DICE_COUNT = 2;
+    public static final DICE_SIDES = 6;
+
+    int playerTurnIndex = 0; // Whos turn it is
+
+    /**
+     * Entry point
+     * @param args Command line arguments
+     */
+    public static void main(String[] args) {
+
+    }
+
+    /**
+     * Initialises the game state, players and board.
+     */
+    public void initGame() {
+        // Generate players
+        // Generate graph
+        // add starting positions from graph to player pos's
+    }
+
+    /**
+     * Generates the cards, selects a solution and deals the cards to players
+     */
+    public void initCards() {
+        // Create three stacks of cards, one for each card type
+        // Get random card of each type to make solution
+        // Shuffle remaining cars into one stack
+        // Deal cards to players
+    }
+
+    /**
+     * Uses dice constants to generate a random number.
+     * @return integer value representing dice roll
+     */
+    public int rollDice() {
+        // Use dice constants to generate random dice roll
+    }
+
+
 
 }
