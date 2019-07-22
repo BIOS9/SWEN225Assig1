@@ -45,4 +45,13 @@ class Cell {
     public boolean isOccupied() {
         return occupant != null;
     }
+
+    /**
+     * Checks if specified cell is connected to this cell
+     * @param cell Cell to check against
+     * @return true if connected, false if not connected
+     */
+    public boolean isConnected(Cell cell) {
+
+    }
 }
