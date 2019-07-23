@@ -9,6 +9,15 @@ package game.cards;
  * @author abbey
  *
  */
+
+/** 
+ * Umple : 
+ * 
+ * They have ALOT of stuff in this class, review later.
+ * 
+ * @author abbey
+ *
+ */
 public class Character implements Card {
 
 }

@@ -6,9 +6,15 @@ import game.cards.Room;
 /**
  * Graph of cells, where walls are represented by Null and doors are identified by a change of cell type.
  * 
- * Responsible for the shape of the board/rooms and the navigation and position of the players/characters.
+ *
+ * @author abbey
+ *
+ */
+
+/** 
+ * Looking at umples code: (in case its important for connections)
  * 
- * Collaborates with Character, Room
+ * + added a getOccupant method returning the character.
  * @author abbey
  *
  */
@@ -22,7 +28,8 @@ class Cell {
 
     private final Room room;
     private final Map<Direction, Cell> neighbours = new HashMap<>();
-    private Character occupant;
+    private Character occupant; // umple has player here
+    //private Turn turn .. umple
 
     /**
      * Constructor
@@ -47,6 +54,14 @@ class Cell {
      */
     public boolean isOccupied() {
         return occupant != null;
+    }
+    
+    /** 
+     * Returns the occupant of the cell
+     * @return
+     */
+    public Character getOccupant() { 
+    	return occupant;
     }
 
     /**
