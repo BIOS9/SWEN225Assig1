@@ -28,15 +28,17 @@ public class Cell {
 
     private final Room room;
     private final Map<Direction, Cell> neighbours = new HashMap<>();
-    private Character occupant; // umple has player here
+    private game.cards.Character occupant; // umple has player here
+    private Position position;
     //private Turn turn .. umple
 
     /**
      * Constructor
      * @param room The room type of this cell
      */
-    public Cell(Room room) {
+    public Cell(Room room, Position position) {
         this.room = room;
+        this.position = position;
     }
 
     /**
@@ -60,10 +62,13 @@ public class Cell {
      * Returns the occupant of the cell
      * @return
      */
-    public Character getOccupant() { 
+    public game.cards.Character getOccupant() {
     	return occupant;
     }
 
+    public void setOccupant(game.cards.Character occupant) {
+        this.occupant = occupant;
+    }
     /**
      * Sets neighbouring cell in the specified direction
      * One dimensional, does not update neighbor of specified cell

@@ -10,5 +10,13 @@ package game.cards;
  *
  */
 public class Room implements Card {
+    private String name;
 
+    public Room(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
