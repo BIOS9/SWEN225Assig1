@@ -7,5 +7,14 @@ package game.cards;
  *
  */
 public class Weapon implements Card {
+    private final String name;
 
+    public Weapon(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

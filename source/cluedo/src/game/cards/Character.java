@@ -19,5 +19,14 @@ package game.cards;
  *
  */
 public class Character implements Card {
+    private final String name;
 
+    public Character(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

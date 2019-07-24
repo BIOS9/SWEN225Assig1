@@ -10,12 +10,13 @@ package game.cards;
  *
  */
 public class Room implements Card {
-    private String name;
+    private final String name;
 
     public Room(String name) {
         this.name = name;
     }
 
+    @Override
     public String getName() {
         return name;
     }
