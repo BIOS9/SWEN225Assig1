@@ -29,16 +29,18 @@ public class Cell {
     private final Room room;
     private final Map<Direction, Cell> neighbours = new HashMap<>();
     private game.cards.Character occupant; // umple has player here
-    private Position position;
+    public final Position position;
+    public final boolean isDoor;
     //private Turn turn .. umple
 
     /**
      * Constructor
      * @param room The room type of this cell
      */
-    public Cell(Room room, Position position) {
+    public Cell(Room room, Position position, boolean isDoor) {
         this.room = room;
         this.position = position;
+        this.isDoor = isDoor;
     }
 
     /**
@@ -47,7 +49,16 @@ public class Cell {
      * @return
      */
     public boolean isRoom(Room room) {
-        return this.room == room;
+        return this.room.equals(room);
+    }
+
+    /**
+     * Checks if specified cell's room type matches the room type of this cell
+     * @param cell
+     * @return
+     */
+    public boolean isRoom(Cell cell) {
+        return isRoom(cell.room);
     }
 
     /**
@@ -69,6 +80,7 @@ public class Cell {
     public void setOccupant(game.cards.Character occupant) {
         this.occupant = occupant;
     }
+
     /**
      * Sets neighbouring cell in the specified direction
      * One dimensional, does not update neighbor of specified cell
@@ -86,5 +98,13 @@ public class Cell {
      */
     public boolean isConnected(Cell cell) {
         return neighbours.containsValue(cell);
+    }
+
+    public boolean hasNeighbour(Direction direction) {
+        return neighbours.containsKey(direction);
+    }
+
+    public Room getRoom() {
+        return room;
     }
 }
