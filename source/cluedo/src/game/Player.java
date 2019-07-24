@@ -1,5 +1,7 @@
 package game;
 
+import game.board.Cell;
+
 import java.util.Collections;
 import java.util.List;
 

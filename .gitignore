@@ -1,4 +1,6 @@
 source/cluedo/.idea
 
 *.iml
+*.class
+*.kotlin_module
 /bin/

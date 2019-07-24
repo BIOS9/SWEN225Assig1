@@ -1,4 +1,4 @@
-package game;
+package game.board;
 
 import java.util.*;
 import game.cards.Room;
@@ -18,7 +18,7 @@ import game.cards.Room;
  * @author abbey
  *
  */
-class Cell {
+public class Cell {
     public enum Direction {
         NORTH,
         SOUTH,

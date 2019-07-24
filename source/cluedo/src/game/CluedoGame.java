@@ -1,5 +1,7 @@
 package game;
 
+import game.board.Board;
+
 import java.util.List;
 
 /**
@@ -10,8 +12,9 @@ import java.util.List;
  *
  */
 class CluedoGame {
-    int playerTurnIndex = 0; // Whos turn it is
-    List<Character> characters;
+    private int playerTurnIndex = 0; // Whos turn it is
+    private List<Character> characters;
+    private Board board;
 
     /**
      * Entry point
