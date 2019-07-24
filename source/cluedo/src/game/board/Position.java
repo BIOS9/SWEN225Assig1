@@ -1,7 +1,5 @@
 package game.board;
 
-import javafx.geometry.Pos;
-
 public class Position {
     public int x, y;
 
@@ -9,5 +7,70 @@ public class Position {
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public static boolean areNeighbours(Position pos1, Position pos2) {
+        if(Math.abs(pos1.x - pos2.x) == 0 && Math.abs(pos1.y - pos2.y) == 1)
+            return true;
+        if(Math.abs(pos1.x - pos2.x) == 1 && Math.abs(pos1.y - pos2.y) == 0)
+            return true;
+
+        return false;
+    }
+
+    public boolean isNeighbour(Position position) {
+        return areNeighbours(this, position);
+    }
+
+    /**
+     * Creates new position one unit up relative to this position
+     */
+    public Position up() {
+        return new Position(x, y - 1);
+    }
+
+    /**
+     * Creates new position one unit down relative to this position
+     */
+    public Position down() {
+        return new Position(x, y + 1);
+    }
+
+    /**
+     * Creates new position one unit left relative to this position
+     */
+    public Position left() {
+        return new Position(x - 1, y);
+    }
+
+    /**
+     * Creates new position one unit right relative to this position
+     */
+    public Position right() {
+        return new Position(x + 1, y);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 163;
+        int result = 1;
+
+        result = prime * result + x;
+        result = prime * result + y;
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+        if(obj.getClass() != getClass())
+            return false;
+        if(obj == this)
+            return true;
+
+        Position pos = (Position)obj;
+        return pos.x == x && pos.y == y;
     }
 }
