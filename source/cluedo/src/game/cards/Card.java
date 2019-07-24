@@ -7,6 +7,6 @@ package game.cards;
  * @author abbey
  *
  */
-interface Card {
+public interface Card {
 
 }
