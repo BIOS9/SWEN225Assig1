@@ -6,12 +6,13 @@ public class Board {
     // c = Conservatory
     // p = Billiard/Pool room
     // h = Hallway
-    // 0-6 = Character starting positions
     // d = Dining room
     // l = Library
     // r = Hall
     // t = Lounge
     // s = Study
+    // space = nothing
+    // 0-6 = Character starting positions
 
     // Capital letters represent doorways CAREFUL OF DOUBLE WIDTH DOORWAYS
     private static final String BOARD =
