@@ -2,14 +2,26 @@ package game;
 import game.board.Cell;
 
 import java.util.*;
-
+/** 
+ * 
+ * Processes the players turn, checking validity and delegating any suggestions or assumptions
+ * to the suggestion class.
+ * 
+ * Collaborates with Player and Suggestion.
+ * @author abbey
+ *
+ */
 class Turn {
+	
+	//Turn Attributes
     public static final int DIE_COUNT = 2;
     public static final int DIE_SIDES = 6;
 
     private final int diceRoll;
+    
+    //Turn Associations
     private Player player;
-    private Queue<Cell> moves;
+    private Queue<Cell> moves;  // ! Do we need to make a link to cell?
     private Suggestion suggestion;
 
     /**
