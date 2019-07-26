@@ -217,7 +217,26 @@ public class Board {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
+        // Prepend column header with numbers
+        builder.append("   ");
+        for(int i = 0; i <= BOARD_WIDTH; ++i) {
+            if(i < 9) {
+                builder.append(i + 1);
+                builder.append(' ');
+            }
+            else if(i % 2 == 0){
+                builder.append(i);
+                builder.append("  ");
+            }
+        }
+
+        builder.append('\n');
         for(int y = 0; y < BOARD_HEIGHT; ++y) {
+
+            // Prepend row header with letters
+            builder.append((char)('A' + y));
+            builder.append("  ");
+
             for(int x = 0; x < BOARD_WIDTH; ++x) {
                 Position position = new Position(x, y);
 
@@ -246,7 +265,25 @@ public class Board {
                 else
                     builder.append("- ");
             }
+
+            // Append row header with letters
+            builder.append(" ");
+            builder.append((char)('A' + y));
+
             builder.append('\n');
+        }
+
+        // Append column header with numbers
+        builder.append("   ");
+        for(int i = 0; i <= BOARD_WIDTH; ++i) {
+            if(i < 9) {
+                builder.append(i + 1);
+                builder.append(' ');
+            }
+            else if(i % 2 == 0){
+                builder.append(i);
+                builder.append("  ");
+            }
         }
 
         return builder.toString();
