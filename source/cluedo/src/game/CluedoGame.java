@@ -1,19 +1,24 @@
 package game;
 
-import game.board.Board;
-
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
+import game.board.Board;
+import game.cards.Card;
+
 /**
- * Responsible for running the game and managing the active game objects.
+ * CluedoGame is responsible for initiating the game board, cards and players and managing the framework of the gameplay.
  * 
- * Collaborates directly with Players, Cards and Characters.
+ * Collaborates directly with Board, Card, Player and Turn.
  * @author abbey
  *
  */
 class CluedoGame {
+	//CluedoGame Attributes
     private int playerTurnIndex = 0; // Whos turn it is
+   
+    //CluedoGame Associations
     private Board board;
 
     private final game.cards.Character[] characters = {
@@ -43,12 +48,20 @@ class CluedoGame {
     }
 
     /**
-     * Generates the cards, selects a solution and deals the cards to players
+     * Generates the cards, selects a solution (3 cards) shuffles remaing cards and 
+     * deals them to the players.
      */
     public void initCards() {
-        // Create three stacks of cards, one for each card type
+    	// Create three stack of cards, one for each card type, Sets since order doesnt matter and no dups?
+    	HashSet<Card> charCards = new HashSet<Card>();
+    	HashSet<Card> weaponCards = new HashSet<Card>();
+    	HashSet<Card> roomCards = new HashSet<Card>();
+    	
+    	//pass to Card to populate the sets? then merge into one set.
+    	
         // Get random card of each type to make solution
         // Shuffle remaining cars into one stack
         // Deal cards to players
+    	
     }
 }

@@ -8,9 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Manages board generation and "rendering"/string generation for console output
+ * Board generates and manages the cells on the board. 
+ * It also manages the string that represents the board for the display.
+ * 
+ * Collaborates directs with Cell.
+ * @author abbey
+ * 
  */
 public class Board {
+	//Board Attributes
     public static final int CHARACTER_COUNT = 6;
     public final int BOARD_WIDTH;
     public final int BOARD_HEIGHT;
@@ -80,7 +86,8 @@ public class Board {
             "ttttttthhrrrrrrhhsssssss\n".toCharArray(),
             "tttttt h rrrrrr h ssssss\n".toCharArray()
     };
-
+    
+    //Board Associations
     private Map<Position, Cell> cells = new HashMap<>();
 
     public Board() {

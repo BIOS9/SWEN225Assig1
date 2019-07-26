@@ -6,23 +6,16 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Responsible for managin the physical players interactions with the game
- * (links to characters and moves)
+ * Represents the actual players in the game (1-6) and links the character they are playing as to the Player object.
+ * Manages the cards the player has been dealt and executes the players turns.
+ * Also keeps track of where the player is on the board and if the player has made thier one acusation.
  * 
- * Colaborates directly with CluedoGame, Card, Cell, Character.
+ * Colaborates directly with Character, Card, Turn and Cell.
  * 
  * @author abbey
- *
- *
- *UPDATE: copied over what appears to be relevant from umple.
- *+ Attributes and Asssociations
- *+ Constructor
- *+ Some getters and setters that didnt have ridiculour booleans in it.
- *+ A to string method.
- * (was on the bus so will sort later and there are typos)
  */
+
 class Player {
-	// Link to suggestion??
 
 	// Player Attributes - Umple
 	private boolean hasAcused = false;
