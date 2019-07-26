@@ -251,16 +251,6 @@ public class Board {
                         builder.append(cell.getRoom().getPrefix());
                         builder.append(' ');
                     }
-//                    else if(!cell.hasNeighbour(Cell.Direction.WEST))
-//                        builder.append('⎸');
-//                    else if(!cell.hasNeighbour(Cell.Direction.EAST))
-//                        builder.append('⎹');
-//                    else if(!cell.hasNeighbour(Cell.Direction.NORTH))
-//                        builder.append('‾');
-//                    else if(!cell.hasNeighbour(Cell.Direction.SOUTH))
-//                        builder.append('_');
-//                    else
-//                        builder.append(' ');
                 }
                 else
                     builder.append("- ");

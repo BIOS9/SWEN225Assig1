@@ -9,6 +9,12 @@ public class Position {
         this.y = y;
     }
 
+    /**
+     * Checks if two positions are direct neighbours, diagonal neighbours do not count
+     * @param pos1
+     * @param pos2
+     * @return
+     */
     public static boolean areNeighbours(Position pos1, Position pos2) {
         if(Math.abs(pos1.x - pos2.x) == 0 && Math.abs(pos1.y - pos2.y) == 1)
             return true;
@@ -18,6 +24,11 @@ public class Position {
         return false;
     }
 
+    /**
+     * Checks if position is a neighbour of this position
+     * @param position
+     * @return
+     */
     public boolean isNeighbour(Position position) {
         return areNeighbours(this, position);
     }
