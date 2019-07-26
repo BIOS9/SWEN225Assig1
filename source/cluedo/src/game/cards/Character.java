@@ -10,7 +10,9 @@ package game.cards;
  *
  */
 
-/** 
+import game.board.Cell;
+
+/**
  * Umple : 
  * 
  * They have ALOT of stuff in this class, review later.
@@ -19,5 +21,23 @@ package game.cards;
  *
  */
 public class Character implements Card {
+    private final String name;
+    private Cell location;
 
+    public Character(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setLocation(Cell location) {
+        this.location = location;
+    }
+
+    public Cell getLocation() {
+        return location;
+    }
 }

@@ -1,0 +1,153 @@
+[
+  {
+    "name": "CluedoGame",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Initiate the game board.",
+      "Initiates the cards and players.",
+      "Manage the gameplay."
+    ],
+    "collaborators": [
+      "Board",
+      "Card",
+      "Player & Turn",
+      ""
+    ]
+  },
+  {
+    "name": "Board",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Generates and manages the cells on the board.",
+      "Manage the display of the board"
+    ],
+    "collaborators": [
+      "Cell"
+    ]
+  },
+  {
+    "name": "Player",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Hold the character the player is representing.",
+      "Manage the cards the player has been dealt.",
+      "Execute the players turn.",
+      "Manage the player's position on the board."
+    ],
+    "collaborators": [
+      "Character",
+      "Card",
+      "Turn",
+      "Cell"
+    ]
+  },
+  {
+    "name": "Turn",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Processes the players turn.",
+      "Manages any suggestions/accusations made.",
+      ""
+    ],
+    "collaborators": [
+      "Player",
+      "Suggestion",
+      ""
+    ]
+  },
+  {
+    "name": "Room",
+    "superclasses": "Card",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Represents a room card.",
+      ""
+    ],
+    "collaborators": [
+      "Card"
+    ]
+  },
+  {
+    "name": "Suggestion",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Managing player suggestions and accusations during turns.",
+      "Manages if a player has made and suggestion/accusation.",
+      "Checking suggestion/accusations have the 3 cards required."
+    ],
+    "collaborators": [
+      "Turn",
+      "Player",
+      "Card"
+    ]
+  },
+  {
+    "name": "Cell",
+    "superclasses": "",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Makes up the board with many cells.",
+      "Handles players positions on the board.",
+      "Has a position for display and construction.",
+      ""
+    ],
+    "collaborators": [
+      "Board",
+      "Player",
+      "Position"
+    ]
+  },
+  {
+    "name": "Character",
+    "superclasses": "Card",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Managing the 6 characters in the game and which player represents them.",
+      ""
+    ],
+    "collaborators": [
+      "Player"
+    ]
+  },
+  {
+    "name": "Card",
+    "superclasses": "",
+    "subclasses": "Character, Weapon, Room",
+    "type": 1,
+    "responsibilities": [
+      "Manages the types of cards in the game.",
+      "Manages the types of cards in a players hand.",
+      "Manages the types of cards in a suggestion."
+    ],
+    "collaborators": [
+      "Game",
+      "Player",
+      "Suggestion"
+    ]
+  },
+  {
+    "name": "Weapon",
+    "superclasses": "Card",
+    "subclasses": "",
+    "type": 1,
+    "responsibilities": [
+      "Knows its name so it can link to card."
+    ],
+    "collaborators": [
+      "Card"
+    ]
+  }
+]
