@@ -60,31 +60,31 @@ public class Board {
 
     // Capital letters represent doorways CAREFUL OF DOUBLE WIDTH DOORWAYS
     private static final char[][] BOARD = {
-            "         h    h         \n".toCharArray(),
-            "kkkkkk hhhbbbbhhh cccccc\n".toCharArray(),
-            "kkkkkkhhbbbbbbbbhhcccccc\n".toCharArray(),
-            "kkkkkkhhbbbbbbbbhhcccccc\n".toCharArray(),
-            "kkkkkkhhbbbbbbbbhhCccccc\n".toCharArray(),
-            "kkkkkkhHBbbbbbbBHhHcccc \n".toCharArray(),
-            " kkkKkhhbbbbbbbbhhhhhhhh\n".toCharArray(),
-            "hhhhHhhhbBbbbbBbhhhhhhh \n".toCharArray(),
-            " hhhhhhhhHhhhhHhhhpppppp\n".toCharArray(),
-            "dddddhhhhhhhhhhhhHPppppp\n".toCharArray(),
-            "ddddddddhh     hhhpppppp\n".toCharArray(),
-            "ddddddddhh     hhhpppppp\n".toCharArray(),
-            "dddddddDHh     hhhppppPp\n".toCharArray(),
-            "ddddddddhh     hhhhhHhH \n".toCharArray(),
-            "ddddddddhh     hhhllLll \n".toCharArray(),
-            "ddddddddhh     hhlllllll\n".toCharArray(),
-            " hhhhhhhhh     hHLllllll\n".toCharArray(),
-            "hhhhhhhhhhhHHhhhhlllllll\n".toCharArray(),
-            " hhhhhHhhrrRRrrhhhlllll \n".toCharArray(),
-            "ttttttThhrrrrrrhhhhhhhhh\n".toCharArray(),
-            "ttttttthhrrrrrRHhHhhhhh \n".toCharArray(),
-            "ttttttthhrrrrrrhhSssssss\n".toCharArray(),
-            "ttttttthhrrrrrrhhsssssss\n".toCharArray(),
-            "ttttttthhrrrrrrhhsssssss\n".toCharArray(),
-            "tttttt h rrrrrr h ssssss\n".toCharArray()
+            "         h    h         ".toCharArray(),
+            "kkkkkk hhhbbbbhhh cccccc".toCharArray(),
+            "kkkkkkhhbbbbbbbbhhcccccc".toCharArray(),
+            "kkkkkkhhbbbbbbbbhhcccccc".toCharArray(),
+            "kkkkkkhhbbbbbbbbhhCccccc".toCharArray(),
+            "kkkkkkhHBbbbbbbBHhHcccc ".toCharArray(),
+            " kkkKkhhbbbbbbbbhhhhhhhh".toCharArray(),
+            "hhhhHhhhbBbbbbBbhhhhhhh ".toCharArray(),
+            " hhhhhhhhHhhhhHhhhpppppp".toCharArray(),
+            "dddddhhhhhhhhhhhhHPppppp".toCharArray(),
+            "ddddddddhh     hhhpppppp".toCharArray(),
+            "ddddddddhh     hhhpppppp".toCharArray(),
+            "dddddddDHh     hhhppppPp".toCharArray(),
+            "ddddddddhh     hhhhhHhH ".toCharArray(),
+            "ddddddddhh     hhhllLll ".toCharArray(),
+            "ddddddddhh     hhlllllll".toCharArray(),
+            " hhhhhhhhh     hHLllllll".toCharArray(),
+            "hhhhhhhhhhhHHhhhhlllllll".toCharArray(),
+            " hhhhhHhhrrRRrrhhhlllll ".toCharArray(),
+            "ttttttThhrrrrrrhhhhhhhhh".toCharArray(),
+            "ttttttthhrrrrrRHhHhhhhh ".toCharArray(),
+            "ttttttthhrrrrrrhhSssssss".toCharArray(),
+            "ttttttthhrrrrrrhhsssssss".toCharArray(),
+            "ttttttthhrrrrrrhhsssssss".toCharArray(),
+            "tttttt h rrrrrr h ssssss".toCharArray()
     };
     
     //Board Associations
@@ -225,9 +225,13 @@ public class Board {
                     Cell cell = cells.get(position);
 
                     if(cell.isOccupied())
-                        builder.append('*');
-                    else
+                        builder.append("# ");
+                    else if(cell.getRoom().getPrefix() == 'h')
+                        builder.append("  ");
+                    else {
                         builder.append(cell.getRoom().getPrefix());
+                        builder.append(' ');
+                    }
 //                    else if(!cell.hasNeighbour(Cell.Direction.WEST))
 //                        builder.append('⎸');
 //                    else if(!cell.hasNeighbour(Cell.Direction.EAST))
@@ -240,7 +244,7 @@ public class Board {
 //                        builder.append(' ');
                 }
                 else
-                    builder.append(' ');
+                    builder.append("- ");
             }
             builder.append('\n');
         }
