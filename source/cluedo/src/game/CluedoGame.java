@@ -76,7 +76,9 @@ class CluedoGame {
 	 */
 	public static void main(String[] args) {
         INPUT_SCANNER = new Scanner(System.in);
-		new CluedoGame().initGame();
+		CluedoGame game = new CluedoGame();
+		game.initGame();
+		game.runGame();
 	}
 
 	/**
@@ -140,7 +142,7 @@ class CluedoGame {
 		Collections.shuffle(weaponCards);
 		this.murderWeapon = weaponCards.get(0);
 		weaponCards.remove(0);
-		
+
 		List<Card> allCards = new ArrayList<>();
 		
 
@@ -153,7 +155,7 @@ class CluedoGame {
         while (true) {
             Turn turn = new Turn(players.get(round % players.size()));
 
-
+            // Execute the turn here, do suggestions and stuff
 
             // CHECK FOR WINNING SOLUTION AND END GAME
             if(false) {
