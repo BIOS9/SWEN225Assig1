@@ -32,6 +32,10 @@ class Turn {
     public Turn(Player player) {
         diceRoll = rollDice();
         this.player = player;
+        
+        //Tell the player how much they rolled
+        //ask them where they want to move
+        //If they move into a room they can make a suggestion/acusation
     }
 
     /**
