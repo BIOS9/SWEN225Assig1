@@ -1,3 +1,5 @@
+// ASSUMING PLAYERS GET NO CHOICE OF WHICH CHARACTER THEY WANT
+
 package game;
 
 import java.util.ArrayList;
@@ -80,7 +82,7 @@ class CluedoGame {
 	/**
 	 * Initialises the game state, players and board.
 	 */
-	public void initGame() {
+	private void initGame() {
 		board = new Board();
 		board.generateBoard(characters);
 
@@ -99,11 +101,17 @@ class CluedoGame {
                 else
                     System.out.println("Player count must be between " + MIN_PLAYERS + " and " + MAX_PLAYERS + " (both inclusive)");
             }
-            catch (InputMismatchException ex) {
+            catch (InputMismatchException ex) { // Error occurs when user enters something other than an integer
                 System.out.println("Please enter a valid number.a");
                 INPUT_SCANNER.nextLine(); // Clear input buffer
             }
         }
+
+        // Generate playerss and add them to list
+        for(int i = 0; i < playerCount; ++i) {
+            players.add(new Player(characters[i], this));
+        }
+
         System.out.println(board.toString());
 	}
 
@@ -111,7 +119,7 @@ class CluedoGame {
 	 * Generates the cards, selects a solution (3 cards) shuffles remaing cards and
 	 * deals them to the players.
 	 */
-	public void initCards() {
+	private void initCards() {
 		// Create three stack of cards, one for each card type, Sets since order doesnt
 		// matter and no dups?
 		List<Character> characterCards = new ArrayList<Character>(Arrays.asList(characters));
@@ -137,4 +145,23 @@ class CluedoGame {
 		
 
 	}
+
+	private void runGame() {
+	    int round = 0; // Total number of rounds
+        Player winner;
+
+        while (true) {
+            Turn turn = new Turn(players.get(round % players.size()));
+
+
+
+            // CHECK FOR WINNING SOLUTION AND END GAME
+            if(false) {
+                winner = null;
+                break;
+            }
+        }
+
+        System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
+    }
 }
