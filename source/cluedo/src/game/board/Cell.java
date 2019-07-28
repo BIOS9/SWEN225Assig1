@@ -3,18 +3,11 @@ package game.board;
 import java.util.*;
 import game.cards.Room;
 
-/**
- * Graph of cells, where walls are represented by Null and doors are identified by a change of cell type.
- * 
- *
- * @author abbey
- *
- */
 
 /** 
- * Looking at umples code: (in case its important for connections)
  * 
- * + added a getOccupant method returning the character.
+ * 
+ * 
  * @author abbey
  *
  */

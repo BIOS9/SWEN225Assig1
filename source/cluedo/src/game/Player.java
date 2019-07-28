@@ -17,10 +17,10 @@ import java.util.List;
 
 class Player {
 
-	// Player Attributes - Umple
+	// Player Attributes
 	private boolean hasAcused = false;
 
-	// Player Associations - Umple
+	// Player Associations
 	private List<game.cards.Card> hand;
 	private List<Turn> turn;
 	private CluedoGame game;
