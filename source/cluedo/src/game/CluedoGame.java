@@ -81,7 +81,7 @@ class CluedoGame {
 	 * Generates the cards, selects a solution (3 cards) shuffles remaing cards and
 	 * deals them to the players.
 	 */
-	private void initCards() {
+	public void initCards() {
 		// Create three stack of cards, one for each card type, Sets since order doesnt
 		// matter and no dups?
 		List<Character> characterCards = new ArrayList<Character>();
