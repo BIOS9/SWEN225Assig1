@@ -247,6 +247,31 @@ public class Board {
                         builder.append("# ");
                     else if(cell.getRoom().getPrefix() == 'h')
                         builder.append("  ");
+                    else if(cell.isDoor) {
+                        Cell.Direction neighbouringDirection = Cell.Direction.NORTH;
+
+                        for(Map.Entry<Cell.Direction, Cell> neighbour : cell.getNeighbours().entrySet()) {
+                            if(neighbour.getValue().isDoor && !neighbour.getValue().isRoom(cell)) {
+                                neighbouringDirection = neighbour.getKey();
+                                break;
+                            }
+                        }
+
+                        switch (neighbouringDirection) {
+                            case EAST:
+                                builder.append("< ");
+                                break;
+                            case WEST:
+                                builder.append("> ");
+                                break;
+                            case NORTH:
+                                builder.append("V ");
+                                break;
+                            case SOUTH:
+                                builder.append("^ ");
+                                break;
+                        }
+                    }
                     else {
                         builder.append(cell.getRoom().getPrefix());
                         builder.append(' ');
