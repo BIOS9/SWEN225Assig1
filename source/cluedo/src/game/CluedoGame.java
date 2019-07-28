@@ -1,14 +1,11 @@
 package game;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-=======
 import java.util.*;
->>>>>>> 9aa2777a30461a6a36ed569c24f0f25f6adf77f1
 
 import game.board.Board;
 import game.cards.Card;
@@ -40,7 +37,6 @@ class CluedoGame {
 	private game.cards.Weapon murderWeapon;
 	private game.cards.Room murderRoom;
 
-<<<<<<< HEAD
 	private final game.cards.Character[] characters = { 
 			new game.cards.Character("Miss Scarlett"),
 			new game.cards.Character("Rev. Green"),
@@ -48,15 +44,6 @@ class CluedoGame {
 			new game.cards.Character("Professor Plum"),
 			new game.cards.Character("Mrs. Peacock"),
 			new game.cards.Character("Mrs. White") };
-=======
-	private final game.cards.Character[] characters = {
-	        new game.cards.Character("Miss Scarlett"),
-			new game.cards.Character("Rev. Green"),
-            new game.cards.Character("Colonel Mustard"),
-			new game.cards.Character("Professor Plum"),
-            new game.cards.Character("Mrs. Peacock"),
-			new game.cards.Character("Mrs. White")};
->>>>>>> 9aa2777a30461a6a36ed569c24f0f25f6adf77f1
 
 	private final game.cards.Room[] rooms = {
     		new game.cards.Room("Kitchen", 'k'),
