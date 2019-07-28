@@ -75,8 +75,6 @@ public class Board {
             "dddddddDHh     hhhppppPp".toCharArray(),
             "ddddddddhh     hhhhhHhH ".toCharArray(),
             "ddddddddhh     hhhllLll ".toCharArray(),
-            "ddddddddhh     hhlllllll".toCharArray(),
-            " hhhhhhhhh     hHLllllll".toCharArray(),
             "hhhhhhhhhhhHHhhhhlllllll".toCharArray(),
             " hhhhhHhhrrRRrrhhhlllll ".toCharArray(),
             "ttttttThhrrrrrrhhhhhhhhh".toCharArray(),
@@ -246,7 +244,6 @@ public class Board {
                     if(cell.isOccupied())
                         builder.append("# ");
                     else if(cell.getRoom().getPrefix() == 'h')
-                        builder.append("  ");
                     else if(cell.isDoor) {
                         Cell.Direction neighbouringDirection = Cell.Direction.NORTH;
 
