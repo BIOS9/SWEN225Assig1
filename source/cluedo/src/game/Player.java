@@ -24,7 +24,6 @@ class Player {
 	private List<game.cards.Card> hand;
 	private List<Turn> turn;
 	private CluedoGame game;
-	private Cell cell;
 	private game.cards.Character character;
 
 	/**
@@ -33,12 +32,10 @@ class Player {
 	 * 
 	 * @param character
 	 * @param game
-	 * @param cell
 	 */
-	public Player(game.cards.Character character, CluedoGame game, Cell cell) {
+	public Player(game.cards.Character character, CluedoGame game) {
 		this.character = character;
 		this.game = game;
-		this.cell = cell;
 	}
 
 	// Getters and setters from Umple (sort through)
@@ -103,11 +100,6 @@ class Player {
 		return game;
 	}
 	/* Code from template association_GetOne */
-	public Cell getCell()
-	{
-		return cell;
-	}
-	/* Code from template association_GetOne */
 	public game.cards.Character getCharacter()
 	{
 		return character;
@@ -118,7 +110,6 @@ class Player {
 	  return super.toString() + "["+
 			  "hasAcused" + ":" + getHasAcused()+ "]" + System.getProperties().getProperty("line.separator") +
 			  "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
-			  "  " + "cell = "+(getCell()!=null?Integer.toHexString(System.identityHashCode(getCell())):"null") + System.getProperties().getProperty("line.separator") +
 			  "  " + "character = "+(getCharacter()!=null?Integer.toHexString(System.identityHashCode(getCharacter())):"null");
 	}
 }
