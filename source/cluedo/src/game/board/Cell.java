@@ -1,6 +1,8 @@
 package game.board;
 
 import java.util.*;
+import java.util.Collections;
+import java.util.Map;
 import game.cards.Room;
 
 /**
@@ -89,6 +91,14 @@ public class Cell {
      */
     public void setNeighbour(Direction direction, Cell cell) {
         neighbours.put(direction, cell);
+    }
+
+    /**
+     * Returns unmodifiable version of neighbours map
+     * @return
+     */
+    public Map<Direction, Cell> getNeighbours() {
+        return Collections.unmodifiableMap(neighbours);
     }
 
     /**
