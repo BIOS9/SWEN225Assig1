@@ -41,6 +41,13 @@ class CluedoGame {
     		new game.cards.Room("Lounge", 't'),
     		new game.cards.Room("Study", 's')};
 	
+	private final game.cards.Weapon[] weapons = {
+			new game.cards.Weapon("Candlestick"),
+			new game.cards.Weapon("Dagger"),
+			new game.cards.Weapon("Lead Pipe"),
+			new game.cards.Weapon("Revolver"),
+			new game.cards.Weapon("Rope"),
+			new game.cards.Weapon("Spanner")};
 
 	/**
 	 * Entry point
