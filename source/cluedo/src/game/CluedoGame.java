@@ -24,10 +24,13 @@ class CluedoGame {
 	// CluedoGame Associations
 	private Board board;
 
-	private final game.cards.Character[] characters = { new game.cards.Character("Miss Scarlett"),
-			new game.cards.Character("Rev. Green"), new game.cards.Character("Colonel Mustard"),
-			new game.cards.Character("Professor Plum"), new game.cards.Character("Mrs. Peacock"),
-			new game.cards.Character("Mrs. White") };
+	private final game.cards.Character[] characters = {
+	        new game.cards.Character("Miss Scarlett"),
+			new game.cards.Character("Rev. Green"),
+            new game.cards.Character("Colonel Mustard"),
+			new game.cards.Character("Professor Plum"),
+            new game.cards.Character("Mrs. Peacock"),
+			new game.cards.Character("Mrs. White")};
 
 	private final game.cards.Room[] roomCards = {
     		new game.cards.Room("Kitchen", 'k'),
