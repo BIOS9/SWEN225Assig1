@@ -114,7 +114,7 @@ class CluedoGame {
 	public void initCards() {
 		// Create three stack of cards, one for each card type, Sets since order doesnt
 		// matter and no dups?
-		List<Character> characterCards = new ArrayList<Character>();
+		List<Character> characterCards = new ArrayList<Character>(Arrays.asList(characters));
 		List<Room> roomCards = new ArrayList<Room>();
 		List<Weapon> weaponCards = new ArrayList<Weapon>();
 		
