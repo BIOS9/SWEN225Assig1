@@ -1,10 +1,14 @@
 package game;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+=======
+import java.util.*;
+>>>>>>> 9aa2777a30461a6a36ed569c24f0f25f6adf77f1
 
 import game.board.Board;
 import game.cards.Card;
@@ -22,6 +26,11 @@ import game.cards.Weapon;
  *
  */
 class CluedoGame {
+    public static final int MIN_PLAYERS = 3;
+    public static final int MAX_PLAYERS = 6;
+
+    public static Scanner INPUT_SCANNER;
+
 	// CluedoGame Attributes
 	private int playerTurnIndex = 0; // Whos turn it is
 
@@ -31,6 +40,7 @@ class CluedoGame {
 	private game.cards.Weapon murderWeapon;
 	private game.cards.Room murderRoom;
 
+<<<<<<< HEAD
 	private final game.cards.Character[] characters = { 
 			new game.cards.Character("Miss Scarlett"),
 			new game.cards.Character("Rev. Green"),
@@ -38,6 +48,15 @@ class CluedoGame {
 			new game.cards.Character("Professor Plum"),
 			new game.cards.Character("Mrs. Peacock"),
 			new game.cards.Character("Mrs. White") };
+=======
+	private final game.cards.Character[] characters = {
+	        new game.cards.Character("Miss Scarlett"),
+			new game.cards.Character("Rev. Green"),
+            new game.cards.Character("Colonel Mustard"),
+			new game.cards.Character("Professor Plum"),
+            new game.cards.Character("Mrs. Peacock"),
+			new game.cards.Character("Mrs. White")};
+>>>>>>> 9aa2777a30461a6a36ed569c24f0f25f6adf77f1
 
 	private final game.cards.Room[] rooms = {
     		new game.cards.Room("Kitchen", 'k'),
@@ -59,12 +78,15 @@ class CluedoGame {
 			new game.cards.Weapon("Rope"),
 			new game.cards.Weapon("Spanner")};
 
+	private List<Player> players = new ArrayList<>();
+
 	/**
 	 * Entry point
 	 * 
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
+        INPUT_SCANNER = new Scanner(System.in);
 		new CluedoGame().initGame();
 	}
 
@@ -74,7 +96,28 @@ class CluedoGame {
 	public void initGame() {
 		board = new Board();
 		board.generateBoard(characters);
-		System.out.println(board.toString());
+
+		System.out.println("Welcome to Cluedo! Have fun >:)\n");
+
+		// Ask user for player count
+		int playerCount;
+        while(true) {
+            System.out.println("How many players are there? " + MIN_PLAYERS + " - " + MAX_PLAYERS + ": ");
+
+            try {
+                playerCount = INPUT_SCANNER.nextInt();
+
+                if (playerCount >= MIN_PLAYERS && playerCount <= MAX_PLAYERS)
+                    break;
+                else
+                    System.out.println("Player count must be between " + MIN_PLAYERS + " and " + MAX_PLAYERS + " (both inclusive)");
+            }
+            catch (InputMismatchException ex) {
+                System.out.println("Please enter a valid number.a");
+                INPUT_SCANNER.nextLine(); // Clear input buffer
+            }
+        }
+        System.out.println(board.toString());
 	}
 
 	/**
