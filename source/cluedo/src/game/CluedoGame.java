@@ -185,4 +185,16 @@ class CluedoGame {
 
 		System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
 	}
+	
+	//Getters and Setters
+	
+	public Card getMurderer() {
+		return this.murderer;
+	}
+	public Card getMurderWeapon() {
+		return this.murderWeapon;
+	}
+	public Card getMurderRoom() {
+		return this.murderRoom;
+	}
 }
