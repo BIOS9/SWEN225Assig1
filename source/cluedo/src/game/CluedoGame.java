@@ -39,32 +39,19 @@ class CluedoGame {
 	private game.cards.Weapon murderWeapon;
 	private game.cards.Room murderRoom;
 
-	private final game.cards.Character[] characters = { 
-			new game.cards.Character("Miss Scarlett"),
-			new game.cards.Character("Rev. Green"), 
-			new game.cards.Character("Colonel Mustard"),
-			new game.cards.Character("Professor Plum"),
-			new game.cards.Character("Mrs. Peacock"),
+	private final game.cards.Character[] characters = { new game.cards.Character("Miss Scarlett"),
+			new game.cards.Character("Rev. Green"), new game.cards.Character("Colonel Mustard"),
+			new game.cards.Character("Professor Plum"), new game.cards.Character("Mrs. Peacock"),
 			new game.cards.Character("Mrs. White") };
 
-	private final game.cards.Room[] rooms = { 
-			new game.cards.Room("Kitchen", 'k'),
-			new game.cards.Room("Ball Room", 'b'),
-			new game.cards.Room("Conservatory", 'c'),
-			new game.cards.Room("Billiard Room", 'p'), 
-			new game.cards.Room("Hallway", 'h'),
-			new game.cards.Room("Dining Room", 'd'), 
-			new game.cards.Room("Library", 'l'),
-			new game.cards.Room("Hall", 'r'), 
-			new game.cards.Room("Lounge", 't'), 
-			new game.cards.Room("Study", 's') };
+	private final game.cards.Room[] rooms = { new game.cards.Room("Kitchen", 'k'),
+			new game.cards.Room("Ball Room", 'b'), new game.cards.Room("Conservatory", 'c'),
+			new game.cards.Room("Billiard Room", 'p'), new game.cards.Room("Hallway", 'h'),
+			new game.cards.Room("Dining Room", 'd'), new game.cards.Room("Library", 'l'),
+			new game.cards.Room("Hall", 'r'), new game.cards.Room("Lounge", 't'), new game.cards.Room("Study", 's') };
 
-	private final game.cards.Weapon[] weapons = { 
-			new game.cards.Weapon("Candlestick"), 
-			new game.cards.Weapon("Dagger"),
-			new game.cards.Weapon("Lead Pipe"), 
-			new game.cards.Weapon("Revolver"), 
-			new game.cards.Weapon("Rope"),
+	private final game.cards.Weapon[] weapons = { new game.cards.Weapon("Candlestick"), new game.cards.Weapon("Dagger"),
+			new game.cards.Weapon("Lead Pipe"), new game.cards.Weapon("Revolver"), new game.cards.Weapon("Rope"),
 			new game.cards.Weapon("Spanner") };
 
 	private List<Player> players = new ArrayList<>();
@@ -157,14 +144,16 @@ class CluedoGame {
 	 * 
 	 * @param cards
 	 */
+	// ABBEY WILL FIX
 	private void dealCards(List<Card> cards) {
-		for (Player p : this.players) { //For each player in the game
-			if (!cards.isEmpty()) { //If theres still cards to deal
-				p.addCardToHand(cards.get(0)); // deal the card and remove it.
-				cards.remove(0);
+		while (!cards.isEmpty()) {
+			for (Player p : this.players) { // For each player in the game
+				if (!cards.isEmpty()) { // If theres still cards to deal
+					p.addCardToHand(cards.get(0)); // deal the card and remove it.
+					cards.remove(0);
+				}
 			}
 		}
-
 	}
 
 	private void runGame() {
@@ -185,15 +174,17 @@ class CluedoGame {
 
 		System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
 	}
-	
-	//Getters and Setters
-	
+
+	// Getters and Setters
+
 	public Card getMurderer() {
 		return this.murderer;
 	}
+
 	public Card getMurderWeapon() {
 		return this.murderWeapon;
 	}
+
 	public Card getMurderRoom() {
 		return this.murderRoom;
 	}
