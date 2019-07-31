@@ -21,7 +21,6 @@ class Turn {
     
     //Turn Associations
     private Player player;
-    private Queue<Cell> moves;  // ! Do we need to make a link to cell?
     private Suggestion suggestion;
 
     /**
@@ -50,11 +49,19 @@ class Turn {
         return false;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
+    public int getDiceRoll() {
+        return diceRoll;
+    }
+
     /**
      * Uses dice constants to generate a random number.
      * @return integer value representing dice roll
      */
-    public int rollDice() {
+    public static int rollDice() {
         Random rng = new Random();
         int roll = 0;
 
