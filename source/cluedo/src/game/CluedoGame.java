@@ -144,7 +144,6 @@ class CluedoGame {
 	 * 
 	 * @param cards
 	 */
-	// ABBEY WILL FIX
 	private void dealCards(List<Card> cards) {
 		while (!cards.isEmpty()) {
 			for (Player p : this.players) { // For each player in the game
