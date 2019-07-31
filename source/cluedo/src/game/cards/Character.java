@@ -22,10 +22,12 @@ import game.board.Cell;
  */
 public class Character implements Card {
     private final String name;
+    private final int number;
     private Cell location;
 
-    public Character(String name) {
+    public Character(String name, int number) {
         this.name = name;
+        this.number = number;
     }
 
     @Override
@@ -39,5 +41,9 @@ public class Character implements Card {
 
     public Cell getLocation() {
         return location;
+    }
+
+    public int getNumber() {
+        return number;
     }
 }

@@ -245,8 +245,10 @@ public class Board {
                 if(cells.containsKey(position)) {
                     Cell cell = cells.get(position);
 
-                    if(cell.isOccupied())
-                        builder.append("# ");
+                    if(cell.isOccupied()) {
+                        builder.append(cell.getOccupant().getNumber());
+                        builder.append(' ');
+                    }
                     else if(cell.getRoom().getPrefix() == 'h')
                         builder.append(". ");
                     else if(cell.isDoor) {

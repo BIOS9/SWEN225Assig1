@@ -37,10 +37,10 @@ class CluedoGame {
 	private Board board;
 	private Suggestion soloutionCards;
 
-	private final game.cards.Character[] characters = { new game.cards.Character("Miss Scarlett"),
-			new game.cards.Character("Rev. Green"), new game.cards.Character("Colonel Mustard"),
-			new game.cards.Character("Professor Plum"), new game.cards.Character("Mrs. Peacock"),
-			new game.cards.Character("Mrs. White") };
+	private final game.cards.Character[] characters = { new game.cards.Character("Miss Scarlett", 1),
+			new game.cards.Character("Rev. Green", 2), new game.cards.Character("Colonel Mustard", 3),
+			new game.cards.Character("Professor Plum", 4), new game.cards.Character("Mrs. Peacock", 5),
+			new game.cards.Character("Mrs. White", 6) };
 
 	private final game.cards.Room[] rooms = { new game.cards.Room("Kitchen", 'k'),
 			new game.cards.Room("Ball Room", 'b'), new game.cards.Room("Conservatory", 'c'),
@@ -163,10 +163,12 @@ class CluedoGame {
 		Player winner;
 
 		while (true) {
-			Turn turn = new Turn(players.get(round % players.size()));
+			Player player = players.get(round % players.size());
+			Turn turn = new Turn(player);
 
             System.out.println(turn.getPlayer().getCharacter().getName() + " you're up!");
             System.out.println("Your dice roll was " + turn.getDiceRoll());
+            System.out.println("Your character is number " + player.getCharacter().getNumber() + " and is located at " + player.getCharacter().getLocation().position.toString());
             // Execute the turn here, do suggestions and stuff
 
             // CHECK FOR WINNING SOLUTION AND END GAME

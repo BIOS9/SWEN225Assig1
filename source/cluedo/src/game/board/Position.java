@@ -62,6 +62,13 @@ public class Position {
     }
 
     @Override
+    public String toString() {
+        String pos = "" + (char)('A' + y);
+        pos += x;
+        return pos;
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 163;
         int result = 1;
