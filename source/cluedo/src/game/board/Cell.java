@@ -107,6 +107,8 @@ public class Cell {
         return neighbours.containsKey(direction);
     }
 
+    public Cell getNeighbour(Direction direction) { return  neighbours.get(direction); }
+
     public Room getRoom() {
         return room;
     }

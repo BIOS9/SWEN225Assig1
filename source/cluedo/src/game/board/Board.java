@@ -151,12 +151,12 @@ public class Board {
     /**
      * Moves character to specified cell on the board if the move is valid
      * @param character Character to move
-     * @param cell Cell to move character to
+     * @param direction Direction to move character
      * @return True if move was valid and completed, false if move was invalid or failed to move
      */
-    public boolean moveCharacter(game.cards.Character character, Cell cell) {
+    public boolean moveCharacter(game.cards.Character character, Cell.Direction direction) {
         // CHECK IF VALID HERE!!
-        moveCharacterForce(character, cell);
+        moveCharacterForce(character, character.getLocation().getNeighbour(direction));
 
         return true; // Valid move
     }
@@ -167,6 +167,8 @@ public class Board {
      * @param cell Cell to move character to
      */
     private void moveCharacterForce(game.cards.Character character, Cell cell) {
+        if(cell == null)
+            return;
         if(character.getLocation() != null)
             character.getLocation().setOccupant(null); // Remove character from old position
         cell.setOccupant(character);

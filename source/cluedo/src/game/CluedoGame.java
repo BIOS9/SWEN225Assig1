@@ -162,6 +162,9 @@ class CluedoGame {
 		}
 	}
 
+	/**
+	 * Runs game, main loop for turns and user input
+	 */
 	private void runGame() {
 		int round = 0; // Total number of rounds
 		Player winner;
@@ -175,9 +178,25 @@ class CluedoGame {
             System.out.println("Your dice roll was " + turn.getDiceRoll());
             System.out.println("Your character is number " + player.getCharacter().getNumber() + " and is located at " + player.getCharacter().getLocation().position.toString());
 
-            System.out.print("Where would you like to move? ");
-			Cell.Direction move = askDirection(false);
+			int moves = turn.getDiceRoll();
 
+			// Move player until they run out of moves or skip
+			while(moves > 0) {
+				board.print();
+
+				System.out.println("You have " + moves + " moves remaining.");
+				System.out.print("Where would you like to move? ");
+				Cell.Direction move = askDirection(false);
+
+				if(move == null) // Skip rest of moves is user skips
+					break;
+
+				if (board.moveCharacter(player.getCharacter(), move)) {
+					--moves;
+				} else {
+					System.out.println("You can't move there!");
+				}
+			}
 
 
 
