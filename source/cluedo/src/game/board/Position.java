@@ -64,7 +64,7 @@ public class Position {
     @Override
     public String toString() {
         String pos = "" + (char)('A' + y);
-        pos += x;
+        pos += (x + 1);
         return pos;
     }
 

@@ -215,6 +215,10 @@ public class Board {
         return java.lang.Character.toLowerCase(c);
     }
 
+    public void print() {
+        System.out.println(toString());
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

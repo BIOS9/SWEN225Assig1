@@ -1,4 +1,9 @@
 // ASSUMING PLAYERS GET NO CHOICE OF WHICH CHARACTER THEY WANT
+// ASSUMING THE PLAYERS MUST MOVE ALL OF THEIR DICE ROLL IF THEY ARE IN THE HALLWAY
+// PLAYERS CAN SKIP THE REST OF THEIR MOVES IF THEY ENTER A ROOM
+// PLAYERS CANNOT MOVE BACK ONTO A CELL THAT THEY HAVE BEEN ON IN THAT TURN
+// PLAYERS CANNOT MAKE A SUGGESTION OR ACCUSATION TWICE IN A ROW IN THE SAME ROOM
+// PLAYERS CANNOT MOVE BACK INTO A ROOM THAT THEY HAVE LEFT IN THAT TURN
 
 package game;
 
@@ -10,6 +15,7 @@ import java.util.List;
 import java.util.*;
 
 import game.board.Board;
+import game.board.Cell;
 import game.cards.Card;
 import game.cards.Character;
 import game.cards.Room;
@@ -98,8 +104,6 @@ class CluedoGame {
 		for (int i = 0; i < playerCount; ++i) {
 			players.add(new Player(characters[i], this));
 		}
-
-		System.out.println(board.toString());
 	}
 
 	/**
@@ -166,9 +170,17 @@ class CluedoGame {
 			Player player = players.get(round % players.size());
 			Turn turn = new Turn(player);
 
+			board.print();
             System.out.println(turn.getPlayer().getCharacter().getName() + " you're up!");
             System.out.println("Your dice roll was " + turn.getDiceRoll());
             System.out.println("Your character is number " + player.getCharacter().getNumber() + " and is located at " + player.getCharacter().getLocation().position.toString());
+
+            System.out.print("Where would you like to move? ");
+			Cell.Direction move = askDirection(false);
+
+
+
+
             // Execute the turn here, do suggestions and stuff
 
             // CHECK FOR WINNING SOLUTION AND END GAME
@@ -181,6 +193,43 @@ class CluedoGame {
         }
 
 		System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
+	}
+
+	/**
+	 * Asks user for direction, allows skipping
+	 * @param allowSkip
+	 * @return Direction, or null if skipped
+	 */
+	private Cell.Direction askDirection(boolean allowSkip) {
+		while (true) {
+			System.out.print("Choose a direction using W A S D");
+			if(allowSkip)
+				System.out.print(" or X for skip");
+			System.out.print(": ");
+
+			try {
+				String input = INPUT_SCANNER.next().toUpperCase();
+				switch (input) {
+					case "W":
+						return Cell.Direction.NORTH;
+					case "S":
+						return Cell.Direction.SOUTH;
+					case "A":
+						return Cell.Direction.WEST;
+					case "D":
+						return Cell.Direction.EAST;
+					case "X":
+						if(allowSkip)
+							return null;
+						else {
+							System.out.println("Skipping not allowed!");
+							continue;
+						}
+				}
+			} catch (InputMismatchException ex) {}
+
+			System.out.println("Invalid input.");
+		}
 	}
 
 
