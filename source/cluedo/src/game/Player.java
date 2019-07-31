@@ -1,6 +1,7 @@
 package game;
 
 import game.board.Cell;
+import game.cards.Card;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,6 +54,10 @@ class Player {
 	public List<game.cards.Card> getHand() {
 		List<game.cards.Card> newHand = Collections.unmodifiableList(hand);
 		return newHand;
+	}
+	
+	public void addCardToHand(Card c) {
+		this.hand.add(c);
 	}
 
 	public int numberOfHand() {

@@ -25,10 +25,10 @@ import game.cards.Weapon;
  *
  */
 class CluedoGame {
-    public static final int MIN_PLAYERS = 3;
-    public static final int MAX_PLAYERS = 6;
+	public static final int MIN_PLAYERS = 3;
+	public static final int MAX_PLAYERS = 6;
 
-    public static Scanner INPUT_SCANNER;
+	public static Scanner INPUT_SCANNER;
 
 	// CluedoGame Attributes
 	private int playerTurnIndex = 0; // Whos turn it is
@@ -39,33 +39,20 @@ class CluedoGame {
 	private game.cards.Weapon murderWeapon;
 	private game.cards.Room murderRoom;
 
-	private final game.cards.Character[] characters = { 
-			new game.cards.Character("Miss Scarlett"),
-			new game.cards.Character("Rev. Green"),
-			new game.cards.Character("Colonel Mustard"),
-			new game.cards.Character("Professor Plum"),
-			new game.cards.Character("Mrs. Peacock"),
+	private final game.cards.Character[] characters = { new game.cards.Character("Miss Scarlett"),
+			new game.cards.Character("Rev. Green"), new game.cards.Character("Colonel Mustard"),
+			new game.cards.Character("Professor Plum"), new game.cards.Character("Mrs. Peacock"),
 			new game.cards.Character("Mrs. White") };
 
-	private final game.cards.Room[] rooms = {
-    		new game.cards.Room("Kitchen", 'k'),
-    		new game.cards.Room("Ball Room", 'b'),
-    		new game.cards.Room("Conservatory", 'c'),
-    		new game.cards.Room("Billiard Room", 'p'),
-    		new game.cards.Room("Hallway", 'h'),
-    		new game.cards.Room("Dining Room", 'd'),
-    		new game.cards.Room("Library", 'l'),
-    		new game.cards.Room("Hall", 'r'),
-    		new game.cards.Room("Lounge", 't'),
-    		new game.cards.Room("Study", 's')};
-	
-	private final game.cards.Weapon[] weapons = {
-			new game.cards.Weapon("Candlestick"),
-			new game.cards.Weapon("Dagger"),
-			new game.cards.Weapon("Lead Pipe"),
-			new game.cards.Weapon("Revolver"),
-			new game.cards.Weapon("Rope"),
-			new game.cards.Weapon("Spanner")};
+	private final game.cards.Room[] rooms = { new game.cards.Room("Kitchen", 'k'),
+			new game.cards.Room("Ball Room", 'b'), new game.cards.Room("Conservatory", 'c'),
+			new game.cards.Room("Billiard Room", 'p'), new game.cards.Room("Hallway", 'h'),
+			new game.cards.Room("Dining Room", 'd'), new game.cards.Room("Library", 'l'),
+			new game.cards.Room("Hall", 'r'), new game.cards.Room("Lounge", 't'), new game.cards.Room("Study", 's') };
+
+	private final game.cards.Weapon[] weapons = { new game.cards.Weapon("Candlestick"), new game.cards.Weapon("Dagger"),
+			new game.cards.Weapon("Lead Pipe"), new game.cards.Weapon("Revolver"), new game.cards.Weapon("Rope"),
+			new game.cards.Weapon("Spanner") };
 
 	private List<Player> players = new ArrayList<>();
 
@@ -75,7 +62,7 @@ class CluedoGame {
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
-        INPUT_SCANNER = new Scanner(System.in);
+		INPUT_SCANNER = new Scanner(System.in);
 		CluedoGame game = new CluedoGame();
 		game.initGame();
 		game.runGame();
@@ -92,34 +79,33 @@ class CluedoGame {
 
 		// Ask user for player count
 		int playerCount;
-        while(true) {
-            System.out.println("How many players are there? " + MIN_PLAYERS + " - " + MAX_PLAYERS + ": ");
+		while (true) {
+			System.out.println("How many players are there? " + MIN_PLAYERS + " - " + MAX_PLAYERS + ": ");
 
-            try {
-                playerCount = INPUT_SCANNER.nextInt();
+			try {
+				playerCount = INPUT_SCANNER.nextInt();
 
-                if (playerCount >= MIN_PLAYERS && playerCount <= MAX_PLAYERS)
-                    break;
-                else
-                    System.out.println("Player count must be between " + MIN_PLAYERS + " and " + MAX_PLAYERS + " (both inclusive)");
-            }
-            catch (InputMismatchException ex) { // Error occurs when user enters something other than an integer
-                System.out.println("Please enter a valid number.a");
-                INPUT_SCANNER.nextLine(); // Clear input buffer
-            }
-        }
+				if (playerCount >= MIN_PLAYERS && playerCount <= MAX_PLAYERS)
+					break;
+				else
+					System.out.println("Player count must be between " + MIN_PLAYERS + " and " + MAX_PLAYERS
+							+ " (both inclusive)");
+			} catch (InputMismatchException ex) { // Error occurs when user enters something other than an integer
+				System.out.println("Please enter a valid number.a");
+				INPUT_SCANNER.nextLine(); // Clear input buffer
+			}
+		}
 
-        // Generate playerss and add them to list
-        for(int i = 0; i < playerCount; ++i) {
-            players.add(new Player(characters[i], this));
-        }
+		// Generate playerss and add them to list
+		for (int i = 0; i < playerCount; ++i) {
+			players.add(new Player(characters[i], this));
+		}
 
-        System.out.println(board.toString());
+		System.out.println(board.toString());
 	}
 
 	/**
-	 * Generates the cards, selects a solution (3 cards) shuffles remaing cards and
-	 * deals them to the players.
+	 * Generates the cards, selects a solution (3 cards) adds all cards to one list.
 	 */
 	private void initCards() {
 		// Create three stack of cards, one for each card type, Sets since order doesnt
@@ -127,45 +113,78 @@ class CluedoGame {
 		List<Character> characterCards = new ArrayList<Character>(Arrays.asList(characters));
 		List<Room> roomCards = new ArrayList<Room>(Arrays.asList(rooms));
 		List<Weapon> weaponCards = new ArrayList<Weapon>(Arrays.asList(weapons));
-		
-		//Choosing the character soloution
+
+		// Choosing the character soloution
 		Collections.shuffle(characterCards);
 		this.murderer = characterCards.get(0);
 		characterCards.remove(0);
-		
-		//Choosing the room soloution
+
+		// Choosing the room soloution
 		Collections.shuffle(roomCards);
 		this.murderRoom = roomCards.get(0);
 		roomCards.remove(0);
-		
-		//Choosing the weapon soloution;
+
+		// Choosing the weapon soloution;
 		Collections.shuffle(weaponCards);
 		this.murderWeapon = weaponCards.get(0);
 		weaponCards.remove(0);
 
+		// add all cards to one list
 		List<Card> allCards = new ArrayList<>();
 		allCards.addAll(characterCards);
 		allCards.addAll(roomCards);
 		allCards.addAll(weaponCards);
 
+		Collections.shuffle(allCards);
+		dealCards(allCards);
+	}
+
+	/**
+	 * Method to deal the cards to the players, assuming they are already shuffled.
+	 * 
+	 * @param cards
+	 */
+	private void dealCards(List<Card> cards) {
+		while (!cards.isEmpty()) {
+			for (Player p : this.players) { // For each player in the game
+				if (!cards.isEmpty()) { // If theres still cards to deal
+					p.addCardToHand(cards.get(0)); // deal the card and remove it.
+					cards.remove(0);
+				}
+			}
+		}
 	}
 
 	private void runGame() {
-	    int round = 0; // Total number of rounds
-        Player winner;
+		int round = 0; // Total number of rounds
+		Player winner;
 
-        while (true) {
-            Turn turn = new Turn(players.get(round % players.size()));
+		while (true) {
+			Turn turn = new Turn(players.get(round % players.size()));
 
-            // Execute the turn here, do suggestions and stuff
+			// Execute the turn here, do suggestions and stuff
 
-            // CHECK FOR WINNING SOLUTION AND END GAME
-            if(false) {
-                winner = null;
-                break;
-            }
-        }
+			// CHECK FOR WINNING SOLUTION AND END GAME
+			if (false) {
+				winner = null;
+				break;
+			}
+		}
 
-        System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
-    }
+		System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
+	}
+
+	// Getters and Setters
+
+	public Card getMurderer() {
+		return this.murderer;
+	}
+
+	public Card getMurderWeapon() {
+		return this.murderWeapon;
+	}
+
+	public Card getMurderRoom() {
+		return this.murderRoom;
+	}
 }
