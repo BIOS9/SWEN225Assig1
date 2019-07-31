@@ -3,6 +3,7 @@ package game;
 import game.board.Cell;
 import game.cards.Card;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +38,7 @@ class Player {
 	public Player(game.cards.Character character, CluedoGame game) {
 		this.character = character;
 		this.game = game;
+		this.hand = new ArrayList<game.cards.Card>();
 	}
 
 	// Getters and setters from Umple (sort through)
