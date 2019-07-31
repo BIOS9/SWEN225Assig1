@@ -72,7 +72,7 @@ class CluedoGame {
 	 */
 	private void initGame() {
 		board = new Board(characters);
-		
+
 		System.out.println("Welcome to Cluedo! Have fun >:)\n");
 
 		// Ask user for player count
