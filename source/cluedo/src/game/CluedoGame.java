@@ -35,9 +35,7 @@ class CluedoGame {
 
 	// CluedoGame Associations
 	private Board board;
-	private game.cards.Character murderer;
-	private game.cards.Weapon murderWeapon;
-	private game.cards.Room murderRoom;
+	private Suggestion soloutionCards;
 
 	private final game.cards.Character[] characters = { new game.cards.Character("Miss Scarlett"),
 			new game.cards.Character("Rev. Green"), new game.cards.Character("Colonel Mustard"),
@@ -113,21 +111,26 @@ class CluedoGame {
 		List<Character> characterCards = new ArrayList<Character>(Arrays.asList(characters));
 		List<Room> roomCards = new ArrayList<Room>(Arrays.asList(rooms));
 		List<Weapon> weaponCards = new ArrayList<Weapon>(Arrays.asList(weapons));
-
+		game.cards.Character murderer;
+		game.cards.Room murderRoom;
+		game.cards.Weapon murderWeapon;
+		
 		// Choosing the character soloution
 		Collections.shuffle(characterCards);
-		this.murderer = characterCards.get(0);
+		murderer = characterCards.get(0);
 		characterCards.remove(0);
 
 		// Choosing the room soloution
 		Collections.shuffle(roomCards);
-		this.murderRoom = roomCards.get(0);
+		murderRoom = roomCards.get(0);
 		roomCards.remove(0);
 
 		// Choosing the weapon soloution;
 		Collections.shuffle(weaponCards);
-		this.murderWeapon = weaponCards.get(0);
+		murderWeapon = weaponCards.get(0);
 		weaponCards.remove(0);
+		
+		this.soloutionCards = new Suggestion(murderRoom, murderer, murderWeapon);
 
 		// add all cards to one list
 		List<Card> allCards = new ArrayList<>();
@@ -178,17 +181,5 @@ class CluedoGame {
 		System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
 	}
 
-	// Getters and Setters
 
-	public Card getMurderer() {
-		return this.murderer;
-	}
-
-	public Card getMurderWeapon() {
-		return this.murderWeapon;
-	}
-
-	public Card getMurderRoom() {
-		return this.murderRoom;
-	}
 }

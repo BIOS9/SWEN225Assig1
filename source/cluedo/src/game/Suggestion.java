@@ -30,4 +30,10 @@ public class Suggestion {
     	this.isAcusation = a;
     }   
     
+    public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon) {
+    	this.room = room;
+    	this.character = character;
+    	this.weapon = weapon;
+    }
+    
 }
