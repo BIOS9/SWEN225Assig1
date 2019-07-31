@@ -162,14 +162,18 @@ class CluedoGame {
 		while (true) {
 			Turn turn = new Turn(players.get(round % players.size()));
 
-			// Execute the turn here, do suggestions and stuff
+            System.out.println(turn.getPlayer().getCharacter().getName() + " you're up!");
+            System.out.println("Your dice roll was " + turn.getDiceRoll());
+            // Execute the turn here, do suggestions and stuff
 
-			// CHECK FOR WINNING SOLUTION AND END GAME
-			if (false) {
-				winner = null;
-				break;
-			}
-		}
+            // CHECK FOR WINNING SOLUTION AND END GAME
+            if(false) {
+                winner = null;
+                break;
+            }
+
+            ++round;
+        }
 
 		System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
 	}
