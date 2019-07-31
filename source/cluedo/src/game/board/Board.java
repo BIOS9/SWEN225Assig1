@@ -90,20 +90,22 @@ public class Board {
     //Board Associations
     private Map<Position, Cell> cells = new HashMap<>();
 
-    public Board() {
+    public Board(game.cards.Character... characters) {
         BOARD_HEIGHT = BOARD.length;
         int widest = 0;
         for(char[] row : BOARD)
             widest = Math.max(widest, row.length);
 
         BOARD_WIDTH = widest;
+
+        generateBoard(characters);
     }
 
     /**
      * Generates board by connecting relevant cells using the board layout string
      * @param characters
      */
-    public void generateBoard(game.cards.Character... characters) {
+    private void generateBoard(game.cards.Character... characters) {
         if(characters.length != CHARACTER_COUNT) {
             throw new IllegalArgumentException("Character count must be " + CHARACTER_COUNT);
         }

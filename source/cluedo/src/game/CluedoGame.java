@@ -63,6 +63,7 @@ class CluedoGame {
 		INPUT_SCANNER = new Scanner(System.in);
 		CluedoGame game = new CluedoGame();
 		game.initGame();
+		game.initCards();
 		game.runGame();
 	}
 
@@ -70,9 +71,8 @@ class CluedoGame {
 	 * Initialises the game state, players and board.
 	 */
 	private void initGame() {
-		board = new Board();
-		board.generateBoard(characters);
-
+		board = new Board(characters);
+		
 		System.out.println("Welcome to Cluedo! Have fun >:)\n");
 
 		// Ask user for player count
