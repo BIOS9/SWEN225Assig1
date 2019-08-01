@@ -198,8 +198,6 @@ class CluedoGame {
 				}
 			}
 
-
-
             // Execute the turn here, do suggestions and stuff
 
             // CHECK FOR WINNING SOLUTION AND END GAME
