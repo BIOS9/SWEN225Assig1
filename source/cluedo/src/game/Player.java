@@ -46,6 +46,14 @@ class Player {
 	{
 		return hasAcused;
 	}
+	
+	public String printCards() {
+		String s = "You have these cards in your hand: ";
+		for(game.cards.Card c : hand) {
+			s += (" [" + c.getName() + "] ");
+		}
+		return s;
+	}
 
 	/* Code from template association_GetMany */
 	public game.cards.Card getHand(int index) {
