@@ -170,6 +170,8 @@ public class Board {
         return true; // Valid move
     }
 
+
+
     /**
      * Moves character to specified cell without checks, used for setting up board
      * @param character Character to move

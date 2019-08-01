@@ -176,6 +176,9 @@ public class CluedoGame {
             
 			int moves = turn.getDiceRoll();
 
+			Set<Cell> visited = new HashSet<>();
+			visited.add(player.getCharacter().getLocation()); // Add starting position to visited
+
 			// Move player until they run out of moves or skip
 			while(moves > 0) {
 				board.print();
@@ -187,7 +190,14 @@ public class CluedoGame {
 				if(move == null) // Skip rest of moves is user skips
 					break;
 
+				Cell newCell = player.getCharacter().getLocation().getNeighbour(move);
+				if(newCell != null && visited.contains(newCell)) {
+					System.out.println("You have already been there!");
+					continue;
+				}
+
 				if (board.moveCharacter(player.getCharacter(), move)) {
+					visited.add(player.getCharacter().getLocation());
 					--moves;
 				} else {
 					System.out.println("You can't move there!");
