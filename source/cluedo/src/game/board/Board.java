@@ -155,7 +155,8 @@ public class Board {
      * @return True if move was valid and completed, false if move was invalid or failed to move
      */
     public boolean moveCharacter(game.cards.Character character, Cell.Direction direction) {
-        // CHECK IF VALID HERE!!
+
+
         moveCharacterForce(character, character.getLocation().getNeighbour(direction));
 
         return true; // Valid move
