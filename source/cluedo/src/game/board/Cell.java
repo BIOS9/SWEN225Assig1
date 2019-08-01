@@ -112,4 +112,9 @@ public class Cell {
     public Room getRoom() {
         return room;
     }
+
+    @Override
+    public int hashCode() {
+        return position.hashCode();
+    }
 }
