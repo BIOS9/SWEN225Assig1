@@ -145,20 +145,13 @@ public class CluedoGame {
 		allCards.addAll(weaponCards);
 
 		Collections.shuffle(allCards);
-		dealCards(allCards);
-	}
-
-	/**
-	 * Method to deal the cards to the players, assuming they are already shuffled.
-	 * 
-	 * @param cards
-	 */
-	private void dealCards(List<Card> cards) {
-		while (!cards.isEmpty()) {
+		
+		//Deals the cards to the players
+		while (!allCards.isEmpty()) {
 			for (Player p : this.players) { // For each player in the game
-				if (!cards.isEmpty()) { // If theres still cards to deal
-					p.addCardToHand(cards.get(0)); // deal the card and remove it.
-					cards.remove(0);
+				if (!allCards.isEmpty()) { // If theres still cards to deal
+					p.addCardToHand(allCards.get(0)); // deal the card and remove it.
+					allCards.remove(0);
 				}
 			}
 		}
