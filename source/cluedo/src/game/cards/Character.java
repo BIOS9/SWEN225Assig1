@@ -15,7 +15,6 @@ import game.board.Cell;
 /**
  * Umple : 
  * 
- * They have ALOT of stuff in this class, review later.
  * 
  * @author abbey
  *

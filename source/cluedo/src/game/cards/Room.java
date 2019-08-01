@@ -42,8 +42,4 @@ public class Room implements Card {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return name;
-    }
 }

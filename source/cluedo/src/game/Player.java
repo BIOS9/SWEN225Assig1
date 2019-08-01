@@ -48,7 +48,7 @@ class Player {
 	}
 	
 	public String printCards() {
-		String s = "You have these cards in your hand: ";
+		String s = "Your hand: ";
 		for(game.cards.Card c : hand) {
 			s += (" [" + c.getName() + "] ");
 		}

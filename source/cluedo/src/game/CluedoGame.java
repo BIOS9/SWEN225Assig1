@@ -30,7 +30,8 @@ import game.cards.Weapon;
  * @author abbey
  *
  */
-class CluedoGame {
+
+public class CluedoGame {
 	public static final int MIN_PLAYERS = 3;
 	public static final int MAX_PLAYERS = 6;
 
@@ -71,6 +72,7 @@ class CluedoGame {
 		game.initGame();
 		game.initCards();
 		game.runGame();
+		
 	}
 
 	/**
@@ -177,7 +179,8 @@ class CluedoGame {
             System.out.println(turn.getPlayer().getCharacter().getName() + " you're up!");
             System.out.println("Your dice roll was " + turn.getDiceRoll());
             System.out.println("Your character is number " + player.getCharacter().getNumber() + " and is located at " + player.getCharacter().getLocation().position.toString());
-
+            System.out.println(turn.getPlayer().printCards());
+            
 			int moves = turn.getDiceRoll();
 
 			Set<Cell> visited = new HashSet<>();
