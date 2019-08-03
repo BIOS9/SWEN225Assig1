@@ -6,6 +6,10 @@
 // PLAYERS CANNOT MOVE BACK INTO A ROOM THAT THEY HAVE LEFT IN THAT TURN
 // ASSUMING PLAYERS ARE NOT IDIOTS WHO WILL WALK INTO A SPACE THEY CANNOT GET OUT OF
 // ASSUMING SKIPPING TURN RULE APPLIES WHEN A PLAYER IS IN A ROOM
+// ASSUMING PLAYERS CAN MAKE TWO SUGGESTIONS IN THE SAME ROOM IN DIFFERENT TURNS
+// ASSUMING A PLAYER CAN MAKE A SUGGESTION WITHOUT MOVING INTO A ROOM IF THEY ARE ALREADY IN IT
+// ASSUMING WEAPONS ARE USELESS AND DONT NEED TO BE MOVED
+
 
 package game;
 
@@ -21,6 +25,7 @@ import game.cards.Card;
 import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * CluedoGame is responsible for initiating the game board, cards and players
@@ -73,7 +78,9 @@ public class CluedoGame {
 			new game.cards.Weapon("Rope"),
 			new game.cards.Weapon("Spanner") };
 
-	private List<Player> players = new ArrayList<>(); 
+	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'H');
+
+	private List<Player> players = new ArrayList<>();
 
 	/**
 	 * Entry point, main method
@@ -180,6 +187,10 @@ public class CluedoGame {
 
 		while (true) {
 			Player player = players.get(round % players.size());
+
+			if(player.getHasAcused()) // If player has accused, skip them
+				continue;
+
 			game.cards.Character character = player.getCharacter();
 			Turn turn = new Turn(player);
 
@@ -196,7 +207,7 @@ public class CluedoGame {
 
 			visitedCells.add(character.getLocation()); // Add starting position to visitedCells
 
-			if(!character.getLocation().isRoom(rooms[0])) { // Check if room is hallway
+			if(!character.getLocation().isRoom(hallway)) { // Check if room is hallway
 				visitedRooms.add(character.getLocation().getRoom());
 			}
 
@@ -206,7 +217,7 @@ public class CluedoGame {
 
 				System.out.println("You have " + moves + " moves remaining.");
 				System.out.print("Where would you like to move? ");
-				Cell.Direction move = askDirection(!character.getLocation().isRoom(rooms[0]));
+				Cell.Direction move = askDirection(!character.getLocation().isRoom(hallway));
 
 				if(move == null) // Skip rest of moves is user skips
 					break;
@@ -225,7 +236,7 @@ public class CluedoGame {
 				if (board.moveCharacter(character, move)) {
 					visitedCells.add(character.getLocation());
 
-					if(!character.getLocation().isRoom(rooms[0])) { // Check if room is hallway or not
+					if(!character.getLocation().isRoom(hallway)) { // Check if room is hallway or not
 						visitedRooms.add(character.getLocation().getRoom());
 					}
 					--moves;
@@ -234,7 +245,9 @@ public class CluedoGame {
 				}
 			}
 
-            // Execute the turn here, do suggestions and stuff
+			// Ask player for suggestion
+			Suggestion suggestion = askSuggestion(player, character.getLocation().getRoom(), character.getLocation().isRoom(hallway)); // Get suggestion, forcing accusation if in hallway
+
 
             // CHECK FOR WINNING SOLUTION AND END GAME
             if(false) {
@@ -246,6 +259,74 @@ public class CluedoGame {
         }
 
 		System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
+	}
+
+	/**
+	 * Asks user for a suggestion or accusation or skip.
+	 * @param forceAccusation Disallows player from providing a suggestion
+	 * @return
+	 */
+	private Suggestion askSuggestion(Player player, Room suggestionRoom, boolean forceAccusation) {
+		while (true) {
+			if(forceAccusation)
+				System.out.print("Would you like to make a: Accusation (A), Nothing (X): (A, X)");
+			else
+				System.out.print("Would you like to make a: Suggestion (S), Accusation (A), Nothing (X): (S, A, X)");
+
+			try {
+				String input = INPUT_SCANNER.next().toUpperCase();
+
+				// User selected cards
+				game.cards.Character character;
+				game.cards.Weapon weapon;
+				game.cards.Room room;
+
+				switch (input) {
+					case "S":
+						if(forceAccusation) {
+							System.out.println("Suggestions are not allowed here!");
+							continue;
+						}
+						character = (game.cards.Character)askCard(characters, "character");
+						weapon = (game.cards.Weapon)askCard(weapons, "weapon");
+
+						return new Suggestion(suggestionRoom, character, weapon, player, false);
+					case "A":
+						room = (game.cards.Room)askCard(rooms, "room");
+						character = (game.cards.Character)askCard(characters, "character");
+						weapon = (game.cards.Weapon)askCard(weapons, "weapon");
+
+						return new Suggestion(room, character, weapon, player, true);
+					case "X":
+						return null;
+				}
+			} catch (InputMismatchException ex) {}
+
+			System.out.println("Invalid input.");
+		}
+	}
+
+	/**
+	 * Asks user to select a card
+	 * @return
+	 */
+	private game.cards.Card askCard(Card[] cards, String type) {
+		for(int i = 0; i < cards.length; ++i) {
+			System.out.print(i + 1);
+			System.out.println(": " + cards[i].getName());
+		}
+		while (true) {
+			try {
+				System.out.println("Please choose a " + type + " (1-" + cards.length + "):");
+				int input = INPUT_SCANNER.nextInt();
+				if(input < 1 || input > cards.length)
+					continue;
+
+				return cards[input - 1];
+			} catch (InputMismatchException ex) {}
+
+			System.out.println("Invalid input.");
+		}
 	}
 
 	/**
