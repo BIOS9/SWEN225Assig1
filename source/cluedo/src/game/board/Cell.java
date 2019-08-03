@@ -8,7 +8,9 @@ import game.cards.Room;
 
 /** 
  * 
+ * Represents the cells that make up the board.
  * 
+ * Associated with Room, it also holds a position for display
  * 
  * @author abbey
  *
