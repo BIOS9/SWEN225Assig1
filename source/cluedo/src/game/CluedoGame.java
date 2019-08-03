@@ -9,6 +9,7 @@
 // ASSUMING PLAYERS CAN MAKE TWO SUGGESTIONS IN THE SAME ROOM IN DIFFERENT TURNS
 // ASSUMING A PLAYER CAN MAKE A SUGGESTION WITHOUT MOVING INTO A ROOM IF THEY ARE ALREADY IN IT
 // ASSUMING WEAPONS ARE USELESS AND DONT NEED TO BE MOVED
+// ASSUMING NOBODY IS LOOKING AT THE SCREEN WHEN THEY SHOULDN'T BE
 
 
 package game;
@@ -248,10 +249,12 @@ public class CluedoGame {
 			// Ask player for suggestion
 			Suggestion suggestion = askSuggestion(player, character.getLocation().getRoom(), character.getLocation().isRoom(hallway)); // Get suggestion, forcing accusation if in hallway
 
+			if(suggestion == null)
+				continue;
 
-            // CHECK FOR WINNING SOLUTION AND END GAME
-            if(false) {
-                winner = null;
+            // Checks if suggestion is accusation, and if it is correct
+            if(suggestion.isAcusation() && suggestion.equals(soloutionCards)) {
+                winner = player;
                 break;
             }
 

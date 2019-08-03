@@ -30,6 +30,22 @@ public class Character implements Card {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+        return false;
+        if(obj.getClass() != getClass())
+            return false;
+        if(obj == this)
+            return true;
+
+        Character character = (Character)obj;
+        if(name == null)
+            return false;
+
+        return name.equals(character.name);
+    }
+
+    @Override
     public String getName() {
         return name;
     }

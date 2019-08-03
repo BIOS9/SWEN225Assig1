@@ -35,5 +35,31 @@ public class Suggestion {
     	this.character = character;
     	this.weapon = weapon;
     }
-    
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+		if(obj.getClass() != getClass())
+			return false;
+		if(obj == this)
+			return true;
+
+		Suggestion suggestion = (Suggestion)obj;
+
+		if(!room.equals(suggestion.room))
+			return false;
+
+		if(!character.equals(suggestion.character))
+			return false;
+
+		if(!weapon.equals(suggestion.weapon))
+			return false;
+
+		return true;
+	}
+
+	public boolean isAcusation() {
+		return isAcusation;
+	}
 }
