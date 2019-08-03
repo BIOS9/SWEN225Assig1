@@ -22,12 +22,12 @@ public class Suggestion {
     Player player;
     
     
-    public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon, Player player, boolean a) {
+    public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon, Player player, boolean isAcusation) {
     	this.room = room;
     	this.character = character;
     	this.weapon = weapon;
     	this.player = player;
-    	this.isAcusation = a;
+    	this.isAcusation = isAcusation;
     }   
     
     public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon) {
