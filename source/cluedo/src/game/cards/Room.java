@@ -1,17 +1,20 @@
 package game.cards;
 /**
- * 
- * Class representing the Room cards.
+ * Class representing the Room cards, knows its name and the prefix used to represent it on the board..
  * 
  * Represented by a Card.
  * 
  * @author abbey
- *
  */
 public class Room implements Card {
     private final String name;
     private final char prefix;
 
+    /**
+     * Creates a new Room object with the rooms name and the prefix representing it on the board.
+     * @param name
+     * @param prefix
+     */
     public Room(String name, char prefix) {
         this.name = name;
         this.prefix = prefix;

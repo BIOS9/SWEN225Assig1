@@ -13,26 +13,28 @@ import java.util.Map;
  * 
  * Collaborates directs with Cell.
  * @author abbey
- * 
  */
 public class Board {
+	
 	//Board Attributes
     public static final int CHARACTER_COUNT = 6;
     public final int BOARD_WIDTH;
     public final int BOARD_HEIGHT;
 
-    // k = Kitchen
-    // b = Ball room
-    // c = Conservatory
-    // p = Billiard/Pool room
-    // h = Hallway
-    // d = Dining room
-    // l = Library
-    // r = Hall
-    // t = Lounge
-    // s = Study
+    // ---- BOARD KEY ----
+    // K = Kitchen
+    // B = Ball room
+    // C = Conservatory
+    // P = Billiard/Pool room
+    // H = Hallway
+    // D = Dining room
+    // L = Library
+    // R = Hall
+    // T = Lounge
+    // S = Study
     // space = nothing
     // 0-6 = Character starting positions
+    // -----------------
 
     // Key for board characters to room names
     private static final Map<java.lang.Character, Room> rooms = new HashMap<java.lang.Character, Room>() {{
@@ -170,8 +172,6 @@ public class Board {
         return true; // Valid move
     }
 
-
-
     /**
      * Moves character to specified cell without checks, used for setting up board
      * @param character Character to move
@@ -185,7 +185,6 @@ public class Board {
         cell.setOccupant(character);
         character.setLocation(cell);
     }
-
     private boolean needsLink(Cell cell1, Cell cell2) {
         if(cell1 == null || cell2 == null)
             return false;
@@ -227,11 +226,17 @@ public class Board {
     private char lowChar(char c) {
         return java.lang.Character.toLowerCase(c);
     }
-
+    
+    /**
+     * Prints the board out as a string.
+     */
     public void print() {
         System.out.println(toString());
     }
-
+    
+    /**
+     * Geneerates a string representation of the board.
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -284,7 +289,6 @@ public class Board {
                                 break;
                             case WEST:
                                 builder.append("> ");
-                                break;
                             case NORTH:
                                 builder.append("V ");
                                 break;
