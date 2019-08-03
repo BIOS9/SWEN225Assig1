@@ -36,16 +36,16 @@ public class Board {
 
     // Key for board characters to room names
     private static final Map<java.lang.Character, Room> rooms = new HashMap<java.lang.Character, Room>() {{
-        put('k', new Room("Kitchen", 'k'));
-        put('b', new Room("Ball Room", 'b'));
-        put('c', new Room("Conservatory", 'c'));
-        put('p', new Room("Billiard Room", 'p'));
-        put('h', new Room("Hallway", 'h'));
-        put('d', new Room("Dining Room", 'd'));
-        put('l', new Room("Library", 'l'));
-        put('r', new Room("Hall", 'r'));
-        put('t', new Room("Lounge", 't'));
-        put('s', new Room("Study", 's'));
+        put('k', new Room("Kitchen", 'K'));
+        put('b', new Room("Ball Room", 'B'));
+        put('c', new Room("Conservatory", 'C'));
+        put('p', new Room("Billiard Room", 'P'));
+        put('h', new Room("Hallway", 'H'));
+        put('d', new Room("Dining Room", 'D'));
+        put('l', new Room("Library", 'L'));
+        put('r', new Room("Hall", 'R'));
+        put('t', new Room("Lounge", 'T'));
+        put('s', new Room("Study", 'S'));
     }};
 
     // Board co-ordinates of each character starting position
@@ -266,7 +266,7 @@ public class Board {
                         builder.append(cell.getOccupant().getNumber());
                         builder.append(' ');
                     }
-                    else if(cell.getRoom().getPrefix() == 'h')
+                    else if(cell.getRoom().getPrefix() == 'H')
                         builder.append(". ");
                     else if(cell.isDoor) {
                         Cell.Direction neighbouringDirection = Cell.Direction.NORTH;
