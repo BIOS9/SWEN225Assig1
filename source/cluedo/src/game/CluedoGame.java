@@ -5,11 +5,11 @@
 // PLAYERS CANNOT MAKE A SUGGESTION OR ACCUSATION TWICE IN A ROW IN THE SAME ROOM
 // PLAYERS CANNOT MOVE BACK INTO A ROOM THAT THEY HAVE LEFT IN THAT TURN
 // ASSUMING PLAYERS ARE NOT IDIOTS WHO WILL WALK INTO A SPACE THEY CANNOT GET OUT OF
+// ASSUMING SKIPPING TURN RULE APPLIES WHEN A PLAYER IS IN A ROOM
 
 package game;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +21,6 @@ import game.cards.Card;
 import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
-import tests.GameTests;
 
 /**
  * CluedoGame is responsible for initiating the game board, cards and players
@@ -193,13 +192,14 @@ public class CluedoGame {
 			if(!character.getLocation().isRoom(rooms[0])) { // Check if room is hallway
 				visitedRooms.add(character.getLocation().getRoom());
 			}
+
 			// Move player until they run out of moves or skip
 			while(moves > 0) {
 				board.print();
 
 				System.out.println("You have " + moves + " moves remaining.");
 				System.out.print("Where would you like to move? ");
-				Cell.Direction move = askDirection(false);
+				Cell.Direction move = askDirection(!character.getLocation().isRoom(rooms[0]));
 
 				if(move == null) // Skip rest of moves is user skips
 					break;
