@@ -32,21 +32,9 @@ class Turn {
         diceRoll = rollDice();
         this.player = player;
         
-        //Tell the player how much they rolled
+        //Tell thwqe player how much they rolled
         //ask them where they want to move
         //If they move into a room they can make a suggestion/acusation
-    }
-
-    /**
-     * Checks if the turn is valid
-     * @return
-     */
-    public boolean isValid() {
-        // Checks if physical move is valid, number of cells moved, is stepping over other player, are cells conencted, etc
-        // Checks if player can make suggestion/accusation eg hasAccused
-        // Checks if suggestion/accusation is valid
-
-        return false;
     }
 
     public Player getPlayer() {

@@ -48,26 +48,34 @@ public class CluedoGame {
 
 	// CluedoGame Associations
 	private Board board;
-	private Suggestion soloutionCards;
+	private Suggestion soloutionCards; 
 
-	private final game.cards.Character[] characters = { new game.cards.Character("Miss Scarlett", 1),
-			new game.cards.Character("Rev. Green", 2), new game.cards.Character("Colonel Mustard", 3),
-			new game.cards.Character("Professor Plum", 4), new game.cards.Character("Mrs. Peacock", 5),
+	private final game.cards.Character[] characters = { 
+			new game.cards.Character("Miss Scarlett", 1),
+			new game.cards.Character("Rev. Green", 2), 
+			new game.cards.Character("Colonel Mustard", 3),
+			new game.cards.Character("Professor Plum", 4), 
+			new game.cards.Character("Mrs. Peacock", 5),
 			new game.cards.Character("Mrs. White", 6) };
 
 	private final game.cards.Room[] rooms = {
-			new game.cards.Room("Kitchen", 'k'),
-			new game.cards.Room("Ball Room", 'b'),
-			new game.cards.Room("Conservatory", 'c'),
-			new game.cards.Room("Billiard Room", 'p'),
-			new game.cards.Room("Dining Room", 'd'),
-			new game.cards.Room("Library", 'l'),
-			new game.cards.Room("Hall", 'r'),
-			new game.cards.Room("Lounge", 't'),
-			new game.cards.Room("Study", 's') };
+			new game.cards.Room("Hallway", 'H'),
+			new game.cards.Room("Kitchen", 'K'),
+			new game.cards.Room("Ball Room", 'B'),
+			new game.cards.Room("Conservatory", 'C'),
+			new game.cards.Room("Billiard Room", 'P'),
+			new game.cards.Room("Dining Room", 'D'),
+			new game.cards.Room("Library", 'L'),
+			new game.cards.Room("Hall", 'R'),
+			new game.cards.Room("Lounge", 'T'),
+			new game.cards.Room("Study", 'S') };
 
-	private final game.cards.Weapon[] weapons = { new game.cards.Weapon("Candlestick"), new game.cards.Weapon("Dagger"),
-			new game.cards.Weapon("Lead Pipe"), new game.cards.Weapon("Revolver"), new game.cards.Weapon("Rope"),
+	private final game.cards.Weapon[] weapons = { 
+			new game.cards.Weapon("Candlestick"), 
+			new game.cards.Weapon("Dagger"),
+			new game.cards.Weapon("Lead Pipe"), 
+			new game.cards.Weapon("Revolver"), 
+			new game.cards.Weapon("Rope"),
 			new game.cards.Weapon("Spanner") };
 
 	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'h');
@@ -75,7 +83,7 @@ public class CluedoGame {
 	private List<Player> players = new ArrayList<>();
 
 	/**
-	 * Entry point
+	 * Entry point, main method
 	 * 
 	 * @param args Command line arguments
 	 */
@@ -85,7 +93,6 @@ public class CluedoGame {
 		game.initGame();
 		game.initCards();
 		game.runGame();
-		
 	}
 
 	/**
@@ -96,11 +103,11 @@ public class CluedoGame {
 
 		System.out.println("Welcome to Cluedo! Have fun >:)\n");
 
-		// Ask user for player count
+		// Ask user how many players will be playing
 		int playerCount;
 		while (true) {
 			System.out.println("How many players are there? " + MIN_PLAYERS + " - " + MAX_PLAYERS + ": ");
-
+			
 			try {
 				playerCount = INPUT_SCANNER.nextInt();
 
@@ -114,7 +121,7 @@ public class CluedoGame {
 				INPUT_SCANNER.nextLine(); // Clear input buffer
 			}
 		}
-
+		
 		// Generate playerss and add them to list
 		for (int i = 0; i < playerCount; ++i) {
 			players.add(new Player(characters[i], this));
@@ -122,7 +129,8 @@ public class CluedoGame {
 	}
 
 	/**
-	 * Generates the cards, selects a solution (3 cards) adds all cards to one list.
+	 * Creates the lists of cards and selects the soloution from the shuffled list.
+	 * Then adds all cards into one list, shuffles it and deals them to the players.
 	 */
 	private void initCards() {
 		// Create three stack of cards, one for each card type, Sets since order doesnt
