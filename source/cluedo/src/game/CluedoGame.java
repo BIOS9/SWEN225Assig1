@@ -78,7 +78,7 @@ public class CluedoGame {
 			new game.cards.Weapon("Rope"),
 			new game.cards.Weapon("Spanner") };
 
-	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'h');
+	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'H');
 
 	private List<Player> players = new ArrayList<>();
 
