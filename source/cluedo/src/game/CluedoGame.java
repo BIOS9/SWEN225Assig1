@@ -4,6 +4,7 @@
 // PLAYERS CANNOT MOVE BACK ONTO A CELL THAT THEY HAVE BEEN ON IN THAT TURN
 // PLAYERS CANNOT MAKE A SUGGESTION OR ACCUSATION TWICE IN A ROW IN THE SAME ROOM
 // PLAYERS CANNOT MOVE BACK INTO A ROOM THAT THEY HAVE LEFT IN THAT TURN
+// ASSUMING PLAYERS ARE NOT IDIOTS WHO WILL WALK INTO A SPACE THEY CANNOT GET OUT OF
 
 package game;
 
@@ -20,6 +21,7 @@ import game.cards.Card;
 import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
+import tests.GameTests;
 
 /**
  * CluedoGame is responsible for initiating the game board, cards and players
@@ -49,11 +51,17 @@ public class CluedoGame {
 			new game.cards.Character("Professor Plum", 4), new game.cards.Character("Mrs. Peacock", 5),
 			new game.cards.Character("Mrs. White", 6) };
 
-	private final game.cards.Room[] rooms = { new game.cards.Room("Kitchen", 'k'),
-			new game.cards.Room("Ball Room", 'b'), new game.cards.Room("Conservatory", 'c'),
-			new game.cards.Room("Billiard Room", 'p'), new game.cards.Room("Hallway", 'h'),
-			new game.cards.Room("Dining Room", 'd'), new game.cards.Room("Library", 'l'),
-			new game.cards.Room("Hall", 'r'), new game.cards.Room("Lounge", 't'), new game.cards.Room("Study", 's') };
+	private final game.cards.Room[] rooms = {
+			new game.cards.Room("Hallway", 'h'),
+			new game.cards.Room("Kitchen", 'k'),
+			new game.cards.Room("Ball Room", 'b'),
+			new game.cards.Room("Conservatory", 'c'),
+			new game.cards.Room("Billiard Room", 'p'),
+			new game.cards.Room("Dining Room", 'd'),
+			new game.cards.Room("Library", 'l'),
+			new game.cards.Room("Hall", 'r'),
+			new game.cards.Room("Lounge", 't'),
+			new game.cards.Room("Study", 's') };
 
 	private final game.cards.Weapon[] weapons = { new game.cards.Weapon("Candlestick"), new game.cards.Weapon("Dagger"),
 			new game.cards.Weapon("Lead Pipe"), new game.cards.Weapon("Revolver"), new game.cards.Weapon("Rope"),
@@ -166,19 +174,25 @@ public class CluedoGame {
 
 		while (true) {
 			Player player = players.get(round % players.size());
+			game.cards.Character character = player.getCharacter();
 			Turn turn = new Turn(player);
 
 			board.print();
-            System.out.println(turn.getPlayer().getCharacter().getName() + " you're up!");
+            System.out.println(character.getName() + " you're up!");
             System.out.println("Your dice roll was " + turn.getDiceRoll());
-            System.out.println("Your character is number " + player.getCharacter().getNumber() + " and is located at " + player.getCharacter().getLocation().position.toString());
+            System.out.println("Your character is number " + character.getNumber() + " and is located at " + character.getLocation().position.toString());
             System.out.println(turn.getPlayer().printCards());
             
 			int moves = turn.getDiceRoll();
 
-			Set<Cell> visited = new HashSet<>();
-			visited.add(player.getCharacter().getLocation()); // Add starting position to visited
+			Set<Cell> visitedCells = new HashSet<>();
+			Set<Room> visitedRooms = new HashSet<>();
 
+			visitedCells.add(character.getLocation()); // Add starting position to visitedCells
+
+			if(!character.getLocation().isRoom(rooms[0])) { // Check if room is hallway
+				visitedRooms.add(character.getLocation().getRoom());
+			}
 			// Move player until they run out of moves or skip
 			while(moves > 0) {
 				board.print();
@@ -190,14 +204,23 @@ public class CluedoGame {
 				if(move == null) // Skip rest of moves is user skips
 					break;
 
-				Cell newCell = player.getCharacter().getLocation().getNeighbour(move);
-				if(newCell != null && visited.contains(newCell)) {
+				Cell newCell = character.getLocation().getNeighbour(move);
+				if(newCell != null && visitedCells.contains(newCell)) {
 					System.out.println("You have already been there!");
 					continue;
 				}
 
-				if (board.moveCharacter(player.getCharacter(), move)) {
-					visited.add(player.getCharacter().getLocation());
+				if(newCell != null && !character.getLocation().isRoom(newCell) && visitedRooms.contains(newCell.getRoom())) { // Check if new cell is a different room, and player has visited that room
+					System.out.println("You have already been in that room!");
+					continue;
+				}
+
+				if (board.moveCharacter(character, move)) {
+					visitedCells.add(character.getLocation());
+
+					if(!character.getLocation().isRoom(rooms[0])) { // Check if room is hallway or not
+						visitedRooms.add(character.getLocation().getRoom());
+					}
 					--moves;
 				} else {
 					System.out.println("You can't move there!");

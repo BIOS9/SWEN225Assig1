@@ -33,6 +33,11 @@ public class Room implements Card {
         return name.equals(room.name);
     }
 
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
     public char getPrefix() {
         return prefix;
     }
