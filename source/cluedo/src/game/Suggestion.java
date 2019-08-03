@@ -21,7 +21,16 @@ public class Suggestion {
     private game.cards.Weapon weapon;
     Player player;
     
-    
+    /**
+     * Constructs a new Suggestion object with the three required cards (Room, Character, Weapon) the player making the suggestion and a 
+     * boolean indicating if the player is making an acusation.
+     * 
+     * @param room
+     * @param character
+     * @param weapon
+     * @param player
+     * @param a
+     */
     public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon, Player player, boolean a) {
     	this.room = room;
     	this.character = character;
@@ -30,10 +39,16 @@ public class Suggestion {
     	this.isAcusation = a;
     }   
     
+    /**
+     * Constructs a new Suggestion object with only the three required cards (Room, Character, Weapon), useful for making the soloution.
+  	 *
+     * @param room
+     * @param character
+     * @param weapon
+     */
     public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon) {
     	this.room = room;
     	this.character = character;
     	this.weapon = weapon;
     }
-    
 }
