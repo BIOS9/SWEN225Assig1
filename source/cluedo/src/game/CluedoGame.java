@@ -44,7 +44,7 @@ public class CluedoGame {
 
 	// CluedoGame Associations
 	private Board board;
-	private Suggestion soloutionCards; 
+	private Suggestion solutionCards;
 
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
@@ -127,7 +127,7 @@ public class CluedoGame {
 	}
 
 	/**
-	 * Creates the lists of cards and selects the soloution from the shuffled list.
+	 * Creates the lists of cards and selects the solution from the shuffled list.
 	 * Then adds all cards into one list, shuffles it and deals them to the players.
 	 */
 	private void initCards() {
@@ -140,23 +140,23 @@ public class CluedoGame {
 		game.cards.Room murderRoom;
 		game.cards.Weapon murderWeapon;
 
-		// Choosing the character soloution
+		// Choosing the character solution
 		Collections.shuffle(characterCards);
 		murderer = characterCards.get(0);
 		characterCards.remove(0);
 
-		// Choosing the room soloution
+		// Choosing the room solution
 		Collections.shuffle(roomCards);
 		murderRoom = roomCards.get(0);
 		roomCards.remove(0);
 
-		// Choosing the weapon soloution;
+		// Choosing the weapon solution;
 		Collections.shuffle(weaponCards);
 		murderWeapon = weaponCards.get(0);
 		weaponCards.remove(0);
 		
-		//Create the soloution Suggestion object
-		this.soloutionCards = new Suggestion(murderRoom, murderer, murderWeapon);
+		//Create the solution Suggestion object
+		this.solutionCards = new Suggestion(murderRoom, murderer, murderWeapon);
 
 		// add all cards to one list
 		List<Card> allCards = new ArrayList<>();
@@ -262,8 +262,8 @@ public class CluedoGame {
 				continue;
 
             // Checks if suggestion is accusation, and if it is correct
-            if(suggestion.isAcusation() && suggestion.equals(soloutionCards)) {
-            	System.out.println("The soloution cards are: "+ soloutionCards.toString());
+            if(suggestion.isAcusation() && suggestion.equals(solutionCards)) {
+            	System.out.println("The solution cards are: "+ solutionCards.toString());
             	System.out.println("Congratulations you won the game!");
                 winner = player;
                 break;
@@ -272,7 +272,7 @@ public class CluedoGame {
             else {
             	player.setHasAcused();
             	System.out.println("Your acusation was incorrect! you can no longer make suggestions or acusations");
-            	System.out.println("The soloution cards are: "+ soloutionCards.toString());
+            	System.out.println("The solution cards are: "+ solutionCards.toString());
             }
              
             // If the suggestion isnt an acusation ask other players for refutations.
