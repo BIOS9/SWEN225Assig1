@@ -29,6 +29,8 @@ import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
 
+import javax.annotation.processing.SupportedSourceVersion;
+
 /**
  * CluedoGame is responsible for initiating the game board, cards and players
  * and managing the framework of the gameplay.
@@ -113,6 +115,7 @@ public class CluedoGame {
 
 				if (playerCount == 1) {
 					System.out.println("Sorry, you need more friends to play this game! Maybe consider a solo game e.g Solitaire.");
+					continue;
 				}
 
 				if (playerCount >= MIN_PLAYERS && playerCount <= MAX_PLAYERS) // Only exit if number is valid
@@ -281,9 +284,12 @@ public class CluedoGame {
 				}
 				// If the suggestion isnt an accusation ask other players for refutations.
 				else {
+					// Move the suggested player into a random spot in the room
 					Room moveRoom = player.getCharacter().getLocation().getRoom();
 					System.out.println("Moving " + suggestion.getCharacter().getName() + " to the " + moveRoom.getName());
-					boolean result = board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom);
+
+					if(!board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom))
+						System.out.println("Failed to move the suggested player into the room! Are there available spaces away from any door?");
 				}
 			}
 
