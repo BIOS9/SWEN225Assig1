@@ -111,6 +111,10 @@ public class CluedoGame {
 			try {
 				playerCount = INPUT_SCANNER.nextInt();
 
+				if (playerCount == 1) {
+					System.out.println("Sorry, you need more friends to play this game! Maybe consider a solo game e.g Solitaire.");
+				}
+
 				if (playerCount >= MIN_PLAYERS && playerCount <= MAX_PLAYERS) // Only exit if number is valid
 					break;
 				else
@@ -188,8 +192,10 @@ public class CluedoGame {
 		while (true) {
 			Player player = players.get(round % players.size()); // Player index is based on the round number and number of players
 
-			if(player.getHasAcused()) // If player has accused, skip them
+			if(player.getHasAcused()) { // If player has accused, skip them
+				System.out.println("Skipping spectator: " + player.getCharacter().getName());
 				continue;
+			}
 
 
 			game.cards.Character character = player.getCharacter();
@@ -259,27 +265,26 @@ public class CluedoGame {
 			// Ask player for suggestion
 			Suggestion suggestion = askSuggestion(player, character.getLocation().getRoom(), character.getLocation().isRoom(hallway)); // Get suggestion, forcing accusation if in hallway
 
-			if(suggestion == null)
-				continue;
-
-            // Checks if suggestion is accusation, and if it is correct
-            if(suggestion.isAcusation() && suggestion.equals(solutionCards)) {
-            	System.out.println("The solution cards are: "+ solutionCards.toString());
-            	System.out.println("Congratulations you won the game!");
-                winner = player;
-                break;
-            }
-            // If the acusation is wrong this player can no longer make suggestions/acusations
-            else if(suggestion.isAcusation()) {
-            	player.setHasAcused();
-            	System.out.println("Your accusation was incorrect! You are now a spectator of the game.");
-            	System.out.println("The solution cards are: "+ solutionCards.toString());
-            }
-			// If the suggestion isnt an accusation ask other players for refutations.
-            else {
-            	Room moveRoom = player.getCharacter().getLocation().getRoom();
-            	System.out.println("Moving " + suggestion.getCharacter().getName() + " to the " + moveRoom.getName());
-				board.moveCharacterToRoom(suggestion.player.getCharacter(), moveRoom);
+			if(suggestion != null) {
+				// Checks if suggestion is accusation, and if it is correct
+				if (suggestion.isAcusation() && suggestion.equals(solutionCards)) {
+					System.out.println("The solution cards are: " + solutionCards.toString());
+					System.out.println("Congratulations you won the game!");
+					winner = player;
+					break;
+				}
+				// If the acusation is wrong this player can no longer make suggestions/acusations
+				else if (suggestion.isAcusation()) {
+					player.setHasAcused();
+					System.out.println("Your accusation was incorrect! You are now a spectator of the game.");
+					System.out.println("The solution cards are: " + solutionCards.toString());
+				}
+				// If the suggestion isnt an accusation ask other players for refutations.
+				else {
+					Room moveRoom = player.getCharacter().getLocation().getRoom();
+					System.out.println("Moving " + suggestion.getCharacter().getName() + " to the " + moveRoom.getName());
+					boolean result = board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom);
+				}
 			}
 
             ++round;
