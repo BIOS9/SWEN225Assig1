@@ -41,9 +41,12 @@ class Player {
 	}
 
 	// Getters and setters from Umple (sort through)
-	public boolean getHasAcused()
-	{
+	public boolean getHasAcused(){
 		return hasAcused;
+	}
+	
+	public void setHasAcused() {
+		this.hasAcused = true;
 	}
 	
 	public String printCards() {

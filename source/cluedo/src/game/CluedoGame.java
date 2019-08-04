@@ -253,8 +253,21 @@ public class CluedoGame {
 
             // Checks if suggestion is accusation, and if it is correct
             if(suggestion.isAcusation() && suggestion.equals(soloutionCards)) {
+            	System.out.println("The soloution cards are: "+ soloutionCards.toString());
+            	System.out.println("Congratulations you won the game!");
                 winner = player;
                 break;
+            }
+            // If the acusation is wrong this player can no longer make suggestions/acusations
+            else {
+            	player.setHasAcused();
+            	System.out.println("Your acusation was incorrect! you can no longer make suggestions or acusations");
+            	System.out.println("The soloution cards are: "+ soloutionCards.toString());
+            }
+             
+            // If the suggestion isnt an acusation ask other players for refutations.
+            if(!suggestion.isAcusation()) {
+            	  	
             }
 
             ++round;
@@ -367,6 +380,4 @@ public class CluedoGame {
 			System.out.println("Invalid input.");
 		}
 	}
-
-
 }
