@@ -1,14 +1,19 @@
 package game.cards;
+
 /**
  * Responsible for representing the weapon objects in the game.
  * 
- * Collaborates directly with Card.
  * @author abbey
- *
  */
 public class Weapon implements Card {
+	
+	//Weapon Attributes
     private final String name;
 
+    /**
+     * Constructor
+     * @param name of weapon
+     */
     public Weapon(String name) {
         this.name = name;
     }

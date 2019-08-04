@@ -35,9 +35,7 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
  * Collaborates directly with Board, Card, Player and Turn.
  * 
  * @author abbey
- *
  */
-
 public class CluedoGame {
 	public static final int MIN_PLAYERS = 3;
 	public static final int MAX_PLAYERS = 6;
@@ -123,7 +121,7 @@ public class CluedoGame {
 			}
 		}
 		
-		// Generate playerss and add them to list
+		// Generate players and add them to list.
 		for (int i = 0; i < playerCount; ++i) {
 			players.add(new Player(characters[i], this));
 		}
@@ -134,11 +132,11 @@ public class CluedoGame {
 	 * Then adds all cards into one list, shuffles it and deals them to the players.
 	 */
 	private void initCards() {
-		// Create three stack of cards, one for each card type, Sets since order doesnt
-		// matter and no dups?
+		
 		List<Character> characterCards = new ArrayList<Character>(Arrays.asList(characters));
 		List<Room> roomCards = new ArrayList<Room>(Arrays.asList(rooms));
 		List<Weapon> weaponCards = new ArrayList<Weapon>(Arrays.asList(weapons));
+		
 		game.cards.Character murderer;
 		game.cards.Room murderRoom;
 		game.cards.Weapon murderWeapon;
@@ -158,6 +156,7 @@ public class CluedoGame {
 		murderWeapon = weaponCards.get(0);
 		weaponCards.remove(0);
 		
+		//Create the soloution Suggestion object
 		this.soloutionCards = new Suggestion(murderRoom, murderer, murderWeapon);
 
 		// add all cards to one list
@@ -170,9 +169,9 @@ public class CluedoGame {
 		
 		//Deals the cards to the players
 		while (!allCards.isEmpty()) {
-			for (Player p : this.players) { // For each player in the game
-				if (!allCards.isEmpty()) { // If theres still cards to deal
-					p.addCardToHand(allCards.get(0)); // deal the card and remove it.
+			for (Player p : this.players) { 
+				if (!allCards.isEmpty()) { 
+					p.addCardToHand(allCards.get(0));
 					allCards.remove(0);
 				}
 			}

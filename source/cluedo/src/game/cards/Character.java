@@ -1,7 +1,9 @@
 package game.cards;
+import game.board.Cell;
+
 /**
- * Represents an in game character that is part of the game regardless of whether a player is the character.
- * 	e.g can have only 3 players but still have 6 characters.
+ * Represents an in game character that is part of the game regardless of whether a player is linked to the character.
+ * 	e.g can have only 3 players but will still have 6 characters.
  * 
  * Responsible for linking the actual players to the character cards. (holding position also)
  * 
@@ -9,21 +11,21 @@ package game.cards;
  * @author abbey
  *
  */
-
-import game.board.Cell;
-
-/**
- * Umple : 
- * 
- * 
- * @author abbey
- *
- */
 public class Character implements Card {
+	
+	//Card Attributes
     private final String name;
     private final int number;
+    
+    //Card Associations
     private Cell location;
-
+    
+    /** 
+     * Constructer
+     * 
+     * @param name of character
+     * @param number
+     */
     public Character(String name, int number) {
         this.name = name;
         this.number = number;

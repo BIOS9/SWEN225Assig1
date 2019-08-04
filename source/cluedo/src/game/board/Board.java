@@ -92,6 +92,11 @@ public class Board {
     //Board Associations
     private Map<Position, Cell> cells = new HashMap<>();
 
+    /**
+     * Constructor
+     * 
+     * @param characters
+     */
     public Board(game.cards.Character... characters) {
         BOARD_HEIGHT = BOARD.length;
         int widest = 0;
