@@ -14,6 +14,7 @@
 
 package game;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -58,7 +59,6 @@ public class CluedoGame {
 			new game.cards.Character("Mrs. White", 6) };
 
 	private final game.cards.Room[] rooms = {
-			new game.cards.Room("Hallway", 'H'),
 			new game.cards.Room("Kitchen", 'K'),
 			new game.cards.Room("Ball Room", 'B'),
 			new game.cards.Room("Conservatory", 'C'),
@@ -140,7 +140,7 @@ public class CluedoGame {
 		game.cards.Character murderer;
 		game.cards.Room murderRoom;
 		game.cards.Weapon murderWeapon;
-		
+
 		// Choosing the character soloution
 		Collections.shuffle(characterCards);
 		murderer = characterCards.get(0);
@@ -196,6 +196,13 @@ public class CluedoGame {
 
 			board.print();
             System.out.println(character.getName() + " you're up!");
+            System.out.println("Press enter to begin your turn...");
+
+            // Waits for player to input something into the console
+            try {
+				System.in.read();
+			} catch(IOException ex) {}
+
             System.out.println("Your dice roll was " + turn.getDiceRoll());
             System.out.println("Your character is number " + character.getNumber() + " and is located at " + character.getLocation().position.toString());
             System.out.println(turn.getPlayer().printCards());
@@ -269,6 +276,8 @@ public class CluedoGame {
             if(!suggestion.isAcusation()) {
             	  	
             }
+
+
 
             ++round;
         }
