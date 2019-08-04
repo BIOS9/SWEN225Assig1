@@ -92,6 +92,11 @@ public class Board {
     //Board Associations
     private Map<Position, Cell> cells = new HashMap<>();
 
+    /**
+     * Constructor
+     * 
+     * @param characters
+     */
     public Board(game.cards.Character... characters) {
         BOARD_HEIGHT = BOARD.length;
         int widest = 0;
@@ -185,6 +190,13 @@ public class Board {
         cell.setOccupant(character);
         character.setLocation(cell);
     }
+    
+    /**
+     * Checks if two cells are linked, if they are not they need a link.
+     * @param cell1
+     * @param cell2
+     * @return
+     */
     private boolean needsLink(Cell cell1, Cell cell2) {
         if(cell1 == null || cell2 == null)
             return false;

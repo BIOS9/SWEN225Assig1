@@ -25,6 +25,7 @@ class Turn {
 
     /**
      * Constructor
+     * 
      * Rolls dice, configures variables
      * @param player Player who is the owner of this turn
      */

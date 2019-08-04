@@ -1,16 +1,31 @@
 package game.board;
 
+/**
+ * Class representing the physical x,y position of the cell objects that make up the board.
+ * 
+ * Associated with cell.
+ * 
+ * @author abbey
+ *
+ */
 public class Position {
+	
+	//Position Attributes
     public int x, y;
-
-    public Position() {}
+    
+    /**
+     * Constructor
+     * @param x positon
+     * @param y position
+     */
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     /**
-     * Checks if two positions are direct neighbours, diagonal neighbours do not count
+     * Checks if two positions are direct neighbours, diagonal neighbours do not count.
+     * 
      * @param pos1
      * @param pos2
      * @return
@@ -25,7 +40,8 @@ public class Position {
     }
 
     /**
-     * Checks if position is a neighbour of this position
+     * Checks if position is a neighbour of this position.
+     * 
      * @param position
      * @return
      */
@@ -34,28 +50,28 @@ public class Position {
     }
 
     /**
-     * Creates new position one unit up relative to this position
+     * Creates new position one unit up relative to this position.
      */
     public Position up() {
         return new Position(x, y - 1);
     }
 
     /**
-     * Creates new position one unit down relative to this position
+     * Creates new position one unit down relative to this position.
      */
     public Position down() {
         return new Position(x, y + 1);
     }
 
     /**
-     * Creates new position one unit left relative to this position
+     * Creates new position one unit left relative to this position.
      */
     public Position left() {
         return new Position(x - 1, y);
     }
 
     /**
-     * Creates new position one unit right relative to this position
+     * Creates new position one unit right relative to this position.
      */
     public Position right() {
         return new Position(x + 1, y);

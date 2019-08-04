@@ -16,7 +16,6 @@ import java.util.List;
  * 
  * @author abbey
  */
-
 class Player {
 
 	// Player Attributes
