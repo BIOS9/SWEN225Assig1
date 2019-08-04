@@ -23,7 +23,6 @@ class Player {
 
 	// Player Associations
 	private List<game.cards.Card> hand;
-	private CluedoGame game;
 	private game.cards.Character character;
 
 	/**
@@ -35,7 +34,6 @@ class Player {
 	 */
 	public Player(game.cards.Character character, CluedoGame game) {
 		this.character = character;
-		this.game = game;
 		this.hand = new ArrayList<game.cards.Card>();
 	}
 
@@ -77,21 +75,8 @@ class Player {
 	}
 
 	/* Code from template association_GetOne */
-	public CluedoGame getGame()
-	{
-		return game;
-	}
-	/* Code from template association_GetOne */
 	public game.cards.Character getCharacter()
 	{
 		return character;
-	}
-
-	// To string method from Umple
-	public String toString() {
-	  return super.toString() + "["+
-			  "hasAcused" + ":" + getHasAcused()+ "]" + System.getProperties().getProperty("line.separator") +
-			  "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
-			  "  " + "character = "+(getCharacter()!=null?Integer.toHexString(System.identityHashCode(getCharacter())):"null");
 	}
 }
