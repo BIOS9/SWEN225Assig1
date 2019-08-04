@@ -12,8 +12,6 @@ public class Position {
 	
 	//Position Attributes
     public int x, y;
-
-    public Position() {}//?
     
     /**
      * Constructor
