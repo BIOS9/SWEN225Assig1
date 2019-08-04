@@ -269,18 +269,15 @@ public class CluedoGame {
                 break;
             }
             // If the acusation is wrong this player can no longer make suggestions/acusations
-            else {
+            else if(suggestion.isAcusation()) {
             	player.setHasAcused();
             	System.out.println("Your acusation was incorrect! you can no longer make suggestions or acusations");
             	System.out.println("The solution cards are: "+ solutionCards.toString());
             }
-             
-            // If the suggestion isnt an acusation ask other players for refutations.
-            if(!suggestion.isAcusation()) {
-            	  	
-            }
-
-
+			// If the suggestion isnt an acusation ask other players for refutations.
+            else {
+				
+			}
 
             ++round;
         }
