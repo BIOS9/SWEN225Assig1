@@ -1,6 +1,8 @@
 package game;
 
 import game.cards.Character;
+import game.cards.Room;
+import game.cards.Weapon;
 
 /**
  *
@@ -54,8 +56,21 @@ public class Suggestion {
     	this.weapon = weapon;
     }
 
+	public String printCards() {
+		String s = "Suggestion: [" + room.getName() + "] [" + weapon.getName() + "] [" + character.getName() + "]";
+		return s;
+	}
+
 	public Character getCharacter() {
 		return character;
+	}
+
+	public Room getRoom() {
+		return room;
+	}
+
+	public Weapon getWeapon() {
+		return weapon;
 	}
 
 	@Override

@@ -11,6 +11,7 @@
 // ASSUMING WEAPONS ARE USELESS AND DON'T NEED TO BE MOVED
 // ASSUMING NOBODY IS LOOKING AT THE SCREEN WHEN THEY SHOULDN'T BE
 // ASSUMING PLAYERS CANT PLAY ONCE THEY HAVE MADE A WRONG ACCUSATION
+// ASSUMING REFUTATIONS END ONCE ONE CARD HAS BEEN SUCCESSFULLY REFUTED
 
 
 package game;
@@ -290,6 +291,8 @@ public class CluedoGame {
 
 					if(!board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom))
 						System.out.println("Failed to move the suggested player into the room! Are there available spaces away from any door?");
+
+					askRefutations(suggestion);
 				}
 			}
 
@@ -297,6 +300,41 @@ public class CluedoGame {
         }
 
 		System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
+	}
+
+	/**
+	 * Goes round all players except the suggestor and asks for them to refute the suggestion
+	 * @param suggestion
+	 */
+	private void askRefutations(Suggestion suggestion) {
+		System.out.println(suggestion.player.getCharacter().getName() + " has made a suggestion, refutations will now begin.");
+		System.out.println(suggestion.printCards());
+
+		for (Player p : players) {
+			if(p == suggestion.player) continue; // Skip suggestion
+
+			List<Card> hand = p.getHand();
+
+			List<Card> availableRefutations = new ArrayList<>();
+
+			if(hand.contains(suggestion.getCharacter()))
+				availableRefutations.add(suggestion.getCharacter());
+
+			if(hand.contains(suggestion.getWeapon()))
+				availableRefutations.add(suggestion.getWeapon());
+
+			if(hand.contains(suggestion.getRoom()))
+				availableRefutations.add(suggestion.getRoom());
+
+			if(availableRefutations.size() == 0) // Skip player if they cannot make any refutations
+				continue;
+
+			System.out.println(p.getCharacter().getName() + " please refute the suggestion:");
+			Card refutation = askCard(availableRefutations.toArray(new Card[0]), "refutations");
+			System.out.println("The card: " + refutation.getName() + " has been refuted.");
+			return;
+		}
+		System.out.println("No refutations were made.");
 	}
 
 	/**
