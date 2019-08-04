@@ -4,8 +4,8 @@ import game.cards.Room;
 import javafx.geometry.Pos;
 import sun.misc.CEFormatException;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Board generates and manages the cells on the board. 
@@ -180,6 +180,38 @@ public class Board {
     }
 
     /**
+     * Moves the specified character into any available cell in the specified room as long as it's not blocking a door
+     * @param character
+     * @param room
+     */
+    public boolean moveCharacterToRoom(game.cards.Character character, game.cards.Room room) {
+        // Get cells where the room matches
+        List<Cell> validCells = cells.values().stream().filter(x -> x.isRoom(room)).collect(Collectors.toList());
+
+        // Get random cell in the room
+        Collections.shuffle(validCells);
+
+        Cell cell = null;
+        for(Cell c : validCells) {
+            if(c.isDoor) // Ensure wont block door
+                continue;
+
+            if(c.isOccupied()) // Skip full cells
+                continue;
+
+            cell = c;
+            break;
+        }
+
+        // If failed to find any free cells in the room
+        if(cell == null)
+            return false;
+
+        moveCharacterForce(character, cell);
+        return true;
+    }
+
+    /**
      * Moves character to specified cell without checks, used for setting up board
      * @param character Character to move
      * @param cell Cell to move character to
@@ -192,7 +224,7 @@ public class Board {
         cell.setOccupant(character);
         character.setLocation(cell);
     }
-    
+
     /**
      * Checks if two cells are linked, if they are not they need a link.
      * @param cell1
@@ -306,6 +338,7 @@ public class Board {
                                 break;
                             case WEST:
                                 builder.append("> ");
+                                break;
                             case NORTH:
                                 builder.append("V ");
                                 break;

@@ -272,12 +272,14 @@ public class CluedoGame {
             // If the acusation is wrong this player can no longer make suggestions/acusations
             else if(suggestion.isAcusation()) {
             	player.setHasAcused();
-            	System.out.println("Your acusation was incorrect! you can no longer make suggestions or acusations");
+            	System.out.println("Your accusation was incorrect! You are now a spectator of the game.");
             	System.out.println("The solution cards are: "+ solutionCards.toString());
             }
-			// If the suggestion isnt an acusation ask other players for refutations.
+			// If the suggestion isnt an accusation ask other players for refutations.
             else {
-
+            	Room moveRoom = player.getCharacter().getLocation().getRoom();
+            	System.out.println("Moving " + suggestion.getCharacter().getName() + " to the " + moveRoom.getName());
+				board.moveCharacterToRoom(suggestion.player.getCharacter(), moveRoom);
 			}
 
             ++round;

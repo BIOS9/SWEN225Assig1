@@ -1,5 +1,7 @@
 package game;
 
+import game.cards.Character;
+
 /**
  *
  * Responsible for taking a pplayers 3 suggestion or acusation cards and checking that they are 1 of each
@@ -29,9 +31,9 @@ public class Suggestion {
      * @param character
      * @param weapon
      * @param player
-     * @param a
+     * @param isAcusation
      */
-    public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon, Player player, boolean a) {
+    public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon, Player player, boolean isAcusation) {
     	this.room = room;
     	this.character = character;
     	this.weapon = weapon;
@@ -51,6 +53,10 @@ public class Suggestion {
     	this.character = character;
     	this.weapon = weapon;
     }
+
+	public Character getCharacter() {
+		return character;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
