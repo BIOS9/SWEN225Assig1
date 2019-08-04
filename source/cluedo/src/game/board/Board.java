@@ -60,6 +60,7 @@ public class Board {
         new Position(0, 17),
     };
 
+    // Board layout definition
     // Capital letters represent doorways CAREFUL OF DOUBLE WIDTH DOORWAYS
     private static final char[][] BOARD = {
             "         h    h         ".toCharArray(),
@@ -113,6 +114,7 @@ public class Board {
      * @param characters
      */
     private void generateBoard(game.cards.Character... characters) {
+        // Ensures number of characters is correct
         if(characters.length != CHARACTER_COUNT) {
             throw new IllegalArgumentException("Character count must be " + CHARACTER_COUNT);
         }
@@ -128,7 +130,7 @@ public class Board {
                 Position position = new Position(x, y);
                 Room room = rooms.get(lowChar(BOARD[y][x]));
                 Cell cell = new Cell(room, position, java.lang.Character.isUpperCase(BOARD[y][x]));
-                cells.put(position, cell);
+                cells.put(position, cell); // Add cell to position map for later linking
 
                 // Link vertically if required
                 if(cells.containsKey(position.up())) {
@@ -279,13 +281,16 @@ public class Board {
                 if(cells.containsKey(position)) {
                     Cell cell = cells.get(position);
 
+                    // Draw player numbers if cell is occupied
                     if(cell.isOccupied()) {
                         builder.append(cell.getOccupant().getNumber());
                         builder.append(' ');
                     }
-                    else if(cell.getRoom().getPrefix() == 'H')
+                    else if(cell.getRoom().getPrefix() == 'H') // Replace hallway with . for better readability
                         builder.append(". ");
                     else if(cell.isDoor) {
+                        // Draw doors in direction of room
+
                         Cell.Direction neighbouringDirection = Cell.Direction.NORTH;
 
                         for(Map.Entry<Cell.Direction, Cell> neighbour : cell.getNeighbours().entrySet()) {
@@ -310,12 +315,12 @@ public class Board {
                         }
                     }
                     else {
-                        builder.append(cell.getRoom().getPrefix());
+                        builder.append(cell.getRoom().getPrefix()); // Draw room letter
                         builder.append(' ');
                     }
                 }
                 else
-                    builder.append("- ");
+                    builder.append("- "); // Draw empty spaces
             }
 
             // Append row header with letters

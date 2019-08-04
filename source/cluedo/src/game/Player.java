@@ -23,7 +23,6 @@ class Player {
 
 	// Player Associations
 	private List<game.cards.Card> hand;
-	private List<Turn> turn;
 	private CluedoGame game;
 	private game.cards.Character character;
 
@@ -49,6 +48,11 @@ class Player {
 		this.hasAcused = true;
 	}
 	
+
+	/**
+	 * Prints out friendly representation of players hand
+	 * @return
+	 */
 	public String printCards() {
 		String s = "Your hand: ";
 		for(game.cards.Card c : hand) {
@@ -72,45 +76,6 @@ class Player {
 		this.hand.add(c);
 	}
 
-	public int numberOfHand() {
-		int number = hand.size();
-		return number;
-	}
-
-	public boolean hasHand() {
-		boolean has = hand.size() > 0;
-		return has;
-	}
-
-	public int indexOfHand(game.cards.Card aHand) {
-		int index = hand.indexOf(aHand);
-		return index;
-	}
-	/* Code from template association_GetMany */
-	public Turn getTurn(int index) {
-		Turn aTurn = turn.get(index);
-		return aTurn;
-	}
-
-	public List<Turn> getTurn() {
-		List<Turn> newTurn = Collections.unmodifiableList(turn);
-		return newTurn;
-	}
-
-	public int numberOfTurn() {
-		int number = turn.size();
-		return number;
-	}
-
-	public boolean hasTurn() {
-		boolean has = turn.size() > 0;
-		return has;
-	}
-
-	public int indexOfTurn(Turn aTurn) {
-		int index = turn.indexOf(aTurn);
-		return index;
-	}
 	/* Code from template association_GetOne */
 	public CluedoGame getGame()
 	{

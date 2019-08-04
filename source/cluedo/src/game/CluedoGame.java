@@ -27,7 +27,6 @@ import game.cards.Card;
 import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  * CluedoGame is responsible for initiating the game board, cards and players
@@ -43,13 +42,11 @@ public class CluedoGame {
 
 	public static Scanner INPUT_SCANNER;
 
-	// CluedoGame Attributes
-	private int playerTurnIndex = 0; // Whos turn it is
-
 	// CluedoGame Associations
 	private Board board;
 	private Suggestion soloutionCards; 
 
+	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
 			new game.cards.Character("Miss Scarlett", 1),
 			new game.cards.Character("Rev. Green", 2), 
@@ -58,6 +55,7 @@ public class CluedoGame {
 			new game.cards.Character("Mrs. Peacock", 5),
 			new game.cards.Character("Mrs. White", 6) };
 
+	// Rooms used in card generation
 	private final game.cards.Room[] rooms = {
 			new game.cards.Room("Kitchen", 'K'),
 			new game.cards.Room("Ball Room", 'B'),
@@ -69,6 +67,7 @@ public class CluedoGame {
 			new game.cards.Room("Lounge", 'T'),
 			new game.cards.Room("Study", 'S') };
 
+	// Weapons used in card generation
 	private final game.cards.Weapon[] weapons = { 
 			new game.cards.Weapon("Candlestick"), 
 			new game.cards.Weapon("Dagger"),
@@ -77,6 +76,7 @@ public class CluedoGame {
 			new game.cards.Weapon("Rope"),
 			new game.cards.Weapon("Spanner") };
 
+	// Separate hallway because there are no hallway cards, but still needed for comparisons
 	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'H');
 
 	private List<Player> players = new ArrayList<>();
@@ -110,11 +110,10 @@ public class CluedoGame {
 			try {
 				playerCount = INPUT_SCANNER.nextInt();
 
-				if (playerCount >= MIN_PLAYERS && playerCount <= MAX_PLAYERS)
+				if (playerCount >= MIN_PLAYERS && playerCount <= MAX_PLAYERS) // Only exit if number is valid
 					break;
 				else
-					System.out.println("Player count must be between " + MIN_PLAYERS + " and " + MAX_PLAYERS
-							+ " (both inclusive)");
+					System.out.println("Player count must be between " + MIN_PLAYERS + " and " + MAX_PLAYERS + " (both inclusive)");
 			} catch (InputMismatchException ex) { // Error occurs when user enters something other than an integer
 				System.out.println("Please enter a valid number.a");
 				INPUT_SCANNER.nextLine(); // Clear input buffer
@@ -186,10 +185,11 @@ public class CluedoGame {
 		Player winner;
 
 		while (true) {
-			Player player = players.get(round % players.size());
+			Player player = players.get(round % players.size()); // Player index is based on the round number and number of players
 
 			if(player.getHasAcused()) // If player has accused, skip them
 				continue;
+
 
 			game.cards.Character character = player.getCharacter();
 			Turn turn = new Turn(player);
@@ -209,6 +209,7 @@ public class CluedoGame {
             
 			int moves = turn.getDiceRoll();
 
+			// Sets of visited places to prevent players going back on them
 			Set<Cell> visitedCells = new HashSet<>();
 			Set<Room> visitedRooms = new HashSet<>();
 
@@ -229,12 +230,14 @@ public class CluedoGame {
 				if(move == null) // Skip rest of moves is user skips
 					break;
 
+				// Check that player has not already been to cell in this turn
 				Cell newCell = character.getLocation().getNeighbour(move);
 				if(newCell != null && visitedCells.contains(newCell)) {
 					System.out.println("You have already been there!");
 					continue;
 				}
 
+				// Check that player has not already been in room in this turn
 				if(newCell != null && !character.getLocation().isRoom(newCell) && visitedRooms.contains(newCell.getRoom())) { // Check if new cell is a different room, and player has visited that room
 					System.out.println("You have already been in that room!");
 					continue;
@@ -244,7 +247,7 @@ public class CluedoGame {
 					visitedCells.add(character.getLocation());
 
 					if(!character.getLocation().isRoom(hallway)) { // Check if room is hallway or not
-						visitedRooms.add(character.getLocation().getRoom());
+						visitedRooms.add(character.getLocation().getRoom()); // Can enter hallway more than once in a turn so don't add to visited
 					}
 					--moves;
 				} else {
@@ -292,6 +295,7 @@ public class CluedoGame {
 	 */
 	private Suggestion askSuggestion(Player player, Room suggestionRoom, boolean forceAccusation) {
 		while (true) {
+			// Only allows suggestions in rooms, not hallway
 			if(forceAccusation)
 				System.out.print("Would you like to make a: Accusation (A), Nothing (X): (A, X)");
 			else
@@ -311,11 +315,14 @@ public class CluedoGame {
 							System.out.println("Suggestions are not allowed here!");
 							continue;
 						}
+
+						// Ask for character and weapon, the room is already chosen because it's a suggestion
 						character = (game.cards.Character)askCard(characters, "character");
 						weapon = (game.cards.Weapon)askCard(weapons, "weapon");
 
 						return new Suggestion(suggestionRoom, character, weapon, player, false);
 					case "A":
+						// Ask for all 3 because this is accusation
 						room = (game.cards.Room)askCard(rooms, "room");
 						character = (game.cards.Character)askCard(characters, "character");
 						weapon = (game.cards.Weapon)askCard(weapons, "weapon");
@@ -335,19 +342,22 @@ public class CluedoGame {
 	 * @return
 	 */
 	private game.cards.Card askCard(Card[] cards, String type) {
+		// Print available cards
 		for(int i = 0; i < cards.length; ++i) {
 			System.out.print(i + 1);
 			System.out.println(": " + cards[i].getName());
 		}
+
+		// Ask for input
 		while (true) {
 			try {
 				System.out.println("Please choose a " + type + " (1-" + cards.length + "):");
 				int input = INPUT_SCANNER.nextInt();
-				if(input < 1 || input > cards.length)
+				if(input < 1 || input > cards.length) // Ensure card number is within bounds
 					continue;
 
 				return cards[input - 1];
-			} catch (InputMismatchException ex) {}
+			} catch (InputMismatchException ex) {} // Error occurs when player does not enter integer
 
 			System.out.println("Invalid input.");
 		}
@@ -384,7 +394,7 @@ public class CluedoGame {
 							continue;
 						}
 				}
-			} catch (InputMismatchException ex) {}
+			} catch (InputMismatchException ex) {} // Error occurs if input format is wrong, just asks again
 
 			System.out.println("Invalid input.");
 		}
