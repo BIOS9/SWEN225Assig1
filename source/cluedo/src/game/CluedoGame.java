@@ -54,17 +54,7 @@ public class CluedoGame {
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
 			new game.cards.Character("Miss Scarlett", 1),
-			new game.cards.Character("Rev."
-					+ ""
-					+ ""
-					+ ""
-					+ ""
-					+ ""
-					+ ""
-					+ ""
-					+ ""
-					+ ""
-					+ " Green", 2), 
+			new game.cards.Character("Rev. Green", 2),
 			new game.cards.Character("Colonel Mustard", 3),
 			new game.cards.Character("Professor Plum", 4), 
 			new game.cards.Character("Mrs. Peacock", 5),
