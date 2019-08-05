@@ -502,4 +502,64 @@ public class BoardTests {
         assertNotEquals(a.getNeighbour(Cell.Direction.NORTH), b);
         assertNotEquals(b.getNeighbour(Cell.Direction.SOUTH), a);
     }
+
+    @Test
+    void testPositionToString() {
+        for(int y = 0; y < 26; ++y)
+            for(int x = 0; x < 26; ++x)
+            {
+                Position position = new Position(x, y);
+                String pos = "" + (char)('A' + y);
+                pos += (x + 1);
+                assertEquals(pos, position.toString());
+            }
+    }
+
+    @Test
+    void testPositionUp() {
+        for(int y = 0; y < 26; ++y)
+            for(int x = 0; x < 26; ++x)
+            {
+                Position position = new Position(x, y);
+                Position newPos = position.up();
+                assertEquals(position.x, newPos.x);
+                assertEquals(position.y - 1, newPos.y);
+            }
+    }
+
+    @Test
+    void testPositionDown() {
+        for(int y = 0; y < 26; ++y)
+            for(int x = 0; x < 26; ++x)
+            {
+                Position position = new Position(x, y);
+                Position newPos = position.down();
+                assertEquals(position.x, newPos.x);
+                assertEquals(position.y + 1, newPos.y);
+            }
+    }
+
+    @Test
+    void testPositionLeft() {
+        for(int y = 0; y < 26; ++y)
+            for(int x = 0; x < 26; ++x)
+            {
+                Position position = new Position(x, y);
+                Position newPos = position.left();
+                assertEquals(position.y, newPos.y);
+                assertEquals(position.x - 1, newPos.x);
+            }
+    }
+
+    @Test
+    void testPositionRight() {
+        for(int y = 0; y < 26; ++y)
+            for(int x = 0; x < 26; ++x)
+            {
+                Position position = new Position(x, y);
+                Position newPos = position.right();
+                assertEquals(position.y, newPos.y);
+                assertEquals(position.x + 1, newPos.x);
+            }
+    }
 }
