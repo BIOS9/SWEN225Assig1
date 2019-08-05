@@ -231,7 +231,7 @@ public class Board {
      * @param cell2
      * @return
      */
-    private boolean needsLink(Cell cell1, Cell cell2) {
+    public boolean needsLink(Cell cell1, Cell cell2) {
         if(cell1 == null || cell2 == null)
             return false;
 
@@ -249,7 +249,7 @@ public class Board {
      * @param north The north-most of the two cells
      * @param south The south-most of the two cells
      */
-    private void linkCellsVertical(Cell north, Cell south) {
+    public void linkCellsVertical(Cell north, Cell south) {
         north.setNeighbour(Cell.Direction.SOUTH, south);
         south.setNeighbour(Cell.Direction.NORTH, north);
     }
@@ -259,9 +259,13 @@ public class Board {
      * @param west The west-most of the two cells
      * @param east The east-most of the two cells
      */
-    private void linkCellsHorizontal(Cell west, Cell east) {
+    public void linkCellsHorizontal(Cell west, Cell east) {
         west.setNeighbour(Cell.Direction.EAST, east);
         east.setNeighbour(Cell.Direction.WEST, west);
+    }
+
+    public Cell getCell(Position position) {
+        return cells.get(position);
     }
 
     /**
