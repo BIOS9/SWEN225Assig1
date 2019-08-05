@@ -21,7 +21,6 @@ class Turn {
     
     //Turn Associations
     private Player player;
-    private Suggestion suggestion;
 
     /**
      * Constructor
