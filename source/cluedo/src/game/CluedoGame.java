@@ -10,8 +10,10 @@
 // ASSUMING A PLAYER CAN MAKE A SUGGESTION WITHOUT MOVING INTO A ROOM IF THEY ARE ALREADY IN IT
 // ASSUMING WEAPONS ARE USELESS AND DON'T NEED TO BE MOVED
 // ASSUMING NOBODY IS LOOKING AT THE SCREEN WHEN THEY SHOULDN'T BE
-// ASSUMING PLAYERS CANT PLAY ONCE THEY HAVE MADE A WRONG ACCUSATION
-// ASSUMING REFUTATIONS END ONCE ONE CARD HAS BEEN SUCCESSFULLY REFUTED
+// -> ASSUMING PLAYERS CANT PLAY ONCE THEY HAVE MADE A WRONG 
+//ACCUSATION
+// -> ASSUMING REFUTATIONS END ONCE ONE CARD HAS BEEN 
+//SUCCESSFULLY REFUTED
 
 
 package game;
@@ -53,7 +55,17 @@ public class CluedoGame {
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
 			new game.cards.Character("Miss Scarlett", 1),
-			new game.cards.Character("Rev. Green", 2), 
+			new game.cards.Character("Rev."
+					+ ""
+					+ ""
+					+ ""
+					+ ""
+					+ ""
+					+ ""
+					+ ""
+					+ ""
+					+ ""
+					+ " Green", 2), 
 			new game.cards.Character("Colonel Mustard", 3),
 			new game.cards.Character("Professor Plum", 4), 
 			new game.cards.Character("Mrs. Peacock", 5),
@@ -447,5 +459,10 @@ public class CluedoGame {
 
 			System.out.println("Invalid input.");
 		}
+	}
+	
+	//Setters to be used for testing whole game implementation
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 }
