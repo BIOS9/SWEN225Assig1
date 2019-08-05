@@ -338,8 +338,10 @@ public class CluedoGame {
 			if(hand.contains(suggestion.getRoom()))
 				availableRefutations.add(suggestion.getRoom());
 
-			if(availableRefutations.size() == 0) // Skip player if they cannot make any refutations
+			if(availableRefutations.size() == 0) {// Skip player if they cannot make any refutations
+				System.out.println(p.getCharacter().getName() + " You have no suitable refutation cards. Skip.");
 				continue;
+			}
 
 			System.out.println(p.getCharacter().getName() + " please refute the suggestion:");
 			Card refutation = askCard(availableRefutations.toArray(new Card[0]), "refutations");

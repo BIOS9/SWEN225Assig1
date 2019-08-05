@@ -1,6 +1,7 @@
 package tests;
 
 import game.board.Board;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import game.board.Cell;
@@ -14,7 +15,7 @@ public class BoardTests {
             new game.cards.Character("Colonel Mustard", 3),
             new game.cards.Character("Professor Plum", 4),
             new game.cards.Character("Mrs. Peacock", 5),
-            new game.cards.Character("Mrs. White", 6) };
+            new game.cards.Character("Mrs. White", 6)};
 
     @Test
     void testBoardGenerate() {
@@ -22,30 +23,30 @@ public class BoardTests {
         String expected =
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  \n" +
                 "A  - - - - - - - - - 1 - - - - 2 - - - - - - - - -  A\n" +
-                "B  k k k k k k - . . . b b b b . . . - c c c c c c  B\n" +
-                "C  k k k k k k . . b b b b b b b b . . c c c c c c  C\n" +
-                "D  k k k k k k . . b b b b b b b b . . c c c c c c  D\n" +
-                "E  k k k k k k . . b b b b b b b b . . ^ c c c c c  E\n" +
-                "F  k k k k k k . . > b b b b b b < . . . c c c c -  F\n" +
-                "G  - k k k ^ k . . b b b b b b b b . . . . . . . 3  G\n" +
-                "H  . . . . . . . . b ^ b b b b ^ b . . . . . . . -  H\n" +
-                "I  - . . . . . . . . . . . . . . . . . p p p p p p  I\n" +
-                "J  d d d d d . . . . . . . . . . . . . > p p p p p  J\n" +
-                "K  d d d d d d d d . . - - - - - . . . p p p p p p  K\n" +
-                "L  d d d d d d d d . . - - - - - . . . p p p p p p  L\n" +
-                "M  d d d d d d d < . . - - - - - . . . p p p p ^ p  M\n" +
-                "N  d d d d d d d d . . - - - - - . . . . . . . . -  N\n" +
-                "O  d d d d d d d d . . - - - - - . . . l l V l l -  O\n" +
-                "P  d d d d d d ^ d . . - - - - - . . l l l l l l l  P\n" +
-                "Q  - . . . . . . . . . - - - - - . . > l l l l l l  Q\n" +
-                "R  6 . . . . . . . . . . . . . . . . l l l l l l l  R\n" +
-                "S  - . . . . . . . . r r V V r r . . . l l l l l -  S\n" +
-                "T  t t t t t t V . . r r r r r r . . . . . . . . 4  T\n" +
-                "U  t t t t t t t . . r r r r r < . . . . . . . . -  U\n" +
-                "V  t t t t t t t . . r r r r r r . . V s s s s s s  V\n" +
-                "W  t t t t t t t . . r r r r r r . . s s s s s s s  W\n" +
-                "X  t t t t t t t . . r r r r r r . . s s s s s s s  X\n" +
-                "Y  t t t t t t - 5 - r r r r r r - . - s s s s s s  Y\n" +
+                "B  K K K K K K - . . . B B B B . . . - C C C C C C  B\n" +
+                "C  K K K K K K . . B B B B B B B B . . C C C C C C  C\n" +
+                "D  K K K K K K . . B B B B B B B B . . C C C C C C  D\n" +
+                "E  K K K K K K . . B B B B B B B B . . ^ C C C C C  E\n" +
+                "F  K K K K K K . . > B B B B B B < . . . C C C C -  F\n" +
+                "G  - K K K ^ K . . B B B B B B B B . . . . . . . 3  G\n" +
+                "H  . . . . . . . . B ^ B B B B ^ B . . . . . . . -  H\n" +
+                "I  - . . . . . . . . . . . . . . . . . P P P P P P  I\n" +
+                "J  D D D D D . . . . . . . . . . . . . > P P P P P  J\n" +
+                "K  D D D D D D D D . . - - - - - . . . P P P P P P  K\n" +
+                "L  D D D D D D D D . . - - - - - . . . P P P P P P  L\n" +
+                "M  D D D D D D D < . . - - - - - . . . P P P P ^ P  M\n" +
+                "N  D D D D D D D D . . - - - - - . . . . . . . . -  N\n" +
+                "O  D D D D D D D D . . - - - - - . . . L L V L L -  O\n" +
+                "P  D D D D D D ^ D . . - - - - - . . L L L L L L L  P\n" +
+                "Q  - . . . . . . . . . - - - - - . . > L L L L L L  Q\n" +
+                "R  6 . . . . . . . . . . . . . . . . L L L L L L L  R\n" +
+                "S  - . . . . . . . . R R V V R R . . . L L L L L -  S\n" +
+                "T  T T T T T T V . . R R R R R R . . . . . . . . 4  T\n" +
+                "U  T T T T T T T . . R R R R R < . . . . . . . . -  U\n" +
+                "V  T T T T T T T . . R R R R R R . . V S S S S S S  V\n" +
+                "W  T T T T T T T . . R R R R R R . . S S S S S S S  W\n" +
+                "X  T T T T T T T . . R R R R R R . . S S S S S S S  X\n" +
+                "Y  T T T T T T - 5 - R R R R R R - . - S S S S S S  Y\n" +
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
         assertEquals(expected, board.toString());
     }
@@ -59,30 +60,30 @@ public class BoardTests {
         String expected =
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  \n" +
                 "A  - - - - - - - - - 1 - - - - 2 - - - - - - - - -  A\n" +
-                "B  k k k k k k - . . . b b b b . . . - c c c c c c  B\n" +
-                "C  k k k k k k . . b b b b b b b b . . c c c c c c  C\n" +
-                "D  k k k k k k . . b b b b b b b b . . c c c c c c  D\n" +
-                "E  k k k k k k . . b b b b b b b b . . ^ c c c c c  E\n" +
-                "F  k k k k k k . . > b b b b b b < . . . c c c c -  F\n" +
-                "G  - k k k ^ k . . b b b b b b b b . . . . . . . 3  G\n" +
-                "H  . . . . . . . . b ^ b b b b ^ b . . . . . . . -  H\n" +
-                "I  - . . . . . . . . . . . . . . . . . p p p p p p  I\n" +
-                "J  d d d d d . . . . . . . . . . . . . > p p p p p  J\n" +
-                "K  d d d d d d d d . . - - - - - . . . p p p p p p  K\n" +
-                "L  d d d d d d d d . . - - - - - . . . p p p p p p  L\n" +
-                "M  d d d d d d d < . . - - - - - . . . p p p p ^ p  M\n" +
-                "N  d d d d d d d d . . - - - - - . . . . . . . . -  N\n" +
-                "O  d d d d d d d d . . - - - - - . . . l l V l l -  O\n" +
-                "P  d d d d d d ^ d . . - - - - - . . l l l l l l l  P\n" +
-                "Q  - . . . . . . . . . - - - - - . . > l l l l l l  Q\n" +
-                "R  6 . . . . . . . . . . . . . . . . l l l l l l l  R\n" +
-                "S  - . . . . . . . . r r V V r r . . . l l l l l -  S\n" +
-                "T  t t t t t t V . . r r r r r r . . . . . . . . 4  T\n" +
-                "U  t t t t t t t . . r r r r r < . . . . . . . . -  U\n" +
-                "V  t t t t t t t . . r r r r r r . . V s s s s s s  V\n" +
-                "W  t t t t t t t . . r r r r r r . . s s s s s s s  W\n" +
-                "X  t t t t t t t . . r r r r r r . . s s s s s s s  X\n" +
-                "Y  t t t t t t - 5 - r r r r r r - . - s s s s s s  Y\n" +
+                "B  K K K K K K - . . . B B B B . . . - C C C C C C  B\n" +
+                "C  K K K K K K . . B B B B B B B B . . C C C C C C  C\n" +
+                "D  K K K K K K . . B B B B B B B B . . C C C C C C  D\n" +
+                "E  K K K K K K . . B B B B B B B B . . ^ C C C C C  E\n" +
+                "F  K K K K K K . . > B B B B B B < . . . C C C C -  F\n" +
+                "G  - K K K ^ K . . B B B B B B B B . . . . . . . 3  G\n" +
+                "H  . . . . . . . . B ^ B B B B ^ B . . . . . . . -  H\n" +
+                "I  - . . . . . . . . . . . . . . . . . P P P P P P  I\n" +
+                "J  D D D D D . . . . . . . . . . . . . > P P P P P  J\n" +
+                "K  D D D D D D D D . . - - - - - . . . P P P P P P  K\n" +
+                "L  D D D D D D D D . . - - - - - . . . P P P P P P  L\n" +
+                "M  D D D D D D D < . . - - - - - . . . P P P P ^ P  M\n" +
+                "N  D D D D D D D D . . - - - - - . . . . . . . . -  N\n" +
+                "O  D D D D D D D D . . - - - - - . . . L L V L L -  O\n" +
+                "P  D D D D D D ^ D . . - - - - - . . L L L L L L L  P\n" +
+                "Q  - . . . . . . . . . - - - - - . . > L L L L L L  Q\n" +
+                "R  6 . . . . . . . . . . . . . . . . L L L L L L L  R\n" +
+                "S  - . . . . . . . . R R V V R R . . . L L L L L -  S\n" +
+                "T  T T T T T T V . . R R R R R R . . . . . . . . 4  T\n" +
+                "U  T T T T T T T . . R R R R R < . . . . . . . . -  U\n" +
+                "V  T T T T T T T . . R R R R R R . . V S S S S S S  V\n" +
+                "W  T T T T T T T . . R R R R R R . . S S S S S S S  W\n" +
+                "X  T T T T T T T . . R R R R R R . . S S S S S S S  X\n" +
+                "Y  T T T T T T - 5 - R R R R R R - . - S S S S S S  Y\n" +
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
         assertEquals(expected, board.toString(), "Board does not match expected");
 
@@ -99,30 +100,30 @@ public class BoardTests {
         expected =
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  \n" +
                 "A  - - - - - - - - - . - - - - 2 - - - - - - - - -  A\n" +
-                "B  k k k k k k - . . 1 b b b b . . . - c c c c c c  B\n" +
-                "C  k k k k k k . . b b b b b b b b . . c c c c c c  C\n" +
-                "D  k k k k k k . . b b b b b b b b . . c c c c c c  D\n" +
-                "E  k k k k k k . . b b b b b b b b . . ^ c c c c c  E\n" +
-                "F  k k k k k k . . > b b b b b b < . . . c c c c -  F\n" +
-                "G  - k k k ^ k . . b b b b b b b b . . . . . . . 3  G\n" +
-                "H  . . . . . . . . b ^ b b b b ^ b . . . . . . . -  H\n" +
-                "I  - . . . . . . . . . . . . . . . . . p p p p p p  I\n" +
-                "J  d d d d d . . . . . . . . . . . . . > p p p p p  J\n" +
-                "K  d d d d d d d d . . - - - - - . . . p p p p p p  K\n" +
-                "L  d d d d d d d d . . - - - - - . . . p p p p p p  L\n" +
-                "M  d d d d d d d < . . - - - - - . . . p p p p ^ p  M\n" +
-                "N  d d d d d d d d . . - - - - - . . . . . . . . -  N\n" +
-                "O  d d d d d d d d . . - - - - - . . . l l V l l -  O\n" +
-                "P  d d d d d d ^ d . . - - - - - . . l l l l l l l  P\n" +
-                "Q  - . . . . . . . . . - - - - - . . > l l l l l l  Q\n" +
-                "R  6 . . . . . . . . . . . . . . . . l l l l l l l  R\n" +
-                "S  - . . . . . . . . r r V V r r . . . l l l l l -  S\n" +
-                "T  t t t t t t V . . r r r r r r . . . . . . . . 4  T\n" +
-                "U  t t t t t t t . . r r r r r < . . . . . . . . -  U\n" +
-                "V  t t t t t t t . . r r r r r r . . V s s s s s s  V\n" +
-                "W  t t t t t t t . . r r r r r r . . s s s s s s s  W\n" +
-                "X  t t t t t t t . . r r r r r r . . s s s s s s s  X\n" +
-                "Y  t t t t t t - 5 - r r r r r r - . - s s s s s s  Y\n" +
+                "B  K K K K K K - . . 1 B B B B . . . - C C C C C C  B\n" +
+                "C  K K K K K K . . B B B B B B B B . . C C C C C C  C\n" +
+                "D  K K K K K K . . B B B B B B B B . . C C C C C C  D\n" +
+                "E  K K K K K K . . B B B B B B B B . . ^ C C C C C  E\n" +
+                "F  K K K K K K . . > B B B B B B < . . . C C C C -  F\n" +
+                "G  - K K K ^ K . . B B B B B B B B . . . . . . . 3  G\n" +
+                "H  . . . . . . . . B ^ B B B B ^ B . . . . . . . -  H\n" +
+                "I  - . . . . . . . . . . . . . . . . . P P P P P P  I\n" +
+                "J  D D D D D . . . . . . . . . . . . . > P P P P P  J\n" +
+                "K  D D D D D D D D . . - - - - - . . . P P P P P P  K\n" +
+                "L  D D D D D D D D . . - - - - - . . . P P P P P P  L\n" +
+                "M  D D D D D D D < . . - - - - - . . . P P P P ^ P  M\n" +
+                "N  D D D D D D D D . . - - - - - . . . . . . . . -  N\n" +
+                "O  D D D D D D D D . . - - - - - . . . L L V L L -  O\n" +
+                "P  D D D D D D ^ D . . - - - - - . . L L L L L L L  P\n" +
+                "Q  - . . . . . . . . . - - - - - . . > L L L L L L  Q\n" +
+                "R  6 . . . . . . . . . . . . . . . . L L L L L L L  R\n" +
+                "S  - . . . . . . . . R R V V R R . . . L L L L L -  S\n" +
+                "T  T T T T T T V . . R R R R R R . . . . . . . . 4  T\n" +
+                "U  T T T T T T T . . R R R R R < . . . . . . . . -  U\n" +
+                "V  T T T T T T T . . R R R R R R . . V S S S S S S  V\n" +
+                "W  T T T T T T T . . R R R R R R . . S S S S S S S  W\n" +
+                "X  T T T T T T T . . R R R R R R . . S S S S S S S  X\n" +
+                "Y  T T T T T T - 5 - R R R R R R - . - S S S S S S  Y\n" +
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
         assertEquals(expected, board.toString(), "Board does not match expected");
 
@@ -156,30 +157,30 @@ public class BoardTests {
         String expected =
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  \n" +
                 "A  - - - - - - - - - . - - - - . - - - - - - - - -  A\n" +
-                "B  k k k k k k - . . 1 b b b b 2 . . - c c c c c c  B\n" +
-                "C  k k k k k k . . b b b b b b b b . . c c c c c c  C\n" +
-                "D  k k k k k k . . b b b b b b b b . . c c c c c c  D\n" +
-                "E  k k k k k k . . b b b b b b b b . . ^ c c c c c  E\n" +
-                "F  k k k k k k . . > b b b b b b < . . . c c c c -  F\n" +
-                "G  - k k k ^ k . . b b b b b b b b . . . . . . 3 .  G\n" +
-                "H  . . . . . . . . b ^ b b b b ^ b . . . . . . . -  H\n" +
-                "I  - . . . . . . . . . . . . . . . . . p p p p p p  I\n" +
-                "J  d d d d d . . . . . . . . . . . . . > p p p p p  J\n" +
-                "K  d d d d d d d d . . - - - - - . . . p p p p p p  K\n" +
-                "L  d d d d d d d d . . - - - - - . . . p p p p p p  L\n" +
-                "M  d d d d d d d < . . - - - - - . . . p p p p ^ p  M\n" +
-                "N  d d d d d d d d . . - - - - - . . . . . . . . -  N\n" +
-                "O  d d d d d d d d . . - - - - - . . . l l V l l -  O\n" +
-                "P  d d d d d d ^ d . . - - - - - . . l l l l l l l  P\n" +
-                "Q  - . . . . . . . . . - - - - - . . > l l l l l l  Q\n" +
-                "R  . 6 . . . . . . . . . . . . . . . l l l l l l l  R\n" +
-                "S  - . . . . . . . . r r V V r r . . . l l l l l -  S\n" +
-                "T  t t t t t t V . . r r r r r r . . . . . . . 4 .  T\n" +
-                "U  t t t t t t t . . r r r r r < . . . . . . . . -  U\n" +
-                "V  t t t t t t t . . r r r r r r . . V s s s s s s  V\n" +
-                "W  t t t t t t t . . r r r r r r . . s s s s s s s  W\n" +
-                "X  t t t t t t t 5 . r r r r r r . . s s s s s s s  X\n" +
-                "Y  t t t t t t - . - r r r r r r - . - s s s s s s  Y\n" +
+                "B  K K K K K K - . . 1 B B B B 2 . . - C C C C C C  B\n" +
+                "C  K K K K K K . . B B B B B B B B . . C C C C C C  C\n" +
+                "D  K K K K K K . . B B B B B B B B . . C C C C C C  D\n" +
+                "E  K K K K K K . . B B B B B B B B . . ^ C C C C C  E\n" +
+                "F  K K K K K K . . > B B B B B B < . . . C C C C -  F\n" +
+                "G  - K K K ^ K . . B B B B B B B B . . . . . . 3 .  G\n" +
+                "H  . . . . . . . . B ^ B B B B ^ B . . . . . . . -  H\n" +
+                "I  - . . . . . . . . . . . . . . . . . P P P P P P  I\n" +
+                "J  D D D D D . . . . . . . . . . . . . > P P P P P  J\n" +
+                "K  D D D D D D D D . . - - - - - . . . P P P P P P  K\n" +
+                "L  D D D D D D D D . . - - - - - . . . P P P P P P  L\n" +
+                "M  D D D D D D D < . . - - - - - . . . P P P P ^ P  M\n" +
+                "N  D D D D D D D D . . - - - - - . . . . . . . . -  N\n" +
+                "O  D D D D D D D D . . - - - - - . . . L L V L L -  O\n" +
+                "P  D D D D D D ^ D . . - - - - - . . L L L L L L L  P\n" +
+                "Q  - . . . . . . . . . - - - - - . . > L L L L L L  Q\n" +
+                "R  . 6 . . . . . . . . . . . . . . . L L L L L L L  R\n" +
+                "S  - . . . . . . . . R R V V R R . . . L L L L L -  S\n" +
+                "T  T T T T T T V . . R R R R R R . . . . . . . 4 .  T\n" +
+                "U  T T T T T T T . . R R R R R < . . . . . . . . -  U\n" +
+                "V  T T T T T T T . . R R R R R R . . V S S S S S S  V\n" +
+                "W  T T T T T T T . . R R R R R R . . S S S S S S S  W\n" +
+                "X  T T T T T T T 5 . R R R R R R . . S S S S S S S  X\n" +
+                "Y  T T T T T T - . - R R R R R R - . - S S S S S S  Y\n" +
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
         assertEquals(expected, board.toString(), "Board does not match expected");
     }
@@ -200,32 +201,32 @@ public class BoardTests {
 
         String expected =
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  \n" +
-                        "A  - - - - - - - - - . - - - - 2 - - - - - - - - -  A\n" +
-                        "B  k k k k k k - . . . b b b b . . . - c c c c c c  B\n" +
-                        "C  k k k k k k . . b b b b b b b b . . c c c c c c  C\n" +
-                        "D  k k k k k k . . b b b b b b b b . . c c c c c c  D\n" +
-                        "E  k k k k k k . . b b b b b b b b . . ^ c c c c c  E\n" +
-                        "F  k k k k k k . . 1 b b b b b b < . . . c c c c -  F\n" +
-                        "G  - k k k ^ k . . b b b b b b b b . . . . . . . 3  G\n" +
-                        "H  . . . . . . . . b ^ b b b b ^ b . . . . . . . -  H\n" +
-                        "I  - . . . . . . . . . . . . . . . . . p p p p p p  I\n" +
-                        "J  d d d d d . . . . . . . . . . . . . > p p p p p  J\n" +
-                        "K  d d d d d d d d . . - - - - - . . . p p p p p p  K\n" +
-                        "L  d d d d d d d d . . - - - - - . . . p p p p p p  L\n" +
-                        "M  d d d d d d d < . . - - - - - . . . p p p p ^ p  M\n" +
-                        "N  d d d d d d d d . . - - - - - . . . . . . . . -  N\n" +
-                        "O  d d d d d d d d . . - - - - - . . . l l V l l -  O\n" +
-                        "P  d d d d d d ^ d . . - - - - - . . l l l l l l l  P\n" +
-                        "Q  - . . . . . . . . . - - - - - . . > l l l l l l  Q\n" +
-                        "R  6 . . . . . . . . . . . . . . . . l l l l l l l  R\n" +
-                        "S  - . . . . . . . . r r V V r r . . . l l l l l -  S\n" +
-                        "T  t t t t t t V . . r r r r r r . . . . . . . . 4  T\n" +
-                        "U  t t t t t t t . . r r r r r < . . . . . . . . -  U\n" +
-                        "V  t t t t t t t . . r r r r r r . . V s s s s s s  V\n" +
-                        "W  t t t t t t t . . r r r r r r . . s s s s s s s  W\n" +
-                        "X  t t t t t t t . . r r r r r r . . s s s s s s s  X\n" +
-                        "Y  t t t t t t - 5 - r r r r r r - . - s s s s s s  Y\n" +
-                        "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
+                "A  - - - - - - - - - . - - - - 2 - - - - - - - - -  A\n" +
+                "B  K K K K K K - . . . B B B B . . . - C C C C C C  B\n" +
+                "C  K K K K K K . . B B B B B B B B . . C C C C C C  C\n" +
+                "D  K K K K K K . . B B B B B B B B . . C C C C C C  D\n" +
+                "E  K K K K K K . . B B B B B B B B . . ^ C C C C C  E\n" +
+                "F  K K K K K K . . 1 B B B B B B < . . . C C C C -  F\n" +
+                "G  - K K K ^ K . . B B B B B B B B . . . . . . . 3  G\n" +
+                "H  . . . . . . . . B ^ B B B B ^ B . . . . . . . -  H\n" +
+                "I  - . . . . . . . . . . . . . . . . . P P P P P P  I\n" +
+                "J  D D D D D . . . . . . . . . . . . . > P P P P P  J\n" +
+                "K  D D D D D D D D . . - - - - - . . . P P P P P P  K\n" +
+                "L  D D D D D D D D . . - - - - - . . . P P P P P P  L\n" +
+                "M  D D D D D D D < . . - - - - - . . . P P P P ^ P  M\n" +
+                "N  D D D D D D D D . . - - - - - . . . . . . . . -  N\n" +
+                "O  D D D D D D D D . . - - - - - . . . L L V L L -  O\n" +
+                "P  D D D D D D ^ D . . - - - - - . . L L L L L L L  P\n" +
+                "Q  - . . . . . . . . . - - - - - . . > L L L L L L  Q\n" +
+                "R  6 . . . . . . . . . . . . . . . . L L L L L L L  R\n" +
+                "S  - . . . . . . . . R R V V R R . . . L L L L L -  S\n" +
+                "T  T T T T T T V . . R R R R R R . . . . . . . . 4  T\n" +
+                "U  T T T T T T T . . R R R R R < . . . . . . . . -  U\n" +
+                "V  T T T T T T T . . R R R R R R . . V S S S S S S  V\n" +
+                "W  T T T T T T T . . R R R R R R . . S S S S S S S  W\n" +
+                "X  T T T T T T T . . R R R R R R . . S S S S S S S  X\n" +
+                "Y  T T T T T T - 5 - R R R R R R - . - S S S S S S  Y\n" +
+                "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
         assertEquals(expected, board.toString(), "Board does not match expected");
 
         result = board.moveCharacter(characters[0], Cell.Direction.EAST);
@@ -234,30 +235,30 @@ public class BoardTests {
         expected =
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  \n" +
                 "A  - - - - - - - - - . - - - - 2 - - - - - - - - -  A\n" +
-                "B  k k k k k k - . . . b b b b . . . - c c c c c c  B\n" +
-                "C  k k k k k k . . b b b b b b b b . . c c c c c c  C\n" +
-                "D  k k k k k k . . b b b b b b b b . . c c c c c c  D\n" +
-                "E  k k k k k k . . b b b b b b b b . . ^ c c c c c  E\n" +
-                "F  k k k k k k . . > 1 b b b b b < . . . c c c c -  F\n" +
-                "G  - k k k ^ k . . b b b b b b b b . . . . . . . 3  G\n" +
-                "H  . . . . . . . . b ^ b b b b ^ b . . . . . . . -  H\n" +
-                "I  - . . . . . . . . . . . . . . . . . p p p p p p  I\n" +
-                "J  d d d d d . . . . . . . . . . . . . > p p p p p  J\n" +
-                "K  d d d d d d d d . . - - - - - . . . p p p p p p  K\n" +
-                "L  d d d d d d d d . . - - - - - . . . p p p p p p  L\n" +
-                "M  d d d d d d d < . . - - - - - . . . p p p p ^ p  M\n" +
-                "N  d d d d d d d d . . - - - - - . . . . . . . . -  N\n" +
-                "O  d d d d d d d d . . - - - - - . . . l l V l l -  O\n" +
-                "P  d d d d d d ^ d . . - - - - - . . l l l l l l l  P\n" +
-                "Q  - . . . . . . . . . - - - - - . . > l l l l l l  Q\n" +
-                "R  6 . . . . . . . . . . . . . . . . l l l l l l l  R\n" +
-                "S  - . . . . . . . . r r V V r r . . . l l l l l -  S\n" +
-                "T  t t t t t t V . . r r r r r r . . . . . . . . 4  T\n" +
-                "U  t t t t t t t . . r r r r r < . . . . . . . . -  U\n" +
-                "V  t t t t t t t . . r r r r r r . . V s s s s s s  V\n" +
-                "W  t t t t t t t . . r r r r r r . . s s s s s s s  W\n" +
-                "X  t t t t t t t . . r r r r r r . . s s s s s s s  X\n" +
-                "Y  t t t t t t - 5 - r r r r r r - . - s s s s s s  Y\n" +
+                "B  K K K K K K - . . . B B B B . . . - C C C C C C  B\n" +
+                "C  K K K K K K . . B B B B B B B B . . C C C C C C  C\n" +
+                "D  K K K K K K . . B B B B B B B B . . C C C C C C  D\n" +
+                "E  K K K K K K . . B B B B B B B B . . ^ C C C C C  E\n" +
+                "F  K K K K K K . . > 1 B B B B B < . . . C C C C -  F\n" +
+                "G  - K K K ^ K . . B B B B B B B B . . . . . . . 3  G\n" +
+                "H  . . . . . . . . B ^ B B B B ^ B . . . . . . . -  H\n" +
+                "I  - . . . . . . . . . . . . . . . . . P P P P P P  I\n" +
+                "J  D D D D D . . . . . . . . . . . . . > P P P P P  J\n" +
+                "K  D D D D D D D D . . - - - - - . . . P P P P P P  K\n" +
+                "L  D D D D D D D D . . - - - - - . . . P P P P P P  L\n" +
+                "M  D D D D D D D < . . - - - - - . . . P P P P ^ P  M\n" +
+                "N  D D D D D D D D . . - - - - - . . . . . . . . -  N\n" +
+                "O  D D D D D D D D . . - - - - - . . . L L V L L -  O\n" +
+                "P  D D D D D D ^ D . . - - - - - . . L L L L L L L  P\n" +
+                "Q  - . . . . . . . . . - - - - - . . > L L L L L L  Q\n" +
+                "R  6 . . . . . . . . . . . . . . . . L L L L L L L  R\n" +
+                "S  - . . . . . . . . R R V V R R . . . L L L L L -  S\n" +
+                "T  T T T T T T V . . R R R R R R . . . . . . . . 4  T\n" +
+                "U  T T T T T T T . . R R R R R < . . . . . . . . -  U\n" +
+                "V  T T T T T T T . . R R R R R R . . V S S S S S S  V\n" +
+                "W  T T T T T T T . . R R R R R R . . S S S S S S S  W\n" +
+                "X  T T T T T T T . . R R R R R R . . S S S S S S S  X\n" +
+                "Y  T T T T T T - 5 - R R R R R R - . - S S S S S S  Y\n" +
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
         assertEquals(expected, board.toString(), "Board does not match expected");
 
@@ -266,32 +267,32 @@ public class BoardTests {
 
         expected =
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  \n" +
-                        "A  - - - - - - - - - . - - - - 2 - - - - - - - - -  A\n" +
-                        "B  k k k k k k - . . . b b b b . . . - c c c c c c  B\n" +
-                        "C  k k k k k k . . b b b b b b b b . . c c c c c c  C\n" +
-                        "D  k k k k k k . . b b b b b b b b . . c c c c c c  D\n" +
-                        "E  k k k k k k . . b b b b b b b b . . ^ c c c c c  E\n" +
-                        "F  k k k k k k . . 1 b b b b b b < . . . c c c c -  F\n" +
-                        "G  - k k k ^ k . . b b b b b b b b . . . . . . . 3  G\n" +
-                        "H  . . . . . . . . b ^ b b b b ^ b . . . . . . . -  H\n" +
-                        "I  - . . . . . . . . . . . . . . . . . p p p p p p  I\n" +
-                        "J  d d d d d . . . . . . . . . . . . . > p p p p p  J\n" +
-                        "K  d d d d d d d d . . - - - - - . . . p p p p p p  K\n" +
-                        "L  d d d d d d d d . . - - - - - . . . p p p p p p  L\n" +
-                        "M  d d d d d d d < . . - - - - - . . . p p p p ^ p  M\n" +
-                        "N  d d d d d d d d . . - - - - - . . . . . . . . -  N\n" +
-                        "O  d d d d d d d d . . - - - - - . . . l l V l l -  O\n" +
-                        "P  d d d d d d ^ d . . - - - - - . . l l l l l l l  P\n" +
-                        "Q  - . . . . . . . . . - - - - - . . > l l l l l l  Q\n" +
-                        "R  6 . . . . . . . . . . . . . . . . l l l l l l l  R\n" +
-                        "S  - . . . . . . . . r r V V r r . . . l l l l l -  S\n" +
-                        "T  t t t t t t V . . r r r r r r . . . . . . . . 4  T\n" +
-                        "U  t t t t t t t . . r r r r r < . . . . . . . . -  U\n" +
-                        "V  t t t t t t t . . r r r r r r . . V s s s s s s  V\n" +
-                        "W  t t t t t t t . . r r r r r r . . s s s s s s s  W\n" +
-                        "X  t t t t t t t . . r r r r r r . . s s s s s s s  X\n" +
-                        "Y  t t t t t t - 5 - r r r r r r - . - s s s s s s  Y\n" +
-                        "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
+                "A  - - - - - - - - - . - - - - 2 - - - - - - - - -  A\n" +
+                "B  K K K K K K - . . . B B B B . . . - C C C C C C  B\n" +
+                "C  K K K K K K . . B B B B B B B B . . C C C C C C  C\n" +
+                "D  K K K K K K . . B B B B B B B B . . C C C C C C  D\n" +
+                "E  K K K K K K . . B B B B B B B B . . ^ C C C C C  E\n" +
+                "F  K K K K K K . . 1 B B B B B B < . . . C C C C -  F\n" +
+                "G  - K K K ^ K . . B B B B B B B B . . . . . . . 3  G\n" +
+                "H  . . . . . . . . B ^ B B B B ^ B . . . . . . . -  H\n" +
+                "I  - . . . . . . . . . . . . . . . . . P P P P P P  I\n" +
+                "J  D D D D D . . . . . . . . . . . . . > P P P P P  J\n" +
+                "K  D D D D D D D D . . - - - - - . . . P P P P P P  K\n" +
+                "L  D D D D D D D D . . - - - - - . . . P P P P P P  L\n" +
+                "M  D D D D D D D < . . - - - - - . . . P P P P ^ P  M\n" +
+                "N  D D D D D D D D . . - - - - - . . . . . . . . -  N\n" +
+                "O  D D D D D D D D . . - - - - - . . . L L V L L -  O\n" +
+                "P  D D D D D D ^ D . . - - - - - . . L L L L L L L  P\n" +
+                "Q  - . . . . . . . . . - - - - - . . > L L L L L L  Q\n" +
+                "R  6 . . . . . . . . . . . . . . . . L L L L L L L  R\n" +
+                "S  - . . . . . . . . R R V V R R . . . L L L L L -  S\n" +
+                "T  T T T T T T V . . R R R R R R . . . . . . . . 4  T\n" +
+                "U  T T T T T T T . . R R R R R < . . . . . . . . -  U\n" +
+                "V  T T T T T T T . . R R R R R R . . V S S S S S S  V\n" +
+                "W  T T T T T T T . . R R R R R R . . S S S S S S S  W\n" +
+                "X  T T T T T T T . . R R R R R R . . S S S S S S S  X\n" +
+                "Y  T T T T T T - 5 - R R R R R R - . - S S S S S S  Y\n" +
+                "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
         assertEquals(expected, board.toString(), "Board does not match expected");
 
         result = board.moveCharacter(characters[0], Cell.Direction.WEST);
@@ -299,32 +300,32 @@ public class BoardTests {
 
         expected =
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  \n" +
-                        "A  - - - - - - - - - . - - - - 2 - - - - - - - - -  A\n" +
-                        "B  k k k k k k - . . . b b b b . . . - c c c c c c  B\n" +
-                        "C  k k k k k k . . b b b b b b b b . . c c c c c c  C\n" +
-                        "D  k k k k k k . . b b b b b b b b . . c c c c c c  D\n" +
-                        "E  k k k k k k . . b b b b b b b b . . ^ c c c c c  E\n" +
-                        "F  k k k k k k . 1 > b b b b b b < . . . c c c c -  F\n" +
-                        "G  - k k k ^ k . . b b b b b b b b . . . . . . . 3  G\n" +
-                        "H  . . . . . . . . b ^ b b b b ^ b . . . . . . . -  H\n" +
-                        "I  - . . . . . . . . . . . . . . . . . p p p p p p  I\n" +
-                        "J  d d d d d . . . . . . . . . . . . . > p p p p p  J\n" +
-                        "K  d d d d d d d d . . - - - - - . . . p p p p p p  K\n" +
-                        "L  d d d d d d d d . . - - - - - . . . p p p p p p  L\n" +
-                        "M  d d d d d d d < . . - - - - - . . . p p p p ^ p  M\n" +
-                        "N  d d d d d d d d . . - - - - - . . . . . . . . -  N\n" +
-                        "O  d d d d d d d d . . - - - - - . . . l l V l l -  O\n" +
-                        "P  d d d d d d ^ d . . - - - - - . . l l l l l l l  P\n" +
-                        "Q  - . . . . . . . . . - - - - - . . > l l l l l l  Q\n" +
-                        "R  6 . . . . . . . . . . . . . . . . l l l l l l l  R\n" +
-                        "S  - . . . . . . . . r r V V r r . . . l l l l l -  S\n" +
-                        "T  t t t t t t V . . r r r r r r . . . . . . . . 4  T\n" +
-                        "U  t t t t t t t . . r r r r r < . . . . . . . . -  U\n" +
-                        "V  t t t t t t t . . r r r r r r . . V s s s s s s  V\n" +
-                        "W  t t t t t t t . . r r r r r r . . s s s s s s s  W\n" +
-                        "X  t t t t t t t . . r r r r r r . . s s s s s s s  X\n" +
-                        "Y  t t t t t t - 5 - r r r r r r - . - s s s s s s  Y\n" +
-                        "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
+                "A  - - - - - - - - - . - - - - 2 - - - - - - - - -  A\n" +
+                "B  K K K K K K - . . . B B B B . . . - C C C C C C  B\n" +
+                "C  K K K K K K . . B B B B B B B B . . C C C C C C  C\n" +
+                "D  K K K K K K . . B B B B B B B B . . C C C C C C  D\n" +
+                "E  K K K K K K . . B B B B B B B B . . ^ C C C C C  E\n" +
+                "F  K K K K K K . 1 > B B B B B B < . . . C C C C -  F\n" +
+                "G  - K K K ^ K . . B B B B B B B B . . . . . . . 3  G\n" +
+                "H  . . . . . . . . B ^ B B B B ^ B . . . . . . . -  H\n" +
+                "I  - . . . . . . . . . . . . . . . . . P P P P P P  I\n" +
+                "J  D D D D D . . . . . . . . . . . . . > P P P P P  J\n" +
+                "K  D D D D D D D D . . - - - - - . . . P P P P P P  K\n" +
+                "L  D D D D D D D D . . - - - - - . . . P P P P P P  L\n" +
+                "M  D D D D D D D < . . - - - - - . . . P P P P ^ P  M\n" +
+                "N  D D D D D D D D . . - - - - - . . . . . . . . -  N\n" +
+                "O  D D D D D D D D . . - - - - - . . . L L V L L -  O\n" +
+                "P  D D D D D D ^ D . . - - - - - . . L L L L L L L  P\n" +
+                "Q  - . . . . . . . . . - - - - - . . > L L L L L L  Q\n" +
+                "R  6 . . . . . . . . . . . . . . . . L L L L L L L  R\n" +
+                "S  - . . . . . . . . R R V V R R . . . L L L L L -  S\n" +
+                "T  T T T T T T V . . R R R R R R . . . . . . . . 4  T\n" +
+                "U  T T T T T T T . . R R R R R < . . . . . . . . -  U\n" +
+                "V  T T T T T T T . . R R R R R R . . V S S S S S S  V\n" +
+                "W  T T T T T T T . . R R R R R R . . S S S S S S S  W\n" +
+                "X  T T T T T T T . . R R R R R R . . S S S S S S S  X\n" +
+                "Y  T T T T T T - 5 - R R R R R R - . - S S S S S S  Y\n" +
+                "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
         assertEquals(expected, board.toString(), "Board does not match expected");
     }
 
@@ -358,30 +359,30 @@ public class BoardTests {
         String expected =
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  \n" +
                 "A  - - - - - - - - - . - - - - . - - - - - - - - -  A\n" +
-                "B  k k k k k k - . . . b b b b . . . - c c c c c c  B\n" +
-                "C  k k k k k k . . b b b b b b b b . . c c c c c c  C\n" +
-                "D  k k k k k k . . b b b b b b b b . . c c c c c c  D\n" +
-                "E  k k k k k k . . b b b b b b b b . . ^ c c c c c  E\n" +
-                "F  k k k k k k . . > b b 1 2 b b < . . . c c c c -  F\n" +
-                "G  - k k k ^ k . . b b b b b b b b . . . . . . . 3  G\n" +
-                "H  . . . . . . . . b ^ b b b b ^ b . . . . . . . -  H\n" +
-                "I  - . . . . . . . . . . . . . . . . . p p p p p p  I\n" +
-                "J  d d d d d . . . . . . . . . . . . . > p p p p p  J\n" +
-                "K  d d d d d d d d . . - - - - - . . . p p p p p p  K\n" +
-                "L  d d d d d d d d . . - - - - - . . . p p p p p p  L\n" +
-                "M  d d d d d d d < . . - - - - - . . . p p p p ^ p  M\n" +
-                "N  d d d d d d d d . . - - - - - . . . . . . . . -  N\n" +
-                "O  d d d d d d d d . . - - - - - . . . l l V l l -  O\n" +
-                "P  d d d d d d ^ d . . - - - - - . . l l l l l l l  P\n" +
-                "Q  - . . . . . . . . . - - - - - . . > l l l l l l  Q\n" +
-                "R  6 . . . . . . . . . . . . . . . . l l l l l l l  R\n" +
-                "S  - . . . . . . . . r r V V r r . . . l l l l l -  S\n" +
-                "T  t t t t t t V . . r r r r r r . . . . . . . . 4  T\n" +
-                "U  t t t t t t t . . r r r r r < . . . . . . . . -  U\n" +
-                "V  t t t t t t t . . r r r r r r . . V s s s s s s  V\n" +
-                "W  t t t t t t t . . r r r r r r . . s s s s s s s  W\n" +
-                "X  t t t t t t t . . r r r r r r . . s s s s s s s  X\n" +
-                "Y  t t t t t t - 5 - r r r r r r - . - s s s s s s  Y\n" +
+                "B  K K K K K K - . . . B B B B . . . - C C C C C C  B\n" +
+                "C  K K K K K K . . B B B B B B B B . . C C C C C C  C\n" +
+                "D  K K K K K K . . B B B B B B B B . . C C C C C C  D\n" +
+                "E  K K K K K K . . B B B B B B B B . . ^ C C C C C  E\n" +
+                "F  K K K K K K . . > B B 1 2 B B < . . . C C C C -  F\n" +
+                "G  - K K K ^ K . . B B B B B B B B . . . . . . . 3  G\n" +
+                "H  . . . . . . . . B ^ B B B B ^ B . . . . . . . -  H\n" +
+                "I  - . . . . . . . . . . . . . . . . . P P P P P P  I\n" +
+                "J  D D D D D . . . . . . . . . . . . . > P P P P P  J\n" +
+                "K  D D D D D D D D . . - - - - - . . . P P P P P P  K\n" +
+                "L  D D D D D D D D . . - - - - - . . . P P P P P P  L\n" +
+                "M  D D D D D D D < . . - - - - - . . . P P P P ^ P  M\n" +
+                "N  D D D D D D D D . . - - - - - . . . . . . . . -  N\n" +
+                "O  D D D D D D D D . . - - - - - . . . L L V L L -  O\n" +
+                "P  D D D D D D ^ D . . - - - - - . . L L L L L L L  P\n" +
+                "Q  - . . . . . . . . . - - - - - . . > L L L L L L  Q\n" +
+                "R  6 . . . . . . . . . . . . . . . . L L L L L L L  R\n" +
+                "S  - . . . . . . . . R R V V R R . . . L L L L L -  S\n" +
+                "T  T T T T T T V . . R R R R R R . . . . . . . . 4  T\n" +
+                "U  T T T T T T T . . R R R R R < . . . . . . . . -  U\n" +
+                "V  T T T T T T T . . R R R R R R . . V S S S S S S  V\n" +
+                "W  T T T T T T T . . R R R R R R . . S S S S S S S  W\n" +
+                "X  T T T T T T T . . R R R R R R . . S S S S S S S  X\n" +
+                "Y  T T T T T T - 5 - R R R R R R - . - S S S S S S  Y\n" +
                 "   1 2 3 4 5 6 7 8 9 10  12  14  16  18  20  22  24  ";
         assertEquals(expected, board.toString(), "Test setup failed");
 
