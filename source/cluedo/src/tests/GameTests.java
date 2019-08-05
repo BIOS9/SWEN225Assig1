@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import game.cards.Card;
 import game.cards.Character;
+import game.cards.Room;
+import game.cards.Weapon;
+
 import org.junit.jupiter.api.Test;
 
 import java.lang.management.PlatformLoggingMXBean;
@@ -48,6 +51,23 @@ public class GameTests {
 			assertTrue(player1Hand.size() > 0);
 			assertTrue(player2Hand.size() > 0);
 		} catch (Exception ex) {
+			fail(ex);
+		}
+	}
+	
+	@Test
+	public void handToStringTest() {
+		CluedoGame game = new CluedoGame();
+		try {
+			Player player = new game.Player(new game.cards.Character ("Miss Scarlett", 1), game);
+			
+			player.addCardToHand(new game.cards.Weapon("Candlestick"));
+			player.addCardToHand(new game.cards.Character("Professor Plum", 4));
+			
+			assertTrue(player.printCards().equals("Your hand:  [Candlestick]  [Professor Plum] "));
+			
+		}
+		catch(Exception ex) {
 			fail(ex);
 		}
 	}
