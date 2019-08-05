@@ -16,7 +16,7 @@ import java.util.List;
  * 
  * @author abbey
  */
-class Player {
+public class Player {
 
 	// Player Attributes
 	private boolean hasAcused = false;
