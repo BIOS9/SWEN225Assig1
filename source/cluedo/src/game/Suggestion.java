@@ -99,4 +99,9 @@ public class Suggestion {
 	public boolean isAcusation() {
 		return isAcusation;
 	}
+
+	@Override
+	public String toString() {
+		return printCards();
+	}
 }

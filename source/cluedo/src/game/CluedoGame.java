@@ -199,6 +199,7 @@ public class CluedoGame {
 
 			if(player.getHasAcused()) { // If player has accused, skip them
 				System.out.println("Skipping spectator: " + player.getCharacter().getName());
+				++round;
 				continue;
 			}
 
