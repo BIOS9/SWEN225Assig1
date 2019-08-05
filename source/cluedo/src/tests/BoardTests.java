@@ -5,6 +5,8 @@ import game.board.Board;
 import static org.junit.jupiter.api.Assertions.*;
 
 import game.board.Cell;
+import game.board.Position;
+import game.cards.Room;
 import org.junit.jupiter.api.Test;
 
 public class BoardTests {
@@ -16,6 +18,18 @@ public class BoardTests {
             new game.cards.Character("Professor Plum", 4),
             new game.cards.Character("Mrs. Peacock", 5),
             new game.cards.Character("Mrs. White", 6)};
+
+    // Rooms used in card generation
+    private final game.cards.Room[] rooms = {
+            new game.cards.Room("Kitchen", 'K'),
+            new game.cards.Room("Ball Room", 'B'),
+            new game.cards.Room("Conservatory", 'C'),
+            new game.cards.Room("Billiard Room", 'P'),
+            new game.cards.Room("Dining Room", 'D'),
+            new game.cards.Room("Library", 'L'),
+            new game.cards.Room("Hall", 'R'),
+            new game.cards.Room("Lounge", 'T'),
+            new game.cards.Room("Study", 'S') };
 
     @Test
     void testBoardGenerate() {
@@ -393,5 +407,99 @@ public class BoardTests {
         result = board.moveCharacter(characters[0], Cell.Direction.EAST);
         assertFalse(result, "Move should fail");
         assertEquals(expected, board.toString(), "Board does not match expected");
+    }
+
+    @Test
+    void testMoveCharacterToRoom() {
+        Board board = new Board(characters);
+        for(int i = 0; i < 100; ++i) { // Test lots to ensure random covers wide range of possibilities
+            for (Room room : rooms) {
+                for (game.cards.Character character : characters) {
+                    board.moveCharacterToRoom(character, room);
+
+                    Cell cell = character.getLocation();
+                    assertTrue(cell.isRoom(room));
+                    assertFalse(cell.isDoor);
+                }
+            }
+        }
+    }
+
+    @Test
+    void testLinkInvalid() {
+        Board board = new Board(characters);
+
+        boolean result = board.needsLink(null, null);
+        assertFalse(result);
+
+        result = board.needsLink(board.getCell(new Position(0, 0)), null);
+        assertFalse(result);
+
+        result = board.needsLink(null, board.getCell(new Position(0, 0)));
+        assertFalse(result);
+    }
+
+    @Test
+    void testLinkRoom() {
+        Board board = new Board(characters);
+
+        // Same room
+        boolean result = board.needsLink(new Cell(rooms[0], null, false), new Cell(rooms[0], null, false));
+        assertTrue(result);
+
+        // Same room, neighbours
+        result = board.needsLink(new Cell(rooms[0], new Position(0, 0), false), new Cell(rooms[0], new Position(0, 1), false));
+        assertTrue(result);
+
+        // Neighbours but different rooms
+        result = board.needsLink(new Cell(rooms[0], new Position(0, 0), false), new Cell(rooms[1], new Position(0, 1), false));
+        assertFalse(result);
+    }
+
+    @Test
+    void testLinkDoor() {
+        Board board = new Board(characters);
+
+        // Same room, doors, neighbours
+        boolean result = board.needsLink(new Cell(rooms[0], new Position(0, 0), true), new Cell(rooms[0], new Position(0, 1), true));
+        assertTrue(result);
+
+        // Different room, neighbours, doors
+        result = board.needsLink(new Cell(rooms[0], new Position(0, 0), true), new Cell(rooms[1], new Position(0, 1), true));
+        assertTrue(result);
+
+        // Doors, not neighbours, different rooms
+        result = board.needsLink(new Cell(rooms[0], new Position(0, 0), true), new Cell(rooms[1], new Position(0, 2), true));
+        assertFalse(result);
+    }
+
+    @Test
+    void testLinkHorizontal() {
+        Board board = new Board(characters);
+        Cell a = new Cell(null, null, false);
+        Cell b = new Cell(null, null, false);
+
+        board.linkCellsHorizontal(a, b);
+
+        assertEquals(a.getNeighbour(Cell.Direction.EAST), b);
+        assertEquals(b.getNeighbour(Cell.Direction.WEST), a);
+
+        assertNotEquals(a.getNeighbour(Cell.Direction.WEST), b);
+        assertNotEquals(b.getNeighbour(Cell.Direction.EAST), a);
+    }
+
+    @Test
+    void testLinkVertical() {
+        Board board = new Board(characters);
+        Cell a = new Cell(null, null, false);
+        Cell b = new Cell(null, null, false);
+
+        board.linkCellsVertical(a, b);
+
+        assertEquals(a.getNeighbour(Cell.Direction.SOUTH), b);
+        assertEquals(b.getNeighbour(Cell.Direction.NORTH), a);
+
+        assertNotEquals(a.getNeighbour(Cell.Direction.NORTH), b);
+        assertNotEquals(b.getNeighbour(Cell.Direction.SOUTH), a);
     }
 }
