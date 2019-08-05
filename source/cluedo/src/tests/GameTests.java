@@ -1,19 +1,13 @@
 package tests;
 
-import com.sun.media.jfxmedia.events.PlayerEvent;
 import game.CluedoGame;
 import game.Player;
-import game.board.Board;
 import static org.junit.jupiter.api.Assertions.*;
 
 import game.cards.Card;
-import game.cards.Character;
-import game.cards.Room;
-import game.cards.Weapon;
 
 import org.junit.jupiter.api.Test;
 
-import java.lang.management.PlatformLoggingMXBean;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;

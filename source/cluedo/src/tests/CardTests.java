@@ -1,8 +1,5 @@
 package tests;
 
-import game.board.Board;
-import game.board.Cell;
-import game.board.Position;
 import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;

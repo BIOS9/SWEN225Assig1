@@ -1,8 +1,6 @@
 package game.board;
 
 import game.cards.Room;
-import javafx.geometry.Pos;
-import sun.misc.CEFormatException;
 
 import java.util.*;
 import java.util.stream.Collectors;

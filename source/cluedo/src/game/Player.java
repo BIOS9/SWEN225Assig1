@@ -1,6 +1,5 @@
 package game;
 
-import game.board.Cell;
 import game.cards.Card;
 
 import java.util.ArrayList;
