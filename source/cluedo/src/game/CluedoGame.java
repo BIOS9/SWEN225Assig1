@@ -31,6 +31,8 @@ import game.cards.Card;
 import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
+import gui.CluedoController;
+import gui.GameWindow;
 
 
 /**
@@ -41,7 +43,7 @@ import game.cards.Weapon;
  * 
  * @author abbey
  */
-public class CluedoGame {
+public class CluedoGame extends Observable {
 	public static final int MIN_PLAYERS = 3;
 	public static final int MAX_PLAYERS = 6;
 
@@ -50,6 +52,7 @@ public class CluedoGame {
 	// CluedoGame Associations
 	private Board board;
 	private Suggestion solutionCards;
+	private CluedoController controller;
 
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
@@ -92,20 +95,24 @@ public class CluedoGame {
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
-		INPUT_SCANNER = new Scanner(System.in);
-		CluedoGame game = new CluedoGame();
-		game.initGame();
-		game.initCards();
-		game.runGame();
+        INPUT_SCANNER = new Scanner(System.in);
+
+	    GameWindow window = new GameWindow();
 	}
+
+	public CluedoGame(CluedoController controller) {
+	    this.controller = controller;
+
+        initGame();
+        initCards();
+        runGame();
+    }
 
 	/**
 	 * Initialises the game state, players and board.
 	 */
 	private void initGame() {
 		board = new Board(characters);
-
-		System.out.println("Welcome to Cluedo! Have fun >:)\n");
 
 		// Ask user how many players will be playing
 		int playerCount;
@@ -141,7 +148,6 @@ public class CluedoGame {
 	 * Then adds all cards into one list, shuffles it and deals them to the players.
 	 */
 	private void initCards() {
-		
 		List<Character> characterCards = new ArrayList<Character>(Arrays.asList(characters));
 		List<Room> roomCards = new ArrayList<Room>(Arrays.asList(rooms));
 		List<Weapon> weaponCards = new ArrayList<Weapon>(Arrays.asList(weapons));
