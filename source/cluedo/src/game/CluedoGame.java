@@ -31,8 +31,9 @@ import game.cards.Card;
 import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
-import gui.CluedoController;
 import gui.GameWindow;
+import gui.request.PlayerCountRequest;
+import gui.request.PlayerRequest;
 
 
 /**
@@ -52,7 +53,6 @@ public class CluedoGame extends Observable {
 	// CluedoGame Associations
 	private Board board;
 	private Suggestion solutionCards;
-	private CluedoController controller;
 
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
@@ -100,9 +100,7 @@ public class CluedoGame extends Observable {
 	    GameWindow window = new GameWindow();
 	}
 
-	public CluedoGame(CluedoController controller) {
-	    this.controller = controller;
-
+    public void startGame() {
         initGame();
         initCards();
         runGame();
@@ -115,28 +113,8 @@ public class CluedoGame extends Observable {
 		board = new Board(characters);
 
 		// Ask user how many players will be playing
-		int playerCount;
-		while (true) {
-			System.out.println("How many players are there? " + MIN_PLAYERS + " - " + MAX_PLAYERS + ": ");
-			
-			try {
-				playerCount = INPUT_SCANNER.nextInt();
+		int playerCount = makeRequest(new PlayerCountRequest()).waitResponse();
 
-				if (playerCount == 1) {
-					System.out.println("Sorry, you need more friends to play this game! Maybe consider a solo game e.g Solitaire.");
-					continue;
-				}
-
-				if (playerCount >= MIN_PLAYERS && playerCount <= MAX_PLAYERS) // Only exit if number is valid
-					break;
-				else
-					System.out.println("Player count must be between " + MIN_PLAYERS + " and " + MAX_PLAYERS + " (both inclusive)");
-			} catch (InputMismatchException ex) { // Error occurs when user enters something other than an integer
-				System.out.println("Please enter a valid number.a");
-				INPUT_SCANNER.nextLine(); // Clear input buffer
-			}
-		}
-		
 		// Generate players and add them to list.
 		for (int i = 0; i < playerCount; ++i) {
 			players.add(new Player(characters[i], this));
@@ -463,4 +441,14 @@ public class CluedoGame extends Observable {
 	public void setBoard(Board board) {
 		this.board = board;
 	}
+
+    /**
+     * Makes request to player for some information
+     * @param request
+     */
+	private <T extends PlayerRequest> T makeRequest(T request) {
+	    setChanged(); // Set changed to indicate game is in request state
+        notifyObservers(request);
+        return request;
+    }
 }

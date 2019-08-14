@@ -1,6 +1,8 @@
 package gui;
 
 import game.CluedoGame;
+import gui.request.PlayerCountRequest;
+import gui.request.PlayerRequest;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,25 +12,24 @@ import java.awt.event.WindowEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-public class GameWindow implements Observer, ActionListener, CluedoController {
+public class GameWindow extends JFrame implements Observer, ActionListener {
     public static final String WINDOW_TITLE = "Cluedo";
     public static final int WINDOW_INITIAL_WIDTH = 800;
     public static final int WINDOW_INITIAL_HEIGHT = 800;
 
-    private JFrame frame;
-    private CluedoGame game;
+    private CluedoGame game = null;
 
     public GameWindow() {
-        frame = new JFrame(WINDOW_TITLE);
-        frame.setSize(WINDOW_INITIAL_WIDTH, WINDOW_INITIAL_HEIGHT);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        super(WINDOW_TITLE);
+        setSize(WINDOW_INITIAL_WIDTH, WINDOW_INITIAL_HEIGHT);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         buildWindow();
 
         // Finalize and display the window with the game
-        frame.pack();
+        pack();
+        setVisible(true);
         newGame();
-        frame.setVisible(true);
     }
 
     /**
@@ -40,7 +41,7 @@ public class GameWindow implements Observer, ActionListener, CluedoController {
         JPanel container = new JPanel(new GridBagLayout()); // The main container that holds all the elements
 
 
-        frame.add(container);
+        add(container);
     }
 
     private void buildMenuBar() {
@@ -52,16 +53,38 @@ public class GameWindow implements Observer, ActionListener, CluedoController {
         menu.add(newGameItem);
 
         JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.addActionListener((e) -> frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)));
+        exitItem.addActionListener((e) -> dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)));
         menu.add(exitItem);
 
         menuBar.add(menu);
-        frame.setJMenuBar(menuBar);
+        setJMenuBar(menuBar);
     }
 
     private void newGame() {
-        game = new CluedoGame(this);
+        if(game != null)
+            game.deleteObserver(this);
+        game = new CluedoGame();
         game.addObserver(this);
+        game.startGame();
+    }
+
+    private void request(PlayerRequest request) {
+        if(request instanceof PlayerCountRequest) {
+            PlayerCountRequest playerCountRequest = (PlayerCountRequest)request;
+            int result = askPlayerCount(playerCountRequest);
+            playerCountRequest.setResponse(result); // Return the result to the game
+        }
+    }
+
+    private int askPlayerCount(PlayerCountRequest request) {
+        while (true) {
+            String result = JOptionPane.showInputDialog("How many players are playing? " + request.conditions);
+            try {
+                int playerCount = Integer.parseInt(result);
+                if(request.isInputValid(playerCount)) // Only exit if the input is valid
+                    return playerCount;
+            } catch (Exception ex) {}
+        }
     }
 
     @Override
@@ -71,6 +94,10 @@ public class GameWindow implements Observer, ActionListener, CluedoController {
 
     @Override
     public void update(Observable o, Object arg) {
-
+        if(arg != null) {
+            if (arg instanceof PlayerRequest) {
+                request((PlayerRequest)arg);
+            }
+        }
     }
 }
