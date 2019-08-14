@@ -57,7 +57,7 @@ public class CluedoGame extends Observable {
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
 			new game.cards.Character("Miss Scarlett", 1),
-			new game.cards.Character("Rev. Green", 2),
+			new game.cards.Character("Mr Green", 2),
 			new game.cards.Character("Colonel Mustard", 3),
 			new game.cards.Character("Professor Plum", 4), 
 			new game.cards.Character("Mrs. Peacock", 5),
@@ -66,7 +66,7 @@ public class CluedoGame extends Observable {
 	// Rooms used in card generation
 	private final game.cards.Room[] rooms = {
 			new game.cards.Room("Kitchen", 'K'),
-			new game.cards.Room("Ball Room", 'B'),
+			new game.cards.Room("Ballroom", 'B'),
 			new game.cards.Room("Conservatory", 'C'),
 			new game.cards.Room("Billiard Room", 'P'),
 			new game.cards.Room("Dining Room", 'D'),
