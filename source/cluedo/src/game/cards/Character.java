@@ -16,7 +16,7 @@ public class Character implements Card {
 	//Card Attributes
     private final String name;
     private final int number;
-    private final String image;
+    private String image;
     
     //Card Associations
     private Cell location;
@@ -31,6 +31,11 @@ public class Character implements Card {
         this.name = name;
         this.number = number;
         this.image = image;
+    }
+    
+    public Character(String name, int number) {
+        this.name = name;
+        this.number = number;
     }
 
     @Override

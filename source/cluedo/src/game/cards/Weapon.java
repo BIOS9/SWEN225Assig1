@@ -9,7 +9,7 @@ public class Weapon implements Card {
 	
 	//Weapon Attributes
     private final String name;
-    private final String image;
+    private String image;
 
     /**
      * Constructor
@@ -18,6 +18,10 @@ public class Weapon implements Card {
     public Weapon(String name, String image) {
         this.name = name;
         this.image = image;
+    }
+    
+    public Weapon(String name) {
+        this.name = name;
     }
 
     @Override
