@@ -16,6 +16,8 @@ import game.cards.Room;
 import game.cards.Weapon;
 import gui.GameWindow;
 import gui.Update.DiceUpdate;
+import gui.Update.GameUpdate;
+import gui.Update.HandUpdate;
 import gui.request.PlayerCountRequest;
 import gui.request.PlayerRequest;
 import javafx.util.Pair;
@@ -41,33 +43,33 @@ public class CluedoGame extends Observable {
 
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
-			new game.cards.Character("Miss Scarlett", 1, "Miss_scarlet.png"),
-			new game.cards.Character("Mr Green", 2, "Mr_green"),
-			new game.cards.Character("Colonel Mustard", 3, "Colonel_mustard.png"),
-			new game.cards.Character("Professor Plum", 4, "Prof_plum.png"), 
-			new game.cards.Character("Mrs. Peacock", 5, "Mrs_peacock.png"),
-			new game.cards.Character("Mrs. White", 6, "Mrs_White.png") };
+			new game.cards.Character("Miss Scarlett", 1, "images/cards/Miss_scarlet.png"),
+			new game.cards.Character("Mr Green", 2, "images/cards/Mr_green"),
+			new game.cards.Character("Colonel Mustard", 3, "images/cards/Colonel_mustard.png"),
+			new game.cards.Character("Professor Plum", 4, "images/cards/Prof_plum.png"),
+			new game.cards.Character("Mrs. Peacock", 5, "images/cards/Mrs_peacock.png"),
+			new game.cards.Character("Mrs. White", 6, "images/cards/Mrs_White.png") };
 
 	// Rooms used in card generation
 	private final game.cards.Room[] rooms = {
-			new Room("Kitchen", 'K', "Kitchen.png"),
-	        new Room("Ball Room", 'B', "Ballroom.png"),
-	        new Room("Conservatory", 'C', "Conservatory.png"),
-	        new Room("Billiard Room", 'P', "Billard_room.png"),
-	        new Room("Dining Room", 'D', "Dining_room.png"),
-	        new Room("Library", 'L', "Library.png"),
-	        new Room("Hall", 'R', "Hall.png"),
-	        new Room("Lounge", 'T', "Lounge.png"),
-	        new Room("Study", 'S', "Study") };
+			new Room("Kitchen", 'K', "images/cards/Kitchen.png"),
+	        new Room("Ball Room", 'B', "images/cards/Ballroom.png"),
+	        new Room("Conservatory", 'C', "images/cards/Conservatory.png"),
+	        new Room("Billiard Room", 'P', "images/cards/Billard_room.png"),
+	        new Room("Dining Room", 'D', "images/cards/Dining_room.png"),
+	        new Room("Library", 'L', "images/cards/Library.png"),
+	        new Room("Hall", 'R', "images/cards/Hall.png"),
+	        new Room("Lounge", 'T', "images/cards/Lounge.png"),
+	        new Room("Study", 'S', "images/cards/Study") };
 
 	// Weapons used in card generation
 	private final game.cards.Weapon[] weapons = { 
-			new game.cards.Weapon("Candlestick", "Candlestick.png"), 
-			new game.cards.Weapon("Knife", "Knife.png"),
-			new game.cards.Weapon("Lead Pipe", "Pipe,png"), 
-			new game.cards.Weapon("Revolver", "Revolver.png"), 
-			new game.cards.Weapon("Rope", "Rope.png"),
-			new game.cards.Weapon("Wrench", "Wrench.png") };
+			new game.cards.Weapon("Candlestick", "images/cards/Candlestick.png"),
+			new game.cards.Weapon("Knife", "images/cards/Knife.png"),
+			new game.cards.Weapon("Lead Pipe", "images/cards/Pipe,png"),
+			new game.cards.Weapon("Revolver", "images/cards/Revolver.png"),
+			new game.cards.Weapon("Rope", "images/cards/Rope.png"),
+			new game.cards.Weapon("Wrench", "images/cards/Wrench.png") };
 
 	// Separate hallway because there are no hallway cards, but still needed for comparisons
 	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'H', "");
@@ -86,9 +88,13 @@ public class CluedoGame extends Observable {
 	}
 
     public void startGame() {
-        initGame();
-        initCards();
-        runGame();
+	    Turn t = new Turn(null);
+        Pair<Integer, Integer> dice = t.rollDice();
+        System.out.println(t.getDiceRoll());
+        updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
+        //initGame();
+        //initCards();
+        //runGame();
     }
 
 	/**
@@ -185,8 +191,8 @@ public class CluedoGame extends Observable {
 			} catch(IOException ex) {}
 
             Pair<Integer, Integer> dice = turn.rollDice();
-            setChanged();
-            notifyObservers(new DiceUpdate(dice.getKey(), dice.getValue()));
+            updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
+            updateGui(new HandUpdate(player.getHand()));
 
             System.out.println("Your dice roll was " + turn.getDiceRoll());
             System.out.println("Your character is number " + character.getNumber() + " and is located at " + character.getLocation().position.toString());
@@ -438,5 +444,10 @@ public class CluedoGame extends Observable {
 	    setChanged(); // Set changed to indicate game is in request state
         notifyObservers(request);
         return request;
+    }
+
+    private void updateGui(GameUpdate update) {
+	    setChanged();
+	    notifyObservers(update);
     }
 }

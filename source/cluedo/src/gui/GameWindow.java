@@ -2,11 +2,13 @@ package gui;
 
 import game.CluedoGame;
 import gui.Update.DiceUpdate;
+import gui.Update.HandUpdate;
 import gui.request.PlayerCountRequest;
 import gui.request.PlayerRequest;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,12 +16,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
-        public class GameWindow extends JFrame implements Observer, ActionListener {
+public class GameWindow extends JFrame implements Observer, ActionListener {
             public static final String WINDOW_TITLE = "Cluedo";
             public static final int
                     WINDOW_INITIAL_WIDTH = 800,
@@ -257,11 +256,38 @@ import java.util.Observer;
         }
     }
 
+    /**
+     * Changes the dice to reflect the dice rolled in the game
+     * @param update Holds the dice values from the roll
+     */
     private void updateDice(DiceUpdate update) {
-        die1.setBacktroundImage(images.get("die" + update.FirstDie));
-        die1.repaint();
-        die2.setBacktroundImage(images.get("die" + update.SecondDie));
-        die2.repaint();
+        // "rolls" the dice for a bit
+        final Random rng = new Random();
+        final Timer timer = new Timer(100, e -> {
+            diceBox.repaint();
+            die1.setBacktroundImage(images.get("die" + (rng.nextInt(6) + 1)));
+            die1.repaint();
+            die2.setBacktroundImage(images.get("die" + (rng.nextInt(6) + 1)));
+            die2.repaint();
+        });
+        timer.setRepeats(true);
+        timer.start();
+
+        // Stops the dice rolling and sets the value
+        Timer stopTimer = new Timer(1500, e -> {
+            timer.stop();
+            diceBox.repaint();
+            die1.setBacktroundImage(images.get("die" + update.FirstDie));
+            die1.repaint();
+            die2.setBacktroundImage(images.get("die" + update.SecondDie));
+            die2.repaint();
+        });
+        stopTimer.setRepeats(false);
+        stopTimer.start();
+    }
+
+    private void updateHand(HandUpdate update) {
+
     }
 
     @Override
@@ -276,6 +302,8 @@ import java.util.Observer;
                 request((PlayerRequest)arg);
             else if(arg instanceof DiceUpdate)
                 updateDice((DiceUpdate)arg);
+            else if(arg instanceof HandUpdate)
+                updateHand((HandUpdate)arg);
         }
     }
 }
