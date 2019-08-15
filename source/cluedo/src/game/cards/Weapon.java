@@ -40,7 +40,7 @@ public class Weapon implements Card {
 
         Weapon weapon = (Weapon) obj;
         if(name == null)
-            return false;
+            return false; 
 
         return name.equals(weapon.name);
     }

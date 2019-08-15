@@ -19,6 +19,7 @@ public class Player {
 
 	// Player Attributes
 	private boolean hasAcused = false;
+	private String playerName;
 
 	// Player Associations
 	private List<game.cards.Card> hand;
@@ -31,6 +32,13 @@ public class Player {
 	 * @param character
 	 * @param game
 	 */
+	public Player(game.cards.Character character, String name, CluedoGame game) {
+		this.character = character;
+		this.hand = new ArrayList<game.cards.Card>();
+		this.playerName = name;
+	}
+	
+	// For testing without the player name.
 	public Player(game.cards.Character character, CluedoGame game) {
 		this.character = character;
 		this.hand = new ArrayList<game.cards.Card>();
