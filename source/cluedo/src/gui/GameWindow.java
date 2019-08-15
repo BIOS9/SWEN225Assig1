@@ -20,7 +20,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
 
     private CluedoGame game = null;
 
-    private JLabel diceBox, cardBox, playerBox, boardBox, messageBox;
+    private JLabel diceBox, cardBox, playerBox, boardBox, messageBox, infoBox;
 
 
     public GameWindow() {
@@ -47,7 +47,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         buildCardBox(container);
         buildBoardBox(container);
         buildPlayerBox(container);
-        buildMessageBox(container);
+        buildInfoBox(container);
 
         container.setOpaque(true);
         container.setBackground(Color.black);
@@ -71,20 +71,18 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         setJMenuBar(menuBar);
     }
 
-    private void buildMessageBox(JPanel container) {
-        messageBox = new JLabel("Hello, here is a message!");
-        messageBox.setPreferredSize(new Dimension(200, 20));
-        messageBox.setOpaque(true);
-        messageBox.setBackground(Color.cyan);
+    private void buildInfoBox(JPanel container) {
+        infoBox = new JLabel();
+        infoBox.setPreferredSize(new Dimension(150, 150));
+        infoBox.setOpaque(true);
+        infoBox.setBackground(Color.magenta);
 
         GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.NONE;
         c.gridx = 0;
-        c.gridy = 2;
-        c.weightx = 1;
-        c.gridwidth = 2;
+        c.gridy = 3;
 
-        container.add(messageBox, c);
+        container.add(infoBox, c);
     }
 
     private void buildPlayerBox(JPanel container) {
@@ -136,11 +134,31 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
 
     private void buildBoardBox(JPanel container) {
+        JPanel boardContainer = new JPanel();
+        boardContainer.setLayout(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+        messageBox = new JLabel("Hello, here is a message!");
+        messageBox.setPreferredSize(new Dimension(200, 20));
+        messageBox.setOpaque(true);
+        messageBox.setBackground(Color.cyan);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        boardContainer.add(messageBox, c);
+
         boardBox = new JLabel();
         boardBox.setOpaque(true);
         boardBox.setBackground(Color.green);
 
-        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridy = 0;
+        boardContainer.add(boardBox, c);
+
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.weighty = 1;
@@ -150,7 +168,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         c.gridy = 0;
         c.anchor = GridBagConstraints.WEST;
 
-        container.add(boardBox, c);
+        container.add(boardContainer, c);
     }
 
     private void newGame() {
