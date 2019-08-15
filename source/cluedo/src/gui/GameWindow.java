@@ -25,11 +25,15 @@ import java.util.Observer;
                     WINDOW_INITIAL_WIDTH = 800,
                     WINDOW_INITIAL_HEIGHT = 800,
 
-                    DICE_BOX_WIDTH = 200,
                     DICE_BOX_HEIGHT = 100,
                     DICE_SIZE = 60,
                     DICE_GAP = 20,
-                    DICE_PADDING_TOP = 15;
+                    DICE_PADDING_TOP = 15,
+
+                    SIDEBAR_WIDTH = 200,
+                    BOTTOMBAR_HEIGHT = 150,
+
+                    INFO_BOX_WIDTH = 150;
 
             public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
                 put("felt", "images/texture/felt.jpg");
@@ -120,7 +124,7 @@ import java.util.Observer;
 
     private void buildInfoBox(JPanel container) {
         infoBox = new JLabel();
-        infoBox.setPreferredSize(new Dimension(150, 150));
+        infoBox.setPreferredSize(new Dimension(INFO_BOX_WIDTH, BOTTOMBAR_HEIGHT));
         infoBox.setOpaque(true);
         infoBox.setBackground(Color.magenta);
 
@@ -134,7 +138,7 @@ import java.util.Observer;
 
     private void buildPlayerBox(JPanel container) {
         playerBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"));
-        playerBox.setPreferredSize(new Dimension(200, 100));
+        playerBox.setPreferredSize(new Dimension(SIDEBAR_WIDTH, 0));
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.VERTICAL;
@@ -147,7 +151,7 @@ import java.util.Observer;
 
     private void buildDiceBox(JPanel container) {
         diceBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"));
-        diceBox.setPreferredSize(new Dimension(DICE_BOX_WIDTH, DICE_BOX_HEIGHT));
+        diceBox.setPreferredSize(new Dimension(SIDEBAR_WIDTH, DICE_BOX_HEIGHT));
 
         FlowLayout layout = new FlowLayout();
         layout.setHgap(DICE_GAP);
@@ -172,7 +176,7 @@ import java.util.Observer;
 
     private void buildCardBox(JPanel container) {
         cardBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"));
-        cardBox.setPreferredSize(new Dimension(100, 150));
+        cardBox.setPreferredSize(new Dimension(0, BOTTOMBAR_HEIGHT));
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
