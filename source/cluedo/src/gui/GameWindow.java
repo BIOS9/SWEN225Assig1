@@ -16,8 +16,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     public static final String WINDOW_TITLE = "Cluedo";
     public static final int WINDOW_INITIAL_WIDTH = 800;
     public static final int WINDOW_INITIAL_HEIGHT = 800;
+    public static final String DICE_BACKGROUND_IMAGE = "images/felt.jpg";
 
     private CluedoGame game = null;
+
+    private JLabel diceBox, cardBox, playerBox, boardBox, messageBox;
+
 
     public GameWindow() {
         super(WINDOW_TITLE);
@@ -29,7 +33,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         // Finalize and display the window with the game
         pack();
         setVisible(true);
-        newGame();
+        //newGame();
     }
 
     /**
@@ -39,7 +43,14 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         buildMenuBar();
 
         JPanel container = new JPanel(new GridBagLayout()); // The main container that holds all the elements
+        buildDiceBox(container);
+        buildCardBox(container);
+        buildBoardBox(container);
+        buildPlayerBox(container);
+        buildMessageBox(container);
 
+        container.setOpaque(true);
+        container.setBackground(Color.black);
 
         add(container);
     }
@@ -58,6 +69,88 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
 
         menuBar.add(menu);
         setJMenuBar(menuBar);
+    }
+
+    private void buildMessageBox(JPanel container) {
+        messageBox = new JLabel("Hello, here is a message!");
+        messageBox.setPreferredSize(new Dimension(200, 20));
+        messageBox.setOpaque(true);
+        messageBox.setBackground(Color.cyan);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 2;
+        c.weightx = 1;
+        c.gridwidth = 2;
+
+        container.add(messageBox, c);
+    }
+
+    private void buildPlayerBox(JPanel container) {
+        playerBox = new JLabel();
+        playerBox.setPreferredSize(new Dimension(200, 100));
+        playerBox.setOpaque(true);
+        playerBox.setBackground(Color.orange);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.VERTICAL;
+        c.gridx = 2;
+        c.gridy = 0;
+        c.weighty = 1;
+
+        container.add(playerBox, c);
+    }
+
+    private void buildDiceBox(JPanel container) {
+        diceBox = new JLabel();
+        diceBox.setPreferredSize(new Dimension(200, 100));
+        diceBox.setOpaque(true);
+        diceBox.setBackground(Color.blue);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.NONE;
+        c.gridx = 2;
+        c.gridy = 1;
+
+        container.add(diceBox, c);
+    }
+
+    private void buildCardBox(JPanel container) {
+        cardBox = new JLabel();
+        cardBox.setOpaque(true);
+        cardBox.setBackground(Color.red);
+        cardBox.setPreferredSize(new Dimension(100, 150));
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.gridx = 1;
+        c.gridy = 3;
+        c.gridwidth = 2;
+
+        c.anchor = GridBagConstraints.EAST;
+
+        container.add(cardBox, c);
+
+    }
+
+    private void buildBoardBox(JPanel container) {
+        boardBox = new JLabel();
+        boardBox.setOpaque(true);
+        boardBox.setBackground(Color.green);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridheight = 2;
+        c.gridwidth = 2;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.WEST;
+
+        container.add(boardBox, c);
     }
 
     private void newGame() {

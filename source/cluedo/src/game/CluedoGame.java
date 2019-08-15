@@ -187,7 +187,6 @@ public class CluedoGame extends Observable {
 				continue;
 			}
 
-
 			game.cards.Character character = player.getCharacter();
 			Turn turn = new Turn(player);
 
