@@ -37,6 +37,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
             public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
                 put("felt", "images/texture/felt.jpg");
                 put("darkFelt", "images/texture/darkFelt.jpg");
+
                 put("borderTL", "images/texture/TopLeftBorderCorner.png");
                 put("borderTR", "images/texture/TopRightBorderCorner.png");
                 put("borderBL", "images/texture/BottomLeftBorderCorner.png");
@@ -45,12 +46,37 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 put("borderBottom", "images/texture/BottomBorderTile.png");
                 put("borderLeft", "images/texture/LeftBorderTile.png");
                 put("borderRight", "images/texture/RightBorderTile.png");
+
                 put("die1", "images/dice/die1.png");
                 put("die2", "images/dice/die2.png");
                 put("die3", "images/dice/die3.png");
                 put("die4", "images/dice/die4.png");
                 put("die5", "images/dice/die5.png");
                 put("die6", "images/dice/die6.png");
+
+                put("Miss Scarlett", "images/cards/Miss_scarlet.png");
+                put("Mr Green", "images/cards/Mr_green");
+                put("Colonel Mustard", "images/cards/Colonel_mustard.png");
+                put("Professor Plum", "images/cards/Prof_plum.png");
+                put("Mrs. Peacock", "images/cards/Mrs_peacock.png");
+                put("Mrs. White", "images/cards/Mrs_White.png");
+
+                put("Kitchen", "images/cards/Kitchen.png");
+                put("Ball Room", "images/cards/Ballroom.png");
+                put("Conservatory", "images/cards/Conservatory.png");
+                put("Billiard Room", "images/cards/Billard_room.png");
+                put("Dining Room", "images/cards/Dining_room.png");
+                put("Library", "images/cards/Library.png");
+                put("Hall", "images/cards/Hall.png");
+                put("Lounge", "images/cards/Lounge.png");
+                put("Study", "images/cards/Study");
+
+                put("Candlestick", "images/cards/Candlestick.png");
+                put("Knife", "images/cards/Knife.png");
+                put("Lead Pipe", "images/cards/Pipe,png");
+                put("Revolver", "images/cards/Revolver.png");
+                put("Rope", "images/cards/Rope.png");
+                put("Wrench", "images/cards/Wrench.png");
     }};
     private Map<String, Image> images = new HashMap<>();
 

@@ -21,18 +21,6 @@ public class Character implements Card {
     //Card Associations
     private Cell location;
     
-    /** 
-     * Constructer
-     * 
-     * @param name of character
-     * @param number
-     */
-    public Character(String name, int number, String image) {
-        this.name = name;
-        this.number = number;
-        this.image = image;
-    }
-    
     // For testing without the image string
     public Character(String name, int number) {
         this.name = name;
@@ -59,11 +47,6 @@ public class Character implements Card {
     public String getName() {
         return name;
     }
-    
-    @Override
-	public String getImage() {
-		return image;
-	}
 
     public void setLocation(Cell location) {
         this.location = location;

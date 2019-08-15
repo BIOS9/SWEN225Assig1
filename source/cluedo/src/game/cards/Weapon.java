@@ -9,17 +9,7 @@ public class Weapon implements Card {
 	
 	//Weapon Attributes
     private final String name;
-    private String image;
 
-    /**
-     * Constructor
-     * @param name of weapon
-     */
-    public Weapon(String name, String image) {
-        this.name = name;
-        this.image = image;
-    }
-    
     public Weapon(String name) {
         this.name = name;
     }
@@ -44,9 +34,4 @@ public class Weapon implements Card {
 
         return name.equals(weapon.name);
     }
-
-	@Override
-	public String getImage() {
-		return image;
-	}
 }
