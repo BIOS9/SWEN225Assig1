@@ -41,6 +41,8 @@ public class CluedoGame extends Observable {
 	private Board board;
 	private Suggestion solutionCards;
 
+	// I MOVED YOUR IMAGE FILE DEFINITIONS INTO GAMEWINDOW. AFTER SOME THOUGHT IT SEEMED LIKE A BETTER SPOT. SORRY!
+
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
 			new game.cards.Character("Miss Scarlett", 1),
@@ -52,27 +54,27 @@ public class CluedoGame extends Observable {
 
 	// Rooms used in card generation
 	private final game.cards.Room[] rooms = {
-			new Room("Kitchen", 'K', "images/cards/Kitchen.png"),
-	        new Room("Ball Room", 'B', "images/cards/Ballroom.png"),
-	        new Room("Conservatory", 'C', "images/cards/Conservatory.png"),
-	        new Room("Billiard Room", 'P', "images/cards/Billard_room.png"),
-	        new Room("Dining Room", 'D', "images/cards/Dining_room.png"),
-	        new Room("Library", 'L', "images/cards/Library.png"),
-	        new Room("Hall", 'R', "images/cards/Hall.png"),
-	        new Room("Lounge", 'T', "images/cards/Lounge.png"),
-	        new Room("Study", 'S', "images/cards/Study") };
+			new Room("Kitchen", 'K'),
+	        new Room("Ball Room", 'B'),
+	        new Room("Conservatory", 'C'),
+	        new Room("Billiard Room", 'P'),
+	        new Room("Dining Room", 'D'),
+	        new Room("Library", 'L'),
+	        new Room("Hall", 'R'),
+	        new Room("Lounge", 'T'),
+	        new Room("Study", 'S')};
 
 	// Weapons used in card generation
 	private final game.cards.Weapon[] weapons = { 
-			new game.cards.Weapon("Candlestick", "images/cards/Candlestick.png"),
-			new game.cards.Weapon("Knife", "images/cards/Knife.png"),
-			new game.cards.Weapon("Lead Pipe", "images/cards/Pipe,png"),
-			new game.cards.Weapon("Revolver", "images/cards/Revolver.png"),
-			new game.cards.Weapon("Rope", "images/cards/Rope.png"),
-			new game.cards.Weapon("Wrench", "images/cards/Wrench.png") };
+			new game.cards.Weapon("Candlestick"),
+			new game.cards.Weapon("Knife"),
+			new game.cards.Weapon("Lead Pipe"),
+			new game.cards.Weapon("Revolver"),
+			new game.cards.Weapon("Rope"),
+			new game.cards.Weapon("Wrench") };
 
 	// Separate hallway because there are no hallway cards, but still needed for comparisons
-	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'H', "");
+	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'H');
 
 	private List<Player> players = new ArrayList<>();
 
@@ -88,12 +90,16 @@ public class CluedoGame extends Observable {
 	}
 
     public void startGame() {
-	    Turn t = new Turn(null);
+
+        initGame();
+        initCards();
+
+        Turn t = new Turn(null);
         Pair<Integer, Integer> dice = t.rollDice();
         System.out.println(t.getDiceRoll());
         updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
-        //initGame();
-        //initCards();
+        updateGui(new HandUpdate(players.get(1).getHand()));
+
         //runGame();
     }
 

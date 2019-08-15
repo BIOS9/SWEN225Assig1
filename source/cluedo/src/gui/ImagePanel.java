@@ -10,15 +10,16 @@ public class ImagePanel extends JPanel {
     private Image backtroundImage;
     private Image borderTL, borderTR, borderBL, borderBR, borderTop, borderBottom, borderLeft, borderRight;
     private boolean drawBorder, tile;
-    private int borderSize = 10;
+    private int borderSize;
 
-    public ImagePanel(Image backgroundImage, boolean tile) {
+    public ImagePanel(Image backgroundImage, boolean tile, int borderSize) {
         this.backtroundImage = backgroundImage;
         drawBorder = false;
         this.tile = tile;
+        this.borderSize = borderSize;
     }
 
-    public ImagePanel(Image backgroundImage, Image borderTL, Image borderTR, Image borderBL, Image borderBR, Image borderTop, Image borderBottom, Image borderLeft, Image borderRight) {
+    public ImagePanel(Image backgroundImage, Image borderTL, Image borderTR, Image borderBL, Image borderBR, Image borderTop, Image borderBottom, Image borderLeft, Image borderRight, int borderSize) {
         this.backtroundImage = backgroundImage;
         this.borderTL = borderTL;
         this.borderTR = borderTR;
@@ -30,6 +31,7 @@ public class ImagePanel extends JPanel {
         this.borderRight = borderRight;
         drawBorder = true;
         tile = true;
+        this.borderSize = borderSize;
     }
 
     public void setBacktroundImage(Image image) {

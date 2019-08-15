@@ -1,6 +1,7 @@
 package gui;
 
 import game.CluedoGame;
+import game.cards.Card;
 import gui.Update.DiceUpdate;
 import gui.Update.HandUpdate;
 import gui.request.PlayerCountRequest;
@@ -21,8 +22,8 @@ import java.util.*;
 public class GameWindow extends JFrame implements Observer, ActionListener {
             public static final String WINDOW_TITLE = "Cluedo";
             public static final int
-                    WINDOW_INITIAL_WIDTH = 800,
-                    WINDOW_INITIAL_HEIGHT = 800,
+                    WINDOW_MIN_WIDTH = 800,
+                    WINDOW_MIN_HEIGHT = 800,
 
                     DICE_BOX_HEIGHT = 100,
                     DICE_SIZE = 60,
@@ -30,9 +31,16 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                     DICE_PADDING_TOP = 15,
 
                     SIDEBAR_WIDTH = 200,
-                    BOTTOMBAR_HEIGHT = 150,
+                    BOTTOMBAR_HEIGHT = 200,
+                    BORDER_WIDTH = 7,
 
-                    INFO_BOX_WIDTH = 150;
+                    INFO_BOX_WIDTH = 150,
+
+                    CARD_WIDTH = 100,
+                    CARD_HEIGHT = 170,
+                    CARD_GAP = 10,
+                    CARD_PADDING_TOP = 10;
+
 
             public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
                 put("felt", "images/texture/felt.jpg");
@@ -55,7 +63,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 put("die6", "images/dice/die6.png");
 
                 put("Miss Scarlett", "images/cards/Miss_scarlet.png");
-                put("Mr Green", "images/cards/Mr_green");
+                put("Mr Green", "images/cards/Mr_green.png");
                 put("Colonel Mustard", "images/cards/Colonel_mustard.png");
                 put("Professor Plum", "images/cards/Prof_plum.png");
                 put("Mrs. Peacock", "images/cards/Mrs_peacock.png");
@@ -69,11 +77,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 put("Library", "images/cards/Library.png");
                 put("Hall", "images/cards/Hall.png");
                 put("Lounge", "images/cards/Lounge.png");
-                put("Study", "images/cards/Study");
+                put("Study", "images/cards/Study.png");
 
                 put("Candlestick", "images/cards/Candlestick.png");
                 put("Knife", "images/cards/Knife.png");
-                put("Lead Pipe", "images/cards/Pipe,png");
+                put("Lead Pipe", "images/cards/Pipe.png");
                 put("Revolver", "images/cards/Revolver.png");
                 put("Rope", "images/cards/Rope.png");
                 put("Wrench", "images/cards/Wrench.png");
@@ -82,12 +90,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
 
     private CluedoGame game = null;
 
-    private JLabel boardBox, messageBox, infoBox;
-    private ImagePanel cardBox, diceBox, die1, die2, playerBox;
+    private JLabel messageBox;
+    private ImagePanel cardBox, diceBox, die1, die2, playerBox, boardBox, infoBox;
+    private JScrollPane cardScollBox;
 
     public GameWindow() {
         super(WINDOW_TITLE);
-        setSize(WINDOW_INITIAL_WIDTH, WINDOW_INITIAL_HEIGHT);
+        setMinimumSize(new Dimension(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         loadImages();
@@ -125,9 +134,6 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         buildPlayerBox(container);
         buildInfoBox(container);
 
-        container.setOpaque(true);
-        container.setBackground(Color.black);
-
         add(container);
     }
 
@@ -148,10 +154,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
 
     private void buildInfoBox(JPanel container) {
-        infoBox = new JLabel();
+        infoBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);;
         infoBox.setPreferredSize(new Dimension(INFO_BOX_WIDTH, BOTTOMBAR_HEIGHT));
-        infoBox.setOpaque(true);
-        infoBox.setBackground(Color.magenta);
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.NONE;
@@ -162,7 +166,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
 
     private void buildPlayerBox(JPanel container) {
-        playerBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"));
+        playerBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
         playerBox.setPreferredSize(new Dimension(SIDEBAR_WIDTH, 0));
 
         GridBagConstraints c = new GridBagConstraints();
@@ -175,7 +179,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
 
     private void buildDiceBox(JPanel container) {
-        diceBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"));
+        diceBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
         diceBox.setPreferredSize(new Dimension(SIDEBAR_WIDTH, DICE_BOX_HEIGHT));
 
         FlowLayout layout = new FlowLayout();
@@ -183,9 +187,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         diceBox.setLayout(layout);
         diceBox.setBorder(new EmptyBorder(DICE_PADDING_TOP, 0, 0, 0));
 
-        die1 = new ImagePanel(images.get("die1"), false);
+        die1 = new ImagePanel(images.get("die1"), false, BORDER_WIDTH);
         die1.setPreferredSize(new Dimension(DICE_SIZE, DICE_SIZE));
-        die2 = new ImagePanel(images.get("die1"), false);
+        die2 = new ImagePanel(images.get("die1"), false, BORDER_WIDTH);
         die2.setPreferredSize(new Dimension(DICE_SIZE, DICE_SIZE));
 
         diceBox.add(die1);
@@ -200,8 +204,18 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
 
     private void buildCardBox(JPanel container) {
-        cardBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"));
-        cardBox.setPreferredSize(new Dimension(0, BOTTOMBAR_HEIGHT));
+        cardBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
+
+
+        FlowLayout layout = new FlowLayout();
+        layout.setAlignment(FlowLayout.LEFT);
+        layout.setHgap(CARD_GAP);
+        cardBox.setBorder(new EmptyBorder(CARD_PADDING_TOP, CARD_GAP, 0, 0));
+        cardBox.setLayout(layout);
+
+        cardScollBox = new JScrollPane(cardBox, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        cardScollBox.setPreferredSize(new Dimension(0, BOTTOMBAR_HEIGHT));
+        cardScollBox.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -212,19 +226,20 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
 
         c.anchor = GridBagConstraints.WEST;
 
-        container.add(cardBox, c);
+        container.add(cardScollBox, c);
 
     }
 
     private void buildBoardBox(JPanel container) {
-        JPanel boardContainer = new JPanel();
+        ImagePanel boardContainer = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
         boardContainer.setLayout(new GridBagLayout());
+        boardContainer.setBorder(new EmptyBorder(BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH));
 
         GridBagConstraints c = new GridBagConstraints();
-        messageBox = new JLabel("Hello, here is a message!");
+        messageBox = new JLabel("Hello, here is a message!", SwingConstants.CENTER);
         messageBox.setMinimumSize(new Dimension(0, 20));
-        messageBox.setOpaque(true);
-        messageBox.setBackground(Color.cyan);
+        messageBox.setOpaque(false);
+        messageBox.setForeground(Color.white);
 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
@@ -232,10 +247,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         c.gridy = 1;
         boardContainer.add(messageBox, c);
 
-        boardBox = new JLabel();
-        boardBox.setOpaque(true);
-        setMinimumSize(new Dimension(600, 600));
-        boardBox.setBackground(Color.green);
+        boardBox = new ImagePanel(images.get("darkFelt"), true, BORDER_WIDTH);
 
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
@@ -313,7 +325,22 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
 
     private void updateHand(HandUpdate update) {
+        cardBox.removeAll();
+        cardBox.repaint();
 
+        int delay = 100;
+        for(Card c : update.hand) {
+            ImagePanel cardPanel = new ImagePanel(images.get(c.getName()), false, BORDER_WIDTH);
+            cardPanel.setPreferredSize(new Dimension(CARD_WIDTH, CARD_HEIGHT));
+
+            Timer t = new Timer(delay, e -> {
+                cardBox.add(cardPanel);
+                cardBox.revalidate();
+            });
+            t.setRepeats(false);
+            t.start();
+            delay += 100;
+        }
     }
 
     @Override
