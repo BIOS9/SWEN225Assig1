@@ -36,16 +36,16 @@ public class Board {
 
     // Key for board characters to room names
     private static final Map<java.lang.Character, Room> rooms = new HashMap<java.lang.Character, Room>() {{
-        put('k', new Room("Kitchen", 'K'));
-        put('b', new Room("Ball Room", 'B'));
-        put('c', new Room("Conservatory", 'C'));
-        put('p', new Room("Billiard Room", 'P'));
-        put('h', new Room("Hallway", 'H'));
-        put('d', new Room("Dining Room", 'D'));
-        put('l', new Room("Library", 'L'));
-        put('r', new Room("Hall", 'R'));
-        put('t', new Room("Lounge", 'T'));
-        put('s', new Room("Study", 'S'));
+        put('k', new Room("Kitchen", 'K', "Kitchen.png"));
+        put('b', new Room("Ball Room", 'B', "Ballroom.png"));
+        put('c', new Room("Conservatory", 'C', "Conservatory.png"));
+        put('p', new Room("Billiard Room", 'P', "Billard_room.png"));
+        put('h', new Room("Hallway", 'H', ""));
+        put('d', new Room("Dining Room", 'D', "Dining_room.png"));
+        put('l', new Room("Library", 'L', "Library.png"));
+        put('r', new Room("Hall", 'R', "Hall.png"));
+        put('t', new Room("Lounge", 'T', "Lounge.png"));
+        put('s', new Room("Study", 'S', "Study"));
     }};
 
     // Board co-ordinates of each character starting position

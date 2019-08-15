@@ -9,6 +9,7 @@ package game.cards;
 public class Room implements Card {
     private final String name;
     private final char prefix;
+    private final String image;
 
     /**
      * Constructor
@@ -16,9 +17,10 @@ public class Room implements Card {
      * @param name of room
      * @param prefix representing the room on board
      */
-    public Room(String name, char prefix) {
+    public Room(String name, char prefix, String image) {
         this.name = name;
         this.prefix = prefix;
+        this.image = image;
     }
 
     @Override
@@ -50,5 +52,10 @@ public class Room implements Card {
     public String getName() {
         return name;
     }
+
+	@Override
+	public String getImage() {
+		return image;
+	}
 
 }

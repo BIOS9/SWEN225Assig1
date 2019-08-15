@@ -9,4 +9,5 @@ package game.cards;
  */
 public interface Card {
     String getName();
+    String getImage();
 }

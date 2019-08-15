@@ -16,6 +16,7 @@ public class Character implements Card {
 	//Card Attributes
     private final String name;
     private final int number;
+    private final String image;
     
     //Card Associations
     private Cell location;
@@ -26,9 +27,10 @@ public class Character implements Card {
      * @param name of character
      * @param number
      */
-    public Character(String name, int number) {
+    public Character(String name, int number, String image) {
         this.name = name;
         this.number = number;
+        this.image = image;
     }
 
     @Override
@@ -51,6 +53,11 @@ public class Character implements Card {
     public String getName() {
         return name;
     }
+    
+    @Override
+	public String getImage() {
+		return image;
+	}
 
     public void setLocation(Cell location) {
         this.location = location;
