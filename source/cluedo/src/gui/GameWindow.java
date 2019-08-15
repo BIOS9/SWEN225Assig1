@@ -124,12 +124,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
+        c.weightx = 0;
         c.gridx = 1;
         c.gridy = 3;
         c.gridwidth = 2;
 
-        c.anchor = GridBagConstraints.EAST;
+        c.anchor = GridBagConstraints.WEST;
 
         container.add(cardBox, c);
 
