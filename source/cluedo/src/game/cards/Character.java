@@ -33,6 +33,7 @@ public class Character implements Card {
         this.image = image;
     }
     
+    // For testing without the image string
     public Character(String name, int number) {
         this.name = name;
         this.number = number;

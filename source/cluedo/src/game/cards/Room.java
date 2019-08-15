@@ -23,6 +23,7 @@ public class Room implements Card {
         this.image = image; 
     }
     
+ // For testing without the image string
     public Room(String name, char prefix) {
         this.name = name;
         this.prefix = prefix;
