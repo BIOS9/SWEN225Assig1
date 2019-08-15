@@ -56,36 +56,37 @@ public class CluedoGame extends Observable {
 
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
-			new game.cards.Character("Miss Scarlett", 1),
-			new game.cards.Character("Mr Green", 2),
-			new game.cards.Character("Colonel Mustard", 3),
-			new game.cards.Character("Professor Plum", 4), 
-			new game.cards.Character("Mrs. Peacock", 5),
-			new game.cards.Character("Mrs. White", 6) };
+			new game.cards.Character("Miss Scarlett", 1, "Miss_scarlet.png"),
+			new game.cards.Character("Mr Green", 2, "Mr_green"),
+			new game.cards.Character("Colonel Mustard", 3, "Colonel_mustard.png"),
+			new game.cards.Character("Professor Plum", 4, "Prof_plum.png"), 
+			new game.cards.Character("Mrs. Peacock", 5, "Mrs_peacock.png"),
+			new game.cards.Character("Mrs. White", 6, "Mrs_White.png") };
 
 	// Rooms used in card generation
 	private final game.cards.Room[] rooms = {
-			new game.cards.Room("Kitchen", 'K'),
-			new game.cards.Room("Ballroom", 'B'),
-			new game.cards.Room("Conservatory", 'C'),
-			new game.cards.Room("Billiard Room", 'P'),
-			new game.cards.Room("Dining Room", 'D'),
-			new game.cards.Room("Library", 'L'),
-			new game.cards.Room("Hall", 'R'),
-			new game.cards.Room("Lounge", 'T'),
-			new game.cards.Room("Study", 'S') };
+			new Room("Kitchen", 'K', "Kitchen.png"),
+	        new Room("Ball Room", 'B', "Ballroom.png"),
+	        new Room("Conservatory", 'C', "Conservatory.png"),
+	        new Room("Billiard Room", 'P', "Billard_room.png"),
+	        new Room("Hallway", 'H', ""),
+	        new Room("Dining Room", 'D', "Dining_room.png"),
+	        new Room("Library", 'L', "Library.png"),
+	        new Room("Hall", 'R', "Hall.png"),
+	        new Room("Lounge", 'T', "Lounge.png"),
+	        new Room("Study", 'S', "Study") };
 
 	// Weapons used in card generation
 	private final game.cards.Weapon[] weapons = { 
-			new game.cards.Weapon("Candlestick"), 
-			new game.cards.Weapon("Dagger"),
-			new game.cards.Weapon("Lead Pipe"), 
-			new game.cards.Weapon("Revolver"), 
-			new game.cards.Weapon("Rope"),
-			new game.cards.Weapon("Spanner") };
+			new game.cards.Weapon("Candlestick", "Candlestick.png"), 
+			new game.cards.Weapon("Knife", "Knife.png"),
+			new game.cards.Weapon("Lead Pipe", "Pipe,png"), 
+			new game.cards.Weapon("Revolver", "Revolver.png"), 
+			new game.cards.Weapon("Rope", "Rope.png"),
+			new game.cards.Weapon("Wrench", "Wrench.png") };
 
 	// Separate hallway because there are no hallway cards, but still needed for comparisons
-	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'H');
+	private final game.cards.Room hallway = new game.cards.Room("Hallway", 'H', "");
 
 	private List<Player> players = new ArrayList<>();
 
