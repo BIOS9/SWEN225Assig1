@@ -1,5 +1,7 @@
 package game;
 
+import javafx.util.Pair;
+
 import java.util.*;
 /** 
  * 
@@ -12,11 +14,7 @@ import java.util.*;
  */
 class Turn {
 	
-	//Turn Attributes
-    public static final int DIE_COUNT = 2;
-    public static final int DIE_SIDES = 6;
-
-    private final int diceRoll;
+    private int diceRoll;
     
     //Turn Associations
     private Player player;
@@ -28,7 +26,6 @@ class Turn {
      * @param player Player who is the owner of this turn
      */
     public Turn(Player player) {
-        diceRoll = rollDice();
         this.player = player;
         
         //Tell thwqe player how much they rolled
@@ -48,13 +45,14 @@ class Turn {
      * Uses dice constants to generate a random number.
      * @return integer value representing dice roll
      */
-    public static int rollDice() {
+    public Pair<Integer, Integer> rollDice() {
         Random rng = new Random();
-        int roll = 0;
 
-        for(int die = 0; die < DIE_COUNT; ++die)
-            roll += rng.nextInt(DIE_SIDES) + 1; // Add 1 because rng gives 0-exclusive DIE_SIDES, dice don't have 0
+        int roll1 = rng.nextInt(6) + 1; // Add 1 because rng gives 0-exclusive 6, dice don't have 0
+        int roll2 = rng.nextInt(6) + 1;
 
-        return roll;
+        diceRoll = roll1 + roll2;
+
+        return new Pair<>(roll1, roll2);
     }
 }

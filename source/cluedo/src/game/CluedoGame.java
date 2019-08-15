@@ -32,8 +32,10 @@ import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
 import gui.GameWindow;
+import gui.Update.DiceUpdate;
 import gui.request.PlayerCountRequest;
 import gui.request.PlayerRequest;
+import javafx.util.Pair;
 
 
 /**
@@ -200,10 +202,14 @@ public class CluedoGame extends Observable {
 				System.in.read();
 			} catch(IOException ex) {}
 
+            Pair<Integer, Integer> dice = turn.rollDice();
+            setChanged();
+            notifyObservers(new DiceUpdate(dice.getKey(), dice.getValue()));
+
             System.out.println("Your dice roll was " + turn.getDiceRoll());
             System.out.println("Your character is number " + character.getNumber() + " and is located at " + character.getLocation().position.toString());
             System.out.println(turn.getPlayer().printCards());
-            
+
 			int moves = turn.getDiceRoll();
 
 			// Sets of visited places to prevent players going back on them
