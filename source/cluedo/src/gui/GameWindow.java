@@ -119,7 +119,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 images.put(image.getKey(), ImageIO.read(new File(image.getValue())));
             } catch (IOException ex) {
                 Path currentRelativePath = Paths.get("");
-                String s = currentRelativePath.toAbsolutePath().toString();
+                String s = currentRelativePath.toAbsolutePath().toString().replace('\\','/');
                 System.out.println("ERROR LOADING IMAGE: " + ex + " " + s + "/" + image.getValue());
             }
         }
