@@ -1,7 +1,6 @@
 
 package game;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -15,9 +14,8 @@ import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
 import gui.GameWindow;
-import gui.Update.DiceUpdate;
-import gui.Update.GameUpdate;
-import gui.Update.HandUpdate;
+import gui.Update.*;
+import gui.request.PlayerBeginTurnRequest;
 import gui.request.PlayerCountRequest;
 import gui.request.PlayerRequest;
 import javafx.util.Pair;
@@ -40,6 +38,15 @@ public class CluedoGame extends Observable {
 	// CluedoGame Associations
 	private Board board;
 	private Suggestion solutionCards;
+    private int round = 0;
+    private int movesLeft;
+    private Player currentPlayer;
+    private boolean gameWon = false;
+    private boolean allowMove = false;
+
+    // Sets of visited places to prevent players going back on them
+    private Set<Cell> visitedCells = new HashSet<>();
+    private Set<Room> visitedRooms = new HashSet<>();
 
 	// I MOVED YOUR IMAGE FILE DEFINITIONS INTO GAMEWINDOW. AFTER SOME THOUGHT IT SEEMED LIKE A BETTER SPOT. SORRY!
 
@@ -93,12 +100,12 @@ public class CluedoGame extends Observable {
 
         initGame();
         initCards();
-
-        Turn t = new Turn(null);
-        Pair<Integer, Integer> dice = t.rollDice();
-        System.out.println(t.getDiceRoll());
-        updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
-        updateGui(new HandUpdate(players.get(1).getHand()));
+        nextTurn();
+//        Turn t = new Turn(null);
+//        Pair<Integer, Integer> dice = t.rollDice();
+//        System.out.println(t.getDiceRoll());
+//        updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
+//        updateGui(new HandUpdate(players.get(1).getHand()));
 
         //runGame();
     }
@@ -168,124 +175,136 @@ public class CluedoGame extends Observable {
 		}
 	}
 
+	public void moveCurrentPlayer(Cell.Direction direction) {
+        if(currentPlayer == null || gameWon || !allowMove || movesLeft <= 0) return;
+
+        game.cards.Character character = currentPlayer.getCharacter();
+
+        // Check that player has not already been to cell in this turn
+        Cell newCell = character.getLocation().getNeighbour(direction);
+        if(newCell != null && visitedCells.contains(newCell)) {
+            updateGui(new MessageUpdate("You have already been there!"));
+            return;
+        }
+
+        // Check that player has not already been in room in this turn
+        if(newCell != null && !character.getLocation().isRoom(newCell) && visitedRooms.contains(newCell.getRoom())) { // Check if new cell is a different room, and player has visited that room
+            updateGui(new MessageUpdate("You have already been in that room!"));
+            return;
+        }
+
+        if (board.moveCharacter(character, direction)) {
+            visitedCells.add(character.getLocation());
+
+            if(!character.getLocation().isRoom(hallway)) { // Check if room is hallway or not
+                visitedRooms.add(character.getLocation().getRoom()); // Can enter hallway more than once in a turn so don't add to visited
+            }
+
+            --movesLeft;
+            updateGui(new MovesLeftUpdate(movesLeft));
+        } else {
+            updateGui(new MessageUpdate("You can't move there!"));
+        }
+    }
+
+    public void nextTurn() {
+	    if(gameWon) return;
+
+	    allowMove = false;
+
+	    ++round;
+        currentPlayer = players.get(round % players.size());
+
+        if(currentPlayer.getHasAcused()) { // If player has accused, skip them
+            updateGui(new PlayerTurnSkipUpdate(currentPlayer));
+            return;
+        }
+
+        game.cards.Character character = currentPlayer.getCharacter();
+
+        // Clears the visited cells for the new turn
+        visitedCells.clear();
+        visitedRooms.clear();
+        visitedCells.add(character.getLocation());
+
+        if(!character.getLocation().isRoom(hallway)) { // Check if room is hallway
+            visitedRooms.add(character.getLocation().getRoom());
+        }
+
+        updateGui(new PlayerTurnUpdate(currentPlayer, round));
+        updateGui(new MessageUpdate(currentPlayer.getPlayerName() + " / " + character.getName() + " you're up!"));
+
+        makeRequest(new PlayerBeginTurnRequest(currentPlayer)).waitResponse(); // Waits for player to begin turn
+
+        Turn turn = new Turn(currentPlayer);
+        Pair<Integer, Integer> dice = turn.rollDice();
+        movesLeft = turn.getDiceRoll();
+
+        updateGui(new MovesLeftUpdate(movesLeft));
+        updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
+        updateGui(new HandUpdate(currentPlayer.getHand()));
+
+
+
+        updateGui(new HandUpdate(new ArrayList<>())); // Clear hand
+    }
+
 	/**
 	 * Runs game, main loop for turns and user input
 	 */
 	private void runGame() {
-		int round = 0; // Total number of rounds
 		Player winner;
 
-		while (true) {
-			Player player = players.get(round % players.size()); // Player index is based on the round number and number of players
+		//while (true) {
 
-			if(player.getHasAcused()) { // If player has accused, skip them
-				System.out.println("Skipping spectator: " + player.getCharacter().getName());
-				++round;
-				continue;
-			}
-
-			game.cards.Character character = player.getCharacter();
-			Turn turn = new Turn(player);
-
-			board.print();
-            System.out.println(character.getName() + " you're up!");
-            System.out.println("Press enter to begin your turn...");
-
-            // Waits for player to input something into the console
-            try {
-				System.in.read();
-			} catch(IOException ex) {}
-
-            Pair<Integer, Integer> dice = turn.rollDice();
-            updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
-            updateGui(new HandUpdate(player.getHand()));
-
-            System.out.println("Your dice roll was " + turn.getDiceRoll());
-            System.out.println("Your character is number " + character.getNumber() + " and is located at " + character.getLocation().position.toString());
-            System.out.println(turn.getPlayer().printCards());
-
-			int moves = turn.getDiceRoll();
-
-			// Sets of visited places to prevent players going back on them
-			Set<Cell> visitedCells = new HashSet<>();
-			Set<Room> visitedRooms = new HashSet<>();
-
-			visitedCells.add(character.getLocation()); // Add starting position to visitedCells
-
-			if(!character.getLocation().isRoom(hallway)) { // Check if room is hallway
-				visitedRooms.add(character.getLocation().getRoom());
-			}
+            //System.out.println("Your character is number " + character.getNumber() + " and is located at " + character.getLocation().position.toString());
 
 			// Move player until they run out of moves or skip
-			while(moves > 0) {
-				board.print();
-
-				System.out.println("You have " + moves + " moves remaining.");
-				System.out.print("Where would you like to move? ");
-				Cell.Direction move = askDirection(!character.getLocation().isRoom(hallway));
-
-				if(move == null) // Skip rest of moves is user skips
-					break;
-
-				// Check that player has not already been to cell in this turn
-				Cell newCell = character.getLocation().getNeighbour(move);
-				if(newCell != null && visitedCells.contains(newCell)) {
-					System.out.println("You have already been there!");
-					continue;
-				}
-
-				// Check that player has not already been in room in this turn
-				if(newCell != null && !character.getLocation().isRoom(newCell) && visitedRooms.contains(newCell.getRoom())) { // Check if new cell is a different room, and player has visited that room
-					System.out.println("You have already been in that room!");
-					continue;
-				}
-
-				if (board.moveCharacter(character, move)) {
-					visitedCells.add(character.getLocation());
-
-					if(!character.getLocation().isRoom(hallway)) { // Check if room is hallway or not
-						visitedRooms.add(character.getLocation().getRoom()); // Can enter hallway more than once in a turn so don't add to visited
-					}
-					--moves;
-				} else {
-					System.out.println("You can't move there!");
-				}
-			}
+//			while(moves > 0) {
+//				System.out.println("You have " + moves + " moves remaining.");
+//				System.out.print("Where would you like to move? ");
+//
+//
+//				if(move == null) // Skip rest of moves is user skips
+//					break;
+//
+//
+//			}
 
 			// Ask player for suggestion
-			Suggestion suggestion = askSuggestion(player, character.getLocation().getRoom(), character.getLocation().isRoom(hallway)); // Get suggestion, forcing accusation if in hallway
+//			Suggestion suggestion = askSuggestion(player, character.getLocation().getRoom(), character.getLocation().isRoom(hallway)); // Get suggestion, forcing accusation if in hallway
+//
+//			if(suggestion != null) {
+//				// Checks if suggestion is accusation, and if it is correct
+//				if (suggestion.isAcusation() && suggestion.equals(solutionCards)) {
+//					System.out.println("The solution cards are: " + solutionCards.toString());
+//					System.out.println("Congratulations you won the game!");
+//					winner = player;
+//					break;
+//				}
+//				// If the acusation is wrong this player can no longer make suggestions/acusations
+//				else if (suggestion.isAcusation()) {
+//					player.setHasAcused();
+//					System.out.println("Your accusation was incorrect! You are now a spectator of the game.");
+//					System.out.println("The solution cards are: " + solutionCards.toString());
+//				}
+//				// If the suggestion isnt an accusation ask other players for refutations.
+//				else {
+//					// Move the suggested player into a random spot in the room
+//					Room moveRoom = player.getCharacter().getLocation().getRoom();
+//					System.out.println("Moving " + suggestion.getCharacter().getName() + " to the " + moveRoom.getName());
+//
+//					if(!board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom))
+//						System.out.println("Failed to move the suggested player into the room! Are there available spaces away from any door?");
+//
+//					askRefutations(suggestion);
+//				}
+//			}
 
-			if(suggestion != null) {
-				// Checks if suggestion is accusation, and if it is correct
-				if (suggestion.isAcusation() && suggestion.equals(solutionCards)) {
-					System.out.println("The solution cards are: " + solutionCards.toString());
-					System.out.println("Congratulations you won the game!");
-					winner = player;
-					break;
-				}
-				// If the acusation is wrong this player can no longer make suggestions/acusations
-				else if (suggestion.isAcusation()) {
-					player.setHasAcused();
-					System.out.println("Your accusation was incorrect! You are now a spectator of the game.");
-					System.out.println("The solution cards are: " + solutionCards.toString());
-				}
-				// If the suggestion isnt an accusation ask other players for refutations.
-				else {
-					// Move the suggested player into a random spot in the room
-					Room moveRoom = player.getCharacter().getLocation().getRoom();
-					System.out.println("Moving " + suggestion.getCharacter().getName() + " to the " + moveRoom.getName());
+            //++round;
+        //}
 
-					if(!board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom))
-						System.out.println("Failed to move the suggested player into the room! Are there available spaces away from any door?");
-
-					askRefutations(suggestion);
-				}
-			}
-
-            ++round;
-        }
-
-		System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
+		//System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
 	}
 
 	/**

@@ -76,7 +76,11 @@ public class Player {
 		List<game.cards.Card> newHand = Collections.unmodifiableList(hand);
 		return newHand;
 	}
-	
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
 	public void addCardToHand(Card c) {
 		this.hand.add(c);
 	}

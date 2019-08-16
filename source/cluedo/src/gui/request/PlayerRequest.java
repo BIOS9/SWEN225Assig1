@@ -13,7 +13,9 @@ import java.util.concurrent.ExecutionException;
 public abstract class PlayerRequest<T> {
     private CompletableFuture<T> future;
 
-    public abstract boolean isInputValid(T input);
+    public boolean isInputValid(T input) {
+        return true;
+    }
 
     public PlayerRequest() {
         future = new CompletableFuture<>();

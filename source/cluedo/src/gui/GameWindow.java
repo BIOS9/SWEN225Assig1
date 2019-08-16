@@ -4,6 +4,8 @@ import game.CluedoGame;
 import game.cards.Card;
 import gui.Update.DiceUpdate;
 import gui.Update.HandUpdate;
+import gui.Update.MessageUpdate;
+import gui.request.PlayerBeginTurnRequest;
 import gui.request.PlayerCountRequest;
 import gui.request.PlayerRequest;
 
@@ -240,7 +242,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         boardContainer.setBorder(new EmptyBorder(BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH));
 
         GridBagConstraints c = new GridBagConstraints();
-        messageBox = new JLabel("Hello, here is a message!", SwingConstants.CENTER);
+        messageBox = new JLabel("Welcome to Cluedo!", SwingConstants.CENTER);
         messageBox.setMinimumSize(new Dimension(0, 20));
         messageBox.setOpaque(false);
         messageBox.setForeground(Color.white);
@@ -271,6 +273,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         container.add(boardContainer, c);
     }
 
+
+
     private void newGame() {
         if(game != null)
             game.deleteObserver(this);
@@ -284,6 +288,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
             PlayerCountRequest playerCountRequest = (PlayerCountRequest)request;
             int result = askPlayerCount(playerCountRequest);
             playerCountRequest.setResponse(result); // Return the result to the game
+
+        } else if (request instanceof PlayerBeginTurnRequest) {
+            PlayerBeginTurnRequest playerBeginTurnRequest = (PlayerBeginTurnRequest)request;
+            askPlayerBeinTurn(playerBeginTurnRequest);
         }
     }
 
@@ -296,6 +304,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                     return playerCount;
             } catch (Exception ex) {}
         }
+    }
+
+    private void askPlayerBeinTurn(PlayerBeginTurnRequest request) {
+        JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " you're up!\nPress ok when you're ready to start.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+        request.setResponse(null);
     }
 
     /**
@@ -347,6 +360,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         }
     }
 
+    private void updateMessage(MessageUpdate update) {
+        messageBox.setText(update.message);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -361,6 +378,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 updateDice((DiceUpdate)arg);
             else if(arg instanceof HandUpdate)
                 updateHand((HandUpdate)arg);
+            else if(arg instanceof MessageUpdate)
+                updateMessage((MessageUpdate)arg);
         }
     }
 }
