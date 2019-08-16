@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class GameWindow extends JFrame implements Observer, ActionListener {
@@ -116,7 +118,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
             try {
                 images.put(image.getKey(), ImageIO.read(new File(image.getValue())));
             } catch (IOException ex) {
-                System.out.println("ERROR LOADING IMAGE: " + ex + " " + image.getValue());
+                Path currentRelativePath = Paths.get("");
+                String s = currentRelativePath.toAbsolutePath().toString();
+                System.out.println("ERROR LOADING IMAGE: " + ex + " " + s + "/" + image.getValue());
             }
         }
     }
