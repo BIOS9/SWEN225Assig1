@@ -521,6 +521,15 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
 
     private void boardPaint(Graphics g) {
+        Graphics2D g2D = (Graphics2D)g;
+        // Set rendering settings
+        RenderingHints hints = new RenderingHints(new HashMap<RenderingHints.Key, Object>() {{
+            put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        }});
+        g2D.setRenderingHints(hints);
+
         int width = boardBox.getWidth();
         int height = boardBox.getHeight();
 
@@ -536,32 +545,50 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         if(board == null) return; // Dont draw the board if its null
 
         int cellSize;
-        int leftOffset = 0;
-        int topOffset = 0;
 
         // base the size on the smallest dimension
         if(width < height) { // if width is smaller than height, we must base the size on the width
             cellSize = width / board.BOARD_WIDTH;
-            topOffset = (height / 2) - (cellSize * board.BOARD_HEIGHT / 2); // Center vertically
         } else { // base the size on the height
             cellSize = height / board.BOARD_HEIGHT;
-            leftOffset = (width / 2) - (cellSize * board.BOARD_WIDTH / 2); // Center horizontally
         }
 
-
+        int leftOffset = (width / 2) - (cellSize * board.BOARD_WIDTH / 2); // Center horizontally
+        int topOffset = (height / 2) - (cellSize * board.BOARD_HEIGHT / 2); // Center vertically
 
         for(int r=0; r<board.BOARD_HEIGHT; r++) {
             for(int c=0; c<board.BOARD_WIDTH; c++) {
 
-                Position pos = new Position(r, c);
+                Position pos = new Position(c, r);
                 Cell cell = board.getCell(pos);
 
                 if(cell == null) continue; // Skip empty cells
 
-                g.setColor(roomColors.get(cell.getRoom().getName()));
-                g.fillRect(leftOffset + pos.x*cellSize, topOffset + pos.y*cellSize, cellSize, cellSize);
-                g.setColor(Color.black);
-                g.drawRect(leftOffset + pos.x*cellSize, topOffset + pos.y*cellSize, cellSize, cellSize);
+                int cellX = leftOffset + pos.x*cellSize;
+                int cellY = topOffset + pos.y*cellSize;
+
+                g2D.setStroke(new BasicStroke(1));
+                // Draw cell
+                g2D.setColor(roomColors.get(cell.getRoom().getName()));
+                g2D.fillRect(cellX, cellY, cellSize, cellSize);
+                // Draw black border
+                g2D.setColor(Color.black);
+                g2D.drawRect(cellX, cellY, cellSize, cellSize);
+
+                if(cell.isOccupied()) {
+                    int characterSize = (int)(cellSize * 0.8);
+                    int circleX = cellX + (cellSize - characterSize) / 2;
+                    int circleY = cellY + (cellSize - characterSize) / 2;
+
+                    Color characterColor = cell.getOccupant().getColor();
+                    // Draw character circle
+                    g2D.setColor(characterColor);
+                    g2D.fillOval(circleX, circleY, characterSize, characterSize);
+                    // Draw black border
+                    g2D.setStroke(new BasicStroke(2));
+                    g2D.setColor(Color.black);
+                    g2D.drawOval(circleX, circleY, characterSize, characterSize);
+                }
             }
         }
     }
