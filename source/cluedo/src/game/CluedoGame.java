@@ -48,8 +48,6 @@ public class CluedoGame extends Observable {
     private Set<Cell> visitedCells = new HashSet<>();
     private Set<Room> visitedRooms = new HashSet<>();
 
-	// I MOVED YOUR IMAGE FILE DEFINITIONS INTO GAMEWINDOW. AFTER SOME THOUGHT IT SEEMED LIKE A BETTER SPOT. SORRY!
-
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
 			new game.cards.Character("Miss Scarlett", 1),
