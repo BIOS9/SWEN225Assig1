@@ -20,13 +20,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.AttributedCharacterIterator;
 import java.util.*;
 import java.util.List;
 
@@ -50,6 +47,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                     DICE_SIZE = 60,
                     DICE_GAP = 20,
                     DICE_PADDING_TOP = 15,
+
+                    PLAYER_HEIGHT = 20,
+                    PLAYER_COLOR_SIZE = 10,
+                    PLAYER_PADDING = 5,
 
                     SIDEBAR_WIDTH = 200,
                     BOTTOMBAR_HEIGHT = 200,
@@ -450,6 +451,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         }
     }
 
+    /**
+     * Updates the list of players in the sidebar
+     * @param update
+     */
     private void updatePlayers(PlayersUpdate update) {
         playerBox.removeAll();
         playerBox.repaint();
@@ -457,14 +462,23 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         for(Player p : update.players) {
             JPanel playerPanel = new JPanel();
             playerPanel.setOpaque(false);
-            playerPanel.setPreferredSize(new Dimension(SIDEBAR_WIDTH - (BORDER_WIDTH * 2), 20));
+            playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.X_AXIS));
+            playerPanel.setPreferredSize(new Dimension(SIDEBAR_WIDTH - (BORDER_WIDTH * 2), PLAYER_HEIGHT));
+            playerPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            playerPanel.add(Box.createRigidArea(new Dimension(PLAYER_PADDING, PLAYER_HEIGHT))); // Add some padding
 
+            // The colored square
             JLabel colorLabel = new JLabel();
             colorLabel.setOpaque(true);
             colorLabel.setBackground(p.getCharacter().getColor());
-            colorLabel.setPreferredSize(new Dimension(10, 10));
+            colorLabel.setPreferredSize(new Dimension(PLAYER_COLOR_SIZE, PLAYER_COLOR_SIZE));
+            colorLabel.setMinimumSize(new Dimension(PLAYER_COLOR_SIZE, PLAYER_COLOR_SIZE));
+            colorLabel.setMaximumSize(new Dimension(PLAYER_COLOR_SIZE, PLAYER_COLOR_SIZE));
             playerPanel.add(colorLabel);
 
+            playerPanel.add(Box.createRigidArea(new Dimension(PLAYER_PADDING, PLAYER_HEIGHT))); // Add some padding
+
+            // Add player's name
             JLabel playerLabel = new JLabel(p.getPlayerName());
             playerLabel.setForeground(Color.white);
             playerLabel.setOpaque(false);
