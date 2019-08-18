@@ -386,7 +386,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
      * Updates the board to let a player know their turn is starting requiring them to acknowledge this.
      * @param request 
      */
-    private void askPlayerBeinTurn(PlayerBeginTurnRequest request) {
+    private void askPlayerBeginTurn(PlayerBeginTurnRequest request) {
         JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " you're up!\nPress ok when you're ready to start.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
         request.setResponse(null);
     }
