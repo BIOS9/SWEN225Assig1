@@ -265,6 +265,8 @@ public class Board {
     public Cell getCell(Position position) {
         return cells.get(position);
     }
+    
+    
 
     /**
      * Converts character to lower case

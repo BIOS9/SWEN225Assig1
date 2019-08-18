@@ -115,6 +115,7 @@ public class CluedoGame extends Observable {
 	 */
 	private void initGame() {
 		board = new Board(characters);
+		updateGui(new BoardUpdate(board));
 
 		// Ask user how many players will be playing
 		int playerCount = makeRequest(new PlayerCountRequest()).waitResponse();
@@ -245,7 +246,7 @@ public class CluedoGame extends Observable {
         updateGui(new PlayerTurnUpdate(currentPlayer, round));
         updateGui(new MessageUpdate(currentPlayer.getPlayerName() + " / " + character.getName() + " you're up!"));
         
-        updateGui(new BoardUpdate(board)); // Abbey
+        updateGui(new BoardUpdate(board)); 
 
         makeRequest(new PlayerBeginTurnRequest(currentPlayer)).waitResponse(); // Waits for player to begin turn
 
