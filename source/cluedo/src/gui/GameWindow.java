@@ -2,6 +2,8 @@ package gui;
 
 import game.CluedoGame;
 import game.Player;
+import game.board.Board;
+import game.board.Position;
 import game.cards.Card;
 import gui.Update.BoardUpdate;
 import gui.Update.DiceUpdate;
@@ -20,10 +22,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.AttributedCharacterIterator;
 import java.util.*;
 import java.util.List;
 
@@ -449,9 +455,22 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         messageBox.setText(update.message);
     }
     
-    private void updateBoard(BoardUpdate board) {
+    private void updateBoard(BoardUpdate update) {
+    	
+    	Board board = update.board;
+    	
+    	BufferedImage boardImage = new BufferedImage(boardBox.getWidth(), boardBox.getHeight(), BufferedImage.TYPE_INT_RGB);
+    	Graphics boardGraphics = boardImage.getGraphics();
     	
     	
+    	for(int r=0; r<board.BOARD_HEIGHT; r++) {
+    		for(int c=0; c<board.BOARD_WIDTH; c++) {
+    			Position pos = new Position(r, c);
+    			boardGraphics.setColor(Color.black);
+    			boardGraphics.drawRect(pos.x, pos.y, 1, 1);
+    		}
+    	}
+    	boardBox.setBacktroundImage(boardImage);
     }
 
     @Override
