@@ -23,7 +23,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * 
+ * Creates the game window using Jpanels, setting backgrounds and allocating the different spaces on the board.
+ * Game panel is the observer, contains the buttons that allow the player to interact with the game elements
+ * 
+ * @author abbey
+ *
+ */
 public class GameWindow extends JFrame implements Observer, ActionListener {
+	
+			//GameWindow attributes
             public static final String WINDOW_TITLE = "Cluedo";
             public static final int
                     WINDOW_MIN_WIDTH = 800,
@@ -45,11 +55,14 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                     CARD_GAP = 10,
                     CARD_PADDING_TOP = 10;
 
-
+            // Map of image names to file locations to make the drawing of the board easier.
             public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
+            	
+            	//backgrounds
                 put("felt", "images/texture/felt.jpg");
                 put("darkFelt", "images/texture/darkFelt.jpg");
-
+                
+                //boarders
                 put("borderTL", "images/texture/TopLeftBorderCorner.png");
                 put("borderTR", "images/texture/TopRightBorderCorner.png");
                 put("borderBL", "images/texture/BottomLeftBorderCorner.png");
@@ -58,21 +71,24 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 put("borderBottom", "images/texture/BottomBorderTile.png");
                 put("borderLeft", "images/texture/LeftBorderTile.png");
                 put("borderRight", "images/texture/RightBorderTile.png");
-
+                
+                //dice
                 put("die1", "images/dice/die1.png");
                 put("die2", "images/dice/die2.png");
                 put("die3", "images/dice/die3.png");
                 put("die4", "images/dice/die4.png");
                 put("die5", "images/dice/die5.png");
                 put("die6", "images/dice/die6.png");
-
+                
+                //player cards
                 put("Miss Scarlett", "images/cards/Miss_scarlet.png");
                 put("Mr Green", "images/cards/Mr_green.png");
                 put("Colonel Mustard", "images/cards/Colonel_mustard.png");
                 put("Professor Plum", "images/cards/Prof_plum.png");
                 put("Mrs. Peacock", "images/cards/Mrs_peacock.png");
                 put("Mrs. White", "images/cards/Mrs_White.png");
-
+                
+                //room cards
                 put("Kitchen", "images/cards/Kitchen.png");
                 put("Ball Room", "images/cards/Ballroom.png");
                 put("Conservatory", "images/cards/Conservatory.png");
@@ -82,7 +98,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 put("Hall", "images/cards/Hall.png");
                 put("Lounge", "images/cards/Lounge.png");
                 put("Study", "images/cards/Study.png");
-
+                
+                //weapon cards
                 put("Candlestick", "images/cards/Candlestick.png");
                 put("Knife", "images/cards/Knife.png");
                 put("Lead Pipe", "images/cards/Pipe.png");
@@ -92,12 +109,16 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }};
     private Map<String, Image> images = new HashMap<>();
 
-    private CluedoGame game = null;
-
     private JLabel messageBox;
     private ImagePanel cardBox, diceBox, die1, die2, playerBox, boardBox, infoBox;
     private JScrollPane cardScollBox;
-
+    
+    //Game window associations
+    private CluedoGame game = null;
+    
+    /**
+     * Constructs a new game window.
+     */
     public GameWindow() {
         super(WINDOW_TITLE);
         setMinimumSize(new Dimension(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT));
@@ -132,8 +153,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
      */
     private void buildWindow() {
         buildMenuBar();
-
-        JPanel container = new JPanel(new GridBagLayout()); // The main container that holds all the elements
+        
+        // The main container that holds all the elements
+        JPanel container = new JPanel(new GridBagLayout()); 
+        
+        // Individual elements of the board.
         buildDiceBox(container);
         buildCardBox(container);
         buildBoardBox(container);
@@ -143,6 +167,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         add(container);
     }
 
+    /**
+     * Constructs the menu bar with the menu items (new game, exit).
+     */
     private void buildMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
@@ -158,7 +185,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         menuBar.add(menu);
         setJMenuBar(menuBar);
     }
-
+    
+    /**
+     * Constructs the info box, have forgotten what it does .... sorra chewed my plan.
+     * @param container
+     */
     private void buildInfoBox(JPanel container) {
         infoBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);;
         infoBox.setPreferredSize(new Dimension(INFO_BOX_WIDTH, BOTTOMBAR_HEIGHT));
@@ -170,7 +201,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
 
         container.add(infoBox, c);
     }
-
+    
+    /**
+     * Constructs the player box, used to display the players who are in the game and who's turn it is currently.
+     * @param container
+     */
     private void buildPlayerBox(JPanel container) {
         playerBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
         playerBox.setPreferredSize(new Dimension(SIDEBAR_WIDTH, 0));
@@ -184,6 +219,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         container.add(playerBox, c);
     }
 
+    /**
+     * Constructs the dice box used for displaying the dice and total number rolled by a player during thier turn.
+     * @param container
+     */
     private void buildDiceBox(JPanel container) {
         diceBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
         diceBox.setPreferredSize(new Dimension(SIDEBAR_WIDTH, DICE_BOX_HEIGHT));
@@ -209,9 +248,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         container.add(diceBox, c);
     }
 
+    /**
+     * Constructs the card box used for displaying the players hand.
+     * @param container
+     */
     private void buildCardBox(JPanel container) {
         cardBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
-
 
         FlowLayout layout = new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
@@ -233,9 +275,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         c.anchor = GridBagConstraints.WEST;
 
         container.add(cardScollBox, c);
-
     }
 
+    /**
+     * Constructs the board box used for displaying the game board.
+     * @param container
+     */
     private void buildBoardBox(JPanel container) {
         ImagePanel boardContainer = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
         boardContainer.setLayout(new GridBagLayout());
@@ -273,8 +318,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         container.add(boardContainer, c);
     }
 
-
-
+    /**
+     * Constructs a new game, removing the observer links of any old games to ensure there is not multiple game
+     * objects sending updates.
+     */
     private void newGame() {
         if(game != null)
             game.deleteObserver(this);
@@ -283,6 +330,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         game.startGame();
     }
 
+    /**
+     * Creates a new request from a player request checking if it is a count request or a 
+     * begin turn request processing the request accordingly.
+     * @param request
+     */
     private void request(PlayerRequest request) {
         if(request instanceof PlayerCountRequest) {
             PlayerCountRequest playerCountRequest = (PlayerCountRequest)request;
@@ -294,7 +346,6 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
             askPlayerBeinTurn(playerBeginTurnRequest);
         }
     }
-
     private int askPlayerCount(PlayerCountRequest request) {
         while (true) {
             String result = JOptionPane.showInputDialog("How many players are playing? " + request.conditions);
@@ -305,7 +356,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
             } catch (Exception ex) {}
         }
     }
-
+    
+    /**
+     * Updates the board to let a player know their turn is starting requiring them to acknowledge this.
+     * @param request 
+     */
     private void askPlayerBeinTurn(PlayerBeginTurnRequest request) {
         JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " you're up!\nPress ok when you're ready to start.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
         request.setResponse(null);
@@ -340,7 +395,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         stopTimer.setRepeats(false);
         stopTimer.start();
     }
-
+    
+    /**
+     * Redisplays the cardBox.
+     * @param update
+     */
     private void updateHand(HandUpdate update) {
         cardBox.removeAll();
         cardBox.repaint();
@@ -359,7 +418,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
             delay += 100;
         }
     }
-
+    
     private void updateMessage(MessageUpdate update) {
         messageBox.setText(update.message);
     }
