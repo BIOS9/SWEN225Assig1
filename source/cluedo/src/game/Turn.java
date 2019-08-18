@@ -3,6 +3,8 @@ package game;
 import javafx.util.Pair;
 
 import java.util.*;
+
+import gui.Update.MessageUpdate;
 /** 
  * 
  * Processes the players turn, checking validity and delegating any suggestions or assumptions
@@ -52,7 +54,6 @@ class Turn {
         int roll2 = rng.nextInt(6) + 1;
 
         diceRoll = roll1 + roll2;
-
         return new Pair<>(roll1, roll2);
     }
 }

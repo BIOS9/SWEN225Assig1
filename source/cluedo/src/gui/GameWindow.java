@@ -441,6 +441,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         return board.getCell(pos);
     }
 
+    /**
+     * Paints the board with the given graphics object.
+     * @param g
+     */
     private void boardPaint(Graphics g) {
         Graphics2D g2D = (Graphics2D)g;
         // Set rendering settings
@@ -607,11 +611,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         if(start == end || end.isOccupied())
             return;
 
+        //cant revisit cells or re enter rooms in one turn.
         if(visitedCells.contains(selectedCell) || visitedRooms.contains(selectedCell.getRoom())) {
             isSelectedVisited = true;
             return;
         }
-
+        
+        //add the initial route (starting cell)
         List<Pair<Cell, Cell.Direction>> initialRoute = new ArrayList<Pair<Cell, Cell.Direction>>() {{ add(new Pair<>(start, null)); }};
         routes.offer(initialRoute);
 
@@ -623,7 +629,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 Cell.Direction direction = neighbour.getKey();
                 Cell nextCell = neighbour.getValue();
 
-                if(nextCell.equals(end) && (bestRoute == null || bestRoute.size() > route.size())) {
+                if(nextCell.equals(end) && (bestRoute == null || bestRoute.size() > route.size())) { // is a better route
                     route.add(new Pair<>(nextCell, direction));
                     bestRoute = route;
                 } else if(!nextCell.isOccupied() && route.stream().noneMatch(x -> x.getKey().equals(nextCell))){
@@ -635,7 +641,6 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 }
             }
         }
-
         if(bestRoute != null) {
             bestRoute.remove(0); // Remove start position from the route
             for (Pair<Cell, Cell.Direction> move : bestRoute) {
@@ -649,7 +654,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Uses the list of valid moves to move the player on the board
      */
     private void executeMoves() {
-        if(isSelectedVisited) {
+        if(isSelectedVisited) { //cant revist cells
             updateMessage(new MessageUpdate("You have already been there!"));
         }
 
@@ -663,11 +668,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 isPlayerMoving = false;
                 return;
             }
-
+            
             // Get where to move
             Cell.Direction d = validMoveDirections.get(0);
             validMoveDirections.remove(0);
 
+            // Move player
             game.moveCurrentPlayer(d);
             Cell playerCell = currentPlayer.getCharacter().getLocation();
             visitedCells.add(playerCell);
@@ -681,6 +687,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         t.start();
     }
 
+    /**
+     * Updates the game info box; round number, moves left and next moves
+     */
     private void updateGameInfoBox() {
         roundNumberLabel.setText("Round: " + (roundNumber + 1));
         movesLeftLabel.setText("Moves Left: " + movesLeft);
@@ -694,7 +703,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 //        }
 //        gameTimerLabel.setText("Game Time: " + gameTimeString);
     }
-
+    
+    /**
+     * Updates the tool tip text that is displayed when a cell or player is hovered by the mouse.
+     */
     private void updateToolTip() {
         if(board == null || selectedCell == null) {
             toolTipText = null;
@@ -791,9 +803,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             die1.repaint();
             die2.setBackgroundImage(images.get("die" + update.SecondDie));
             die2.repaint();
+            updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you rolled a "+ movesLeft + " !"));
         });
         stopTimer.setRepeats(false);
         stopTimer.start();
+        
+        //updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you have "+ movesLeft +" moves left!"));
     }
     
     /**
@@ -854,14 +869,17 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
             playerBox.add(playerPanel);
         }
-
         playerBox.revalidate();
     }
-
+    
     private void updateMessage(MessageUpdate update) {
         messageBox.setText(update.message);
     }
     
+    /**
+     * Updates the board object in the GUI, repainting the gui to display the new board.
+     * @param update object containing the new board.
+     */
     private void updateBoard(BoardUpdate update) {
     	board = update.board;
     	validMoveCells.clear();
@@ -869,7 +887,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     	selectedCell = null;
     	boardBox.repaint();
     }
-
+    
+    /**
+     * Updates the player turn, updating the current player and incrementing the round number
+     * Clears all routes and visited areas ands updates current player pos into visited sets 
+     * and updates and repaints the relevant panels.
+     * @param update
+     */
     private void updatePlayerTurn(PlayerTurnUpdate update) {
         currentPlayer = update.player;
         roundNumber = update.round;
@@ -893,9 +917,14 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         boardBox.repaint();
     }
 
+    /**
+     * Updates the moves left field and the game info box.
+     * @param update
+     */
     private void updateMovesLeft(MovesLeftUpdate update) {
         movesLeft = update.movesLeft;
         updateGameInfoBox();
+        updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you have "+ movesLeft + " !"));
     }
 
     @Override
@@ -903,6 +932,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     }
 
+    /**
+     * Updates the ovserver based on the object arguments, calls relevant update method for
+     * the arguments.
+     */
     @Override
     public void update(Observable o, Object arg) {
         if(arg != null) {
@@ -930,6 +963,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     }
 
+    /**
+     * Handles highlighting path and its avalibility based on where the mouse is.
+     */
     @Override
     public void mouseMoved(MouseEvent e) {
         int x = e.getX();
@@ -942,12 +978,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         updateToolTip();
 
         Cell cell = getCellAtPos(x, y);
+        
         if(cell != null && !cell.equals(selectedCell)) {
             selectedCell = cell;
-
             findPlayerRoute();
             attemptedMoveCount = validMoveCells.size();
             updateGameInfoBox();
+            
         } else if(cell == null) {
             selectedCell = null;
         }
