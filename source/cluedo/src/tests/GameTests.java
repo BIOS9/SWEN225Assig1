@@ -32,8 +32,8 @@ public class GameTests {
 			playersField.setAccessible(true);
 			List<game.Player> playerList = (List<Player>)playersField.get(game);
 
-			playerList.add(new game.Player(new game.cards.Character("Miss Scarlett", 1), game));
-			playerList.add(new game.Player(new game.cards.Character("Rev. Green", 2), game));
+			playerList.add(new game.Player(new game.cards.Character("Miss Scarlett", 1)));
+			playerList.add(new game.Player(new game.cards.Character("Rev. Green", 2)));
 
 			Method initCards = game.getClass().getDeclaredMethod("initCards");
 			initCards.setAccessible(true);
@@ -53,7 +53,7 @@ public class GameTests {
 	public void handToStringTest() {
 		CluedoGame game = new CluedoGame();
 		try {
-			Player player = new game.Player(new game.cards.Character ("Miss Scarlett", 1), game);
+			Player player = new game.Player(new game.cards.Character ("Miss Scarlett", 1));
 			
 			player.addCardToHand(new game.cards.Weapon("Candlestick"));
 			player.addCardToHand(new game.cards.Character("Professor Plum", 4));

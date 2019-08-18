@@ -1,12 +1,14 @@
 package gui;
 
 import game.CluedoGame;
+import game.Player;
 import game.cards.Card;
 import gui.Update.DiceUpdate;
 import gui.Update.HandUpdate;
 import gui.Update.MessageUpdate;
 import gui.request.PlayerBeginTurnRequest;
 import gui.request.PlayerCountRequest;
+import gui.request.PlayerSetupRequest;
 import gui.request.PlayerRequest;
 
 import javax.imageio.ImageIO;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.List;
 
 public class GameWindow extends JFrame implements Observer, ActionListener {
             public static final String WINDOW_TITLE = "Cluedo";
@@ -100,6 +103,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
 
     public GameWindow() {
         super(WINDOW_TITLE);
+
         setMinimumSize(new Dimension(WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -109,6 +113,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         // Finalize and display the window with the game
         pack();
         setVisible(true);
+
         //newGame();
     }
 
@@ -284,29 +289,48 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
 
     private void request(PlayerRequest request) {
-        if(request instanceof PlayerCountRequest) {
-            PlayerCountRequest playerCountRequest = (PlayerCountRequest)request;
-            int result = askPlayerCount(playerCountRequest);
-            playerCountRequest.setResponse(result); // Return the result to the game
+        if(request instanceof PlayerSetupRequest) {
+            PlayerSetupRequest playerSetupRequest = (PlayerSetupRequest)request;
+            Player result = askPlayerInfo(playerSetupRequest);
+            playerSetupRequest.setResponse(result); // Return the result to the game
 
         } else if (request instanceof PlayerBeginTurnRequest) {
             PlayerBeginTurnRequest playerBeginTurnRequest = (PlayerBeginTurnRequest)request;
-            askPlayerBeinTurn(playerBeginTurnRequest);
+            askPlayerBeginTurn(playerBeginTurnRequest);
+
+        } else if(request instanceof PlayerCountRequest) {
+            PlayerCountRequest playerCountRequest = (PlayerCountRequest)request;
+            int count = askPlayerCount();
+            playerCountRequest.setResponse(count);
         }
     }
 
-    private int askPlayerCount(PlayerCountRequest request) {
+    private Player askPlayerInfo(PlayerSetupRequest request) {
+        PlayerSetupWindow window = new PlayerSetupWindow(request.characters, request.chosenCharacters, this);
+        Player player = window.player;
+        window.setVisible(false);
+        window.dispose();
+        return player;
+    }
+
+    private int askPlayerCount() {
         while (true) {
-            String result = JOptionPane.showInputDialog("How many players are playing? " + request.conditions);
             try {
-                int playerCount = Integer.parseInt(result);
-                if(request.isInputValid(playerCount)) // Only exit if the input is valid
-                    return playerCount;
-            } catch (Exception ex) {}
+                int response = Integer.parseInt(JOptionPane.showInputDialog(this, "How many players are playing? (3-6)", "Cluedo", JOptionPane.INFORMATION_MESSAGE));
+
+                if(response > 6)
+                    JOptionPane.showMessageDialog(this, "The maximum number of players is 6", "Cluedo", JOptionPane.WARNING_MESSAGE);
+                else if (response < 3)
+                    JOptionPane.showMessageDialog(this, "The minimum number of players is 3", "Cluedo", JOptionPane.WARNING_MESSAGE);
+                else
+                    return response;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid number (3-6)!", "Cluedo", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
 
-    private void askPlayerBeinTurn(PlayerBeginTurnRequest request) {
+    private void askPlayerBeginTurn(PlayerBeginTurnRequest request) {
         JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " you're up!\nPress ok when you're ready to start.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
         request.setResponse(null);
     }

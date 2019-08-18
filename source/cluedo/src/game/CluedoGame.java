@@ -17,6 +17,7 @@ import gui.GameWindow;
 import gui.Update.*;
 import gui.request.PlayerBeginTurnRequest;
 import gui.request.PlayerCountRequest;
+import gui.request.PlayerSetupRequest;
 import gui.request.PlayerRequest;
 import javafx.util.Pair;
 
@@ -93,11 +94,11 @@ public class CluedoGame extends Observable {
 	public static void main(String[] args) {
         INPUT_SCANNER = new Scanner(System.in);
 
+
 	    GameWindow window = new GameWindow();
 	}
 
     public void startGame() {
-
         initGame();
         initCards();
         nextTurn();
@@ -119,9 +120,16 @@ public class CluedoGame extends Observable {
 		// Ask user how many players will be playing
 		int playerCount = makeRequest(new PlayerCountRequest()).waitResponse();
 
-		// Generate players and add them to list.
-		for (int i = 0; i < playerCount; ++i) {
-			players.add(new Player(characters[i], this));
+		// Chosen characters that cant be chosen by next players
+		List<game.cards.Character> chosenCharacters = new ArrayList<>();
+
+		// Add new players
+		for(int i = 0; i < playerCount; ++i) {
+			// Ask user for player info
+			Player player = makeRequest(new PlayerSetupRequest(Arrays.asList(characters), chosenCharacters)).waitResponse();
+			// Add character to list of used characters
+			chosenCharacters.add(player.getCharacter());
+			players.add(player);
 		}
 	}
 

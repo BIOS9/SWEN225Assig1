@@ -30,16 +30,15 @@ public class Player {
 	 * by the player, the game and the starting cell of the player (fixed).
 	 * 
 	 * @param character
-	 * @param game
 	 */
-	public Player(game.cards.Character character, String name, CluedoGame game) {
+	public Player(game.cards.Character character, String name) {
 		this.character = character;
 		this.hand = new ArrayList<game.cards.Card>();
 		this.playerName = name;
 	}
 	
 	// For testing without the player name.
-	public Player(game.cards.Character character, CluedoGame game) {
+	public Player(game.cards.Character character) {
 		this.character = character;
 		this.hand = new ArrayList<game.cards.Card>();
 	}
