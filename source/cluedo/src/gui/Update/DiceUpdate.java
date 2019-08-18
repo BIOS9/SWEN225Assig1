@@ -1,7 +1,7 @@
 package gui.Update;
 
 /**
- * Class representing a dice update in the game.
+ * Represents a dice update in the game.
  * @author abbey
  *
  */
