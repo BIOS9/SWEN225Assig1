@@ -239,6 +239,8 @@ public class CluedoGame extends Observable {
 
         updateGui(new PlayerTurnUpdate(currentPlayer, round));
         updateGui(new MessageUpdate(currentPlayer.getPlayerName() + " / " + character.getName() + " you're up!"));
+        
+        updateGui(new BoardUpdate(board)); // Abbey
 
         makeRequest(new PlayerBeginTurnRequest(currentPlayer)).waitResponse(); // Waits for player to begin turn
 

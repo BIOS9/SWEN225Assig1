@@ -3,6 +3,7 @@ package gui;
 import game.CluedoGame;
 import game.Player;
 import game.cards.Card;
+import gui.Update.BoardUpdate;
 import gui.Update.DiceUpdate;
 import gui.Update.HandUpdate;
 import gui.Update.MessageUpdate;
@@ -447,6 +448,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     private void updateMessage(MessageUpdate update) {
         messageBox.setText(update.message);
     }
+    
+    private void updateBoard(BoardUpdate board) {
+    	
+    	
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -464,6 +470,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 updateHand((HandUpdate)arg);
             else if(arg instanceof MessageUpdate)
                 updateMessage((MessageUpdate)arg);
+            else if(arg instanceof BoardUpdate)
+            	updateBoard((BoardUpdate)arg);
         }
     }
 }
