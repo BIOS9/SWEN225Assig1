@@ -257,10 +257,10 @@ public class CluedoGame extends Observable {
         updateGui(new MovesLeftUpdate(movesLeft));
         updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
         updateGui(new HandUpdate(currentPlayer.getHand()));
+		allowMove = true;
 
 
-
-        updateGui(new HandUpdate(new ArrayList<>())); // Clear hand
+        //updateGui(new HandUpdate(new ArrayList<>())); // Clear hand
     }
 
 	/**

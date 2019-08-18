@@ -1,32 +1,37 @@
 package gui;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import game.CluedoGame;
 import game.Player;
 import game.board.Board;
 import game.board.Cell;
 import game.board.Position;
 import game.cards.Card;
+import game.cards.Room;
 import gui.Update.*;
 import gui.request.PlayerBeginTurnRequest;
 import gui.request.PlayerCountRequest;
 import gui.request.PlayerSetupRequest;
 import gui.request.PlayerRequest;
+import javafx.util.Pair;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
+import java.util.List;
 
 /**
  * 
@@ -36,7 +41,7 @@ import java.util.*;
  * @author abbey
  *
  */
-public class GameWindow extends JFrame implements Observer, ActionListener {
+public class GameWindow extends JFrame implements Observer, ActionListener, MouseMotionListener, MouseListener {
 	
 			//GameWindow attributes
             public static final String WINDOW_TITLE = "Cluedo";
@@ -131,7 +136,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         put("Hallway", Color.decode("#66BA5C"));
     }};
 
-    private JLabel messageBox;
+    private JLabel messageBox, roundNumberLabel, movesLeftLabel, gameTimerLabel, attemptedMoveLabel;
     private ImagePanel cardBox, diceBox, die1, die2, playerBox, infoBox;
     private JPanel boardBox;
     private JScrollPane cardScollBox;
@@ -139,6 +144,18 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     //Game window associations
     private CluedoGame game = null;
     private Board board;
+    private Player currentPlayer;
+    private int roundNumber;
+    private int attemptedMoveCount;
+    private int movesLeft;
+    private Instant gameStart;
+    private Cell selectedCell;
+    private boolean isSelectedVisited = false;
+    private boolean isPlayerMoving = false;
+    private Set<Cell> validMoveCells = new HashSet<>(); // Cells in the move that are valid
+    private Set<Cell> visitedCells = new HashSet<>();
+    private Set<Room> visitedRooms = new HashSet<>();
+    private List<Cell.Direction> validMoveDirections = new ArrayList<>(); // Path of valid moves
     
     /**
      * Constructs a new game window.
@@ -156,7 +173,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         pack();
         setVisible(true);
 
-        //newGame();
+        newGame();
     }
 
     /**
@@ -219,6 +236,25 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     private void buildInfoBox(JPanel container) {
         infoBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);;
         infoBox.setPreferredSize(new Dimension(INFO_BOX_WIDTH, BOTTOMBAR_HEIGHT));
+        infoBox.setLayout(new BoxLayout(infoBox, BoxLayout.Y_AXIS));
+        infoBox.setBorder(new EmptyBorder(BORDER_WIDTH * 2, BORDER_WIDTH * 2, BORDER_WIDTH * 2, BORDER_WIDTH * 2));
+
+        roundNumberLabel = new JLabel();
+        roundNumberLabel.setForeground(Color.white);
+
+        movesLeftLabel = new JLabel();
+        movesLeftLabel.setForeground(Color.white);
+
+        attemptedMoveLabel = new JLabel();
+        attemptedMoveLabel.setForeground(Color.white);
+
+        gameTimerLabel = new JLabel();
+        gameTimerLabel.setForeground(Color.white);
+
+        infoBox.add(roundNumberLabel);
+        infoBox.add(movesLeftLabel);
+        infoBox.add(attemptedMoveLabel);
+        infoBox.add(gameTimerLabel);
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.NONE;
@@ -226,6 +262,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         c.gridy = 3;
 
         container.add(infoBox, c);
+        updateGameInfoBox();
+
+        // Update timer every second
+        Timer timer = new Timer(1000, e -> {
+            updateGameInfoBox();
+        });
+        timer.setRepeats(true);
     }
     
     /**
@@ -332,6 +375,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 boardPaint(g);
             }
         };
+        boardBox.setDoubleBuffered(true);
+        boardBox.addMouseMotionListener(this);
+        boardBox.addMouseListener(this);
 
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
@@ -356,11 +402,269 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
      * objects sending updates.
      */
     private void newGame() {
+        gameStart = Instant.now();
         if(game != null)
             game.deleteObserver(this);
         game = new CluedoGame();
         game.addObserver(this);
         game.startGame();
+    }
+
+    /**
+     * Gets a cell at the specified graphical position on the boardBox
+     */
+    private Cell getCellAtPos(int x, int y) {
+        if(board == null) return null;
+
+        int width = boardBox.getWidth();
+        int height = boardBox.getHeight();
+
+        int cellSize;
+
+        // base the size on the smallest dimension
+        if(width < height) { // if width is smaller than height, we must base the size on the width
+            cellSize = width / board.BOARD_WIDTH;
+        } else { // base the size on the height
+            cellSize = height / board.BOARD_HEIGHT;
+        }
+
+        int leftOffset = (width / 2) - (cellSize * board.BOARD_WIDTH / 2); // Center horizontally
+        int topOffset = (height / 2) - (cellSize * board.BOARD_HEIGHT / 2); // Center vertically
+
+        x -= leftOffset;
+        y -= topOffset;
+
+        Position pos = new Position(x / cellSize, y / cellSize);
+
+        return board.getCell(pos);
+    }
+
+    private void boardPaint(Graphics g) {
+        Graphics2D g2D = (Graphics2D)g;
+        // Set rendering settings
+        RenderingHints hints = new RenderingHints(new HashMap<RenderingHints.Key, Object>() {{
+            put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        }});
+        g2D.setRenderingHints(hints);
+
+        int width = boardBox.getWidth();
+        int height = boardBox.getHeight();
+
+        Image backgroundImage = images.get("darkFelt");
+
+        // Draw the background image tiled
+        for (int x = 0; x < width; x += backgroundImage.getWidth(null)) {
+            for (int y = 0; y < height; y += backgroundImage.getHeight(null)) {
+                g.drawImage(backgroundImage, x, y, null, null);
+            }
+        }
+
+        if(board == null) return; // Dont draw the board if its null
+
+        int cellSize;
+
+        // base the size on the smallest dimension
+        if(width < height) { // if width is smaller than height, we must base the size on the width
+            cellSize = width / board.BOARD_WIDTH;
+        } else { // base the size on the height
+            cellSize = height / board.BOARD_HEIGHT;
+        }
+
+        int leftOffset = (width / 2) - (cellSize * board.BOARD_WIDTH / 2); // Center horizontally
+        int topOffset = (height / 2) - (cellSize * board.BOARD_HEIGHT / 2); // Center vertically
+
+        Set<Cell> occupiedCells = new HashSet<>();
+
+        for(int r=0; r<board.BOARD_HEIGHT; r++) {
+            for(int c=0; c<board.BOARD_WIDTH; c++) {
+
+                Position pos = new Position(c, r);
+                Cell cell = board.getCell(pos);
+
+                if(cell == null) continue; // Skip empty cells
+
+                int cellX = leftOffset + pos.x*cellSize;
+                int cellY = topOffset + pos.y*cellSize;
+
+                g2D.setStroke(new BasicStroke(1));
+
+                // Draw cell
+                g2D.setColor(roomColors.get(cell.getRoom().getName()));
+                g2D.fillRect(cellX, cellY, cellSize, cellSize);
+
+                // Draw border
+                g2D.setColor(Color.black);
+                g2D.drawRect(cellX, cellY, cellSize, cellSize);
+
+                if(cell.isOccupied()) {
+                    occupiedCells.add(cell);
+                }
+            }
+        }
+
+        // Draw the valid move cells
+        if(!validMoveCells.isEmpty()) {
+            List<Cell> validCells = new ArrayList<>(validMoveCells);
+
+            // Add current player pos to cells to draw
+            if(currentPlayer != null) {
+                Cell c = currentPlayer.getCharacter().getLocation();
+                validCells.add(c);
+            }
+
+            // Draw cells that are valid places to move as green
+            for (Cell c : validCells) {
+                g2D.setColor(roomColors.get(c.getRoom().getName()).brighter());
+                g2D.fillRect(leftOffset + c.position.x * cellSize, topOffset + c.position.y * cellSize, cellSize, cellSize);
+
+                g2D.setStroke(new BasicStroke(2));
+                g2D.setColor(Color.decode("#49de23"));
+                g2D.drawRect(leftOffset + c.position.x * cellSize, topOffset + c.position.y * cellSize, cellSize, cellSize);
+            }
+        } else if(isSelectedVisited) {
+            // Draw current cell as visited
+            g2D.setColor(roomColors.get(selectedCell.getRoom().getName()).darker());
+            g2D.fillRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
+
+            g2D.setStroke(new BasicStroke(2));
+            g2D.setColor(Color.decode("#fca40a"));
+            g2D.drawRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
+        } else if(selectedCell != null) {
+            // Draw current cell as invalid
+            g2D.setColor(roomColors.get(selectedCell.getRoom().getName()).darker());
+            g2D.fillRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
+
+            g2D.setStroke(new BasicStroke(2));
+            g2D.setColor(Color.decode("#de3923"));
+            g2D.drawRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
+        }
+
+        // Draw players last to ensure player tokens are always on top
+        for(Cell c : occupiedCells) {
+            int characterSize = (int)(cellSize * 0.8);
+            int cellX = leftOffset + c.position.x*cellSize;
+            int cellY = topOffset + c.position.y*cellSize;
+            int circleX = cellX + (cellSize - characterSize) / 2;
+            int circleY = cellY + (cellSize - characterSize) / 2;
+
+            Color characterColor = c.getOccupant().getColor();
+            // Draw character circle
+            g2D.setColor(characterColor);
+            g2D.fillOval(circleX, circleY, characterSize, characterSize);
+            // Draw black border
+            g2D.setStroke(new BasicStroke(2));
+            g2D.setColor(Color.black);
+            g2D.drawOval(circleX, circleY, characterSize, characterSize);
+        }
+    }
+
+    /**
+     * Uses path finding algorithm to find a route from the player to the specified cell
+     */
+    private void findPlayerRoute() {
+        isSelectedVisited = false;
+        validMoveCells.clear();
+        validMoveDirections.clear();
+
+        if(selectedCell == null || currentPlayer == null || movesLeft == 0) return;
+
+        List<Pair<Cell, Cell.Direction>> bestRoute = null;
+        PriorityQueue<List<Pair<Cell, Cell.Direction>>> routes = new PriorityQueue<>(Comparator.comparingInt(List::size));
+
+        Cell start = currentPlayer.getCharacter().getLocation();
+        Cell end = selectedCell;
+
+        if(start == end || end.isOccupied())
+            return;
+
+        if(visitedCells.contains(selectedCell) || visitedRooms.contains(selectedCell.getRoom())) {
+            isSelectedVisited = true;
+            return;
+        }
+
+        List<Pair<Cell, Cell.Direction>> initialRoute = new ArrayList<Pair<Cell, Cell.Direction>>() {{ add(new Pair<>(start, null)); }};
+        routes.offer(initialRoute);
+
+        while (!routes.isEmpty()) {
+            List<Pair<Cell, Cell.Direction>> route = routes.poll(); // Get lowest cost route
+            Cell tailCell = route.get(route.size() - 1).getKey(); // Get the cell at the end of the route
+
+            for(Map.Entry<Cell.Direction, Cell> neighbour : tailCell.getNeighbours().entrySet()) {
+                Cell.Direction direction = neighbour.getKey();
+                Cell nextCell = neighbour.getValue();
+
+                if(nextCell.equals(end) && (bestRoute == null || bestRoute.size() > route.size())) {
+                    route.add(new Pair<>(nextCell, direction));
+                    bestRoute = route;
+                } else if(!nextCell.isOccupied() && route.stream().noneMatch(x -> x.getKey().equals(nextCell))){
+                    List<Pair<Cell, Cell.Direction>> newRoute = new ArrayList<>(route);
+                    newRoute.add(new Pair<>(nextCell, direction));
+
+                    if(newRoute.size() <= movesLeft)
+                        routes.offer(newRoute);
+                }
+            }
+        }
+
+        if(bestRoute != null) {
+            bestRoute.remove(0); // Remove start position from the route
+            for (Pair<Cell, Cell.Direction> move : bestRoute) {
+                validMoveCells.add(move.getKey());
+                validMoveDirections.add(move.getValue());
+            }
+        }
+    }
+
+    /**
+     * Uses the list of valid moves to move the player on the board
+     */
+    private void executeMoves() {
+        if(isSelectedVisited) {
+            updateMessage(new MessageUpdate("You have already been there!"));
+        }
+
+        if(isPlayerMoving || validMoveCells.isEmpty() || currentPlayer == null || board == null) return;
+        isPlayerMoving = true;
+
+        // Timer to animate movement
+        final Timer t = new Timer(100, e -> {
+            if(validMoveDirections.isEmpty()) {
+                ((Timer)e.getSource()).stop();
+                isPlayerMoving = false;
+                return;
+            }
+
+            // Get where to move
+            Cell.Direction d = validMoveDirections.get(0);
+            validMoveDirections.remove(0);
+
+            game.moveCurrentPlayer(d);
+            Cell playerCell = currentPlayer.getCharacter().getLocation();
+            visitedCells.add(playerCell);
+            if(!playerCell.getRoom().getName().equals("Hallway"))
+                visitedRooms.add(playerCell.getRoom());
+
+            validMoveCells.remove(playerCell); // Remove the cells as they are moved over
+            boardBox.repaint();
+        });
+        t.setRepeats(true);
+        t.start();
+    }
+
+    private void updateGameInfoBox() {
+        roundNumberLabel.setText("Round: " + (roundNumber + 1));
+        movesLeftLabel.setText("Moves Left: " + movesLeft);
+        attemptedMoveLabel.setText("Next Moves: " + attemptedMoveCount);
+
+//        String gameTimeString = "";
+//        if(gameStart != null) {
+//            Duration d = Duration.between(Instant.now(), gameStart);
+//
+//            gameTimeString = d.toHours() + ":" + d.toMinutes() + ":" + d.toMillis() / 1000;
+//        }
+//        gameTimerLabel.setText("Game Time: " + gameTimeString);
     }
 
     /**
@@ -517,80 +821,38 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     
     private void updateBoard(BoardUpdate update) {
     	board = update.board;
+    	validMoveCells.clear();
+    	validMoveDirections.clear();
+    	selectedCell = null;
     	boardBox.repaint();
     }
 
-    private void boardPaint(Graphics g) {
-        Graphics2D g2D = (Graphics2D)g;
-        // Set rendering settings
-        RenderingHints hints = new RenderingHints(new HashMap<RenderingHints.Key, Object>() {{
-            put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        }});
-        g2D.setRenderingHints(hints);
+    private void updatePlayerTurn(PlayerTurnUpdate update) {
+        currentPlayer = update.player;
+        roundNumber = update.round;
 
-        int width = boardBox.getWidth();
-        int height = boardBox.getHeight();
+        // Clear routes and visited areas
+        visitedCells.clear();
+        visitedRooms.clear();
+        validMoveCells.clear();
+        validMoveDirections.clear();
 
-        Image backgroundImage = images.get("darkFelt");
+        // Add current player pos to visited sets
+        if(currentPlayer != null) {
+            visitedCells.add(currentPlayer.getCharacter().getLocation());
 
-        // Draw the background image tiled
-        for (int x = 0; x < width; x += backgroundImage.getWidth(null)) {
-            for (int y = 0; y < height; y += backgroundImage.getHeight(null)) {
-                g.drawImage(backgroundImage, x, y, null, null);
+            if(!currentPlayer.getCharacter().getLocation().getRoom().getName().equals("Hallway")) {
+                visitedRooms.add(currentPlayer.getCharacter().getLocation().getRoom());
             }
         }
+        // Render updates
+        updateGameInfoBox();
+        boardBox.repaint();
+    }
 
-        if(board == null) return; // Dont draw the board if its null
-
-        int cellSize;
-
-        // base the size on the smallest dimension
-        if(width < height) { // if width is smaller than height, we must base the size on the width
-            cellSize = width / board.BOARD_WIDTH;
-        } else { // base the size on the height
-            cellSize = height / board.BOARD_HEIGHT;
-        }
-
-        int leftOffset = (width / 2) - (cellSize * board.BOARD_WIDTH / 2); // Center horizontally
-        int topOffset = (height / 2) - (cellSize * board.BOARD_HEIGHT / 2); // Center vertically
-
-        for(int r=0; r<board.BOARD_HEIGHT; r++) {
-            for(int c=0; c<board.BOARD_WIDTH; c++) {
-
-                Position pos = new Position(c, r);
-                Cell cell = board.getCell(pos);
-
-                if(cell == null) continue; // Skip empty cells
-
-                int cellX = leftOffset + pos.x*cellSize;
-                int cellY = topOffset + pos.y*cellSize;
-
-                g2D.setStroke(new BasicStroke(1));
-                // Draw cell
-                g2D.setColor(roomColors.get(cell.getRoom().getName()));
-                g2D.fillRect(cellX, cellY, cellSize, cellSize);
-                // Draw black border
-                g2D.setColor(Color.black);
-                g2D.drawRect(cellX, cellY, cellSize, cellSize);
-
-                if(cell.isOccupied()) {
-                    int characterSize = (int)(cellSize * 0.8);
-                    int circleX = cellX + (cellSize - characterSize) / 2;
-                    int circleY = cellY + (cellSize - characterSize) / 2;
-
-                    Color characterColor = cell.getOccupant().getColor();
-                    // Draw character circle
-                    g2D.setColor(characterColor);
-                    g2D.fillOval(circleX, circleY, characterSize, characterSize);
-                    // Draw black border
-                    g2D.setStroke(new BasicStroke(2));
-                    g2D.setColor(Color.black);
-                    g2D.drawOval(circleX, circleY, characterSize, characterSize);
-                }
-            }
-        }
+    private void updateMovesLeft(MovesLeftUpdate update) {
+        movesLeft = update.movesLeft;
+        updateGameInfoBox();
     }
 
     @Override
@@ -602,17 +864,77 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     public void update(Observable o, Object arg) {
         if(arg != null) {
             if (arg instanceof PlayerRequest)
-                request((PlayerRequest)arg);
-            else if(arg instanceof DiceUpdate)
-                updateDice((DiceUpdate)arg);
-            else if(arg instanceof HandUpdate)
-                updateHand((HandUpdate)arg);
-            else if(arg instanceof MessageUpdate)
-                updateMessage((MessageUpdate)arg);
-            else if(arg instanceof BoardUpdate)
-            	updateBoard((BoardUpdate)arg);
-            else if(arg instanceof PlayersUpdate)
-                updatePlayers((PlayersUpdate)arg);
+                request((PlayerRequest) arg);
+            else if (arg instanceof DiceUpdate)
+                updateDice((DiceUpdate) arg);
+            else if (arg instanceof HandUpdate)
+                updateHand((HandUpdate) arg);
+            else if (arg instanceof MessageUpdate)
+                updateMessage((MessageUpdate) arg);
+            else if (arg instanceof BoardUpdate)
+                updateBoard((BoardUpdate) arg);
+            else if (arg instanceof PlayersUpdate)
+                updatePlayers((PlayersUpdate) arg);
+            else if (arg instanceof PlayerTurnUpdate)
+                updatePlayerTurn((PlayerTurnUpdate) arg);
+            else if (arg instanceof MovesLeftUpdate)
+                updateMovesLeft((MovesLeftUpdate) arg);
         }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        if(board == null || isPlayerMoving) return;
+
+        int x = e.getX();
+        int y = e.getY();
+
+        Cell cell = getCellAtPos(x, y);
+        if(cell == null || cell.equals(selectedCell)) return;
+
+        selectedCell = cell;
+
+        findPlayerRoute();
+        attemptedMoveCount = validMoveCells.size();
+        updateGameInfoBox();
+
+        boardBox.repaint();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(currentPlayer == null || board == null) return;
+
+        selectedCell = getCellAtPos(e.getX(), e.getY());
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if(currentPlayer == null || board == null) return;
+
+        // Execute moves if the mouse is released in the same cell it was pressed in
+        Cell currentCell = getCellAtPos(e.getX(), e.getY());
+        if(currentCell != null && currentCell.equals(selectedCell))
+            executeMoves();
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
