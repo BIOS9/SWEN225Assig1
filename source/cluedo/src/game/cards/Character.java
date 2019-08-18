@@ -44,6 +44,11 @@ public class Character implements Card {
     }
 
     @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
     public String getName() {
         return name;
     }

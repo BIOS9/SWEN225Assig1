@@ -358,7 +358,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
 
     private Player askPlayerInfo(PlayerSetupRequest request) {
-        PlayerSetupWindow window = new PlayerSetupWindow(request.characters, request.chosenCharacters, this);
+        PlayerSetupWindow window = new PlayerSetupWindow(request.characters, request.chosenCharacters, request.chosenNames,this);
         Player player = window.player;
         window.setVisible(false);
         window.dispose();
