@@ -1,6 +1,8 @@
 package game.cards;
 import game.board.Cell;
 
+import java.awt.*;
+
 /**
  * Represents an in game character that is part of the game regardless of whether a player is linked to the character.
  * 	e.g can have only 3 players but will still have 6 characters.
@@ -17,7 +19,8 @@ public class Character implements Card {
     private final String name;
     private final int number;
     private String image;
-    
+    private Color color;
+
     //Card Associations
     private Cell location;
     
@@ -25,6 +28,16 @@ public class Character implements Card {
     public Character(String name, int number) {
         this.name = name;
         this.number = number;
+    }
+
+    public Character(String name, int number, Color color) {
+        this.name = name;
+        this.number = number;
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     @Override

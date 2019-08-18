@@ -5,10 +5,7 @@ import game.Player;
 import game.board.Board;
 import game.board.Position;
 import game.cards.Card;
-import gui.Update.BoardUpdate;
-import gui.Update.DiceUpdate;
-import gui.Update.HandUpdate;
-import gui.Update.MessageUpdate;
+import gui.Update.*;
 import gui.request.PlayerBeginTurnRequest;
 import gui.request.PlayerCountRequest;
 import gui.request.PlayerSetupRequest;
@@ -221,6 +218,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     private void buildPlayerBox(JPanel container) {
         playerBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
         playerBox.setPreferredSize(new Dimension(SIDEBAR_WIDTH, 0));
+
+        playerBox.setLayout(new FlowLayout());
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.VERTICAL;
@@ -450,7 +449,33 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
             delay += 100;
         }
     }
-    
+
+    private void updatePlayers(PlayersUpdate update) {
+        playerBox.removeAll();
+        playerBox.repaint();
+
+        for(Player p : update.players) {
+            JPanel playerPanel = new JPanel();
+            playerPanel.setOpaque(false);
+            playerPanel.setPreferredSize(new Dimension(SIDEBAR_WIDTH - (BORDER_WIDTH * 2), 20));
+
+            JLabel colorLabel = new JLabel();
+            colorLabel.setOpaque(true);
+            colorLabel.setBackground(p.getCharacter().getColor());
+            colorLabel.setPreferredSize(new Dimension(10, 10));
+            playerPanel.add(colorLabel);
+
+            JLabel playerLabel = new JLabel(p.getPlayerName());
+            playerLabel.setForeground(Color.white);
+            playerLabel.setOpaque(false);
+            playerPanel.add(playerLabel);
+
+            playerBox.add(playerPanel);
+        }
+
+        playerBox.revalidate();
+    }
+
     private void updateMessage(MessageUpdate update) {
         messageBox.setText(update.message);
     }
@@ -493,6 +518,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 updateMessage((MessageUpdate)arg);
             else if(arg instanceof BoardUpdate)
             	updateBoard((BoardUpdate)arg);
+            else if(arg instanceof PlayersUpdate)
+                updatePlayers((PlayersUpdate)arg);
         }
     }
 }
