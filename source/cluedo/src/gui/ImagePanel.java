@@ -4,14 +4,20 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Jpanel that draws tiled background image
+ * Jpanel that draws tiled background image.
  */
 public class ImagePanel extends JPanel {
     private Image backtroundImage;
     private Image borderTL, borderTR, borderBL, borderBR, borderTop, borderBottom, borderLeft, borderRight;
     private boolean drawBorder, tile;
     private int borderSize;
-
+    
+    /** 
+     * Constructor with basic information.
+     * @param backgroundImage
+     * @param tile
+     * @param borderSize
+     */
     public ImagePanel(Image backgroundImage, boolean tile, int borderSize) {
         this.backtroundImage = backgroundImage;
         drawBorder = false;
@@ -19,6 +25,19 @@ public class ImagePanel extends JPanel {
         this.borderSize = borderSize;
     }
 
+    /**
+     * Constructor with specific border information
+     * @param backgroundImage
+     * @param borderTL
+     * @param borderTR
+     * @param borderBL
+     * @param borderBR
+     * @param borderTop
+     * @param borderBottom
+     * @param borderLeft
+     * @param borderRight
+     * @param borderSize
+     */
     public ImagePanel(Image backgroundImage, Image borderTL, Image borderTR, Image borderBL, Image borderBR, Image borderTop, Image borderBottom, Image borderLeft, Image borderRight, int borderSize) {
         this.backtroundImage = backgroundImage;
         this.borderTL = borderTL;
@@ -77,18 +96,22 @@ public class ImagePanel extends JPanel {
 
         Dimension dimensions = getSize();
 
+        //top border
         for (int x = 0; x < dimensions.width; x += borderTop.getWidth(null)) {
             g.drawImage(borderTop, x, 0, borderTop.getWidth(null), borderSize,null, null);
         }
 
+        //bottom border
         for (int x = 0; x < dimensions.width; x += borderBottom.getWidth(null)) {
             g.drawImage(borderBottom, x, dimensions.height - borderSize, borderBottom.getWidth(null), borderSize, null, null);
         }
 
+        //left border
         for (int y = 0; y < dimensions.height; y += borderLeft.getHeight(null)) {
             g.drawImage(borderLeft, 0, y, borderSize, borderLeft.getHeight(null), null, null);
         }
 
+        //right border
         for (int y = 0; y < dimensions.height; y += borderRight.getHeight(null)) {
             g.drawImage(borderRight, dimensions.width - borderSize, y, borderSize, borderRight.getHeight(null), null, null);
         }

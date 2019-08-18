@@ -52,7 +52,6 @@ public class Player {
 		this.hasAcused = true;
 	}
 	
-
 	/**
 	 * Prints out friendly representation of players hand
 	 * @return
@@ -64,18 +63,22 @@ public class Player {
 		}
 		return s;
 	}
-
-	/* Code from template association_GetMany */
+	
+	//do we use this??
 	public game.cards.Card getHand(int index) {
 		game.cards.Card aHand = hand.get(index);
 		return aHand;
 	}
-
+	
+	/**
+	 * Returns a list of cards.
+	 * @return unmodifiable list of cards in players hand.
+	 */
 	public List<game.cards.Card> getHand() {
 		List<game.cards.Card> newHand = Collections.unmodifiableList(hand);
 		return newHand;
 	}
-
+	
 	public String getPlayerName() {
 		return playerName;
 	}

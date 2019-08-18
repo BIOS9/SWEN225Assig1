@@ -13,10 +13,18 @@ import java.util.concurrent.ExecutionException;
 public abstract class PlayerRequest<T> {
     private CompletableFuture<T> future;
 
+    /**
+     * Checks validity of input.
+     * @param input
+     * @return
+     */
     public boolean isInputValid(T input) {
         return true;
     }
 
+    /**
+     * Creates a future to populate a new player request.
+     */
     public PlayerRequest() {
         future = new CompletableFuture<>();
     }
