@@ -6,6 +6,7 @@ import game.board.Board;
 import game.board.Cell;
 import game.board.Position;
 import game.cards.Card;
+import game.cards.Room;
 import gui.Update.*;
 import gui.request.PlayerBeginTurnRequest;
 import gui.request.PlayerCountRequest;
@@ -117,6 +118,19 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 put("Wrench", "images/cards/Wrench.png");
     }};
     private Map<String, Image> images = new HashMap<>();
+
+    private Map<String, Color> roomColors = new HashMap<String, Color>() {{
+        put("Study", Color.decode("#F5B0A0"));
+        put("Hall", Color.decode("#F7E7AB"));
+        put("Lounge", Color.decode("#A3F5EF"));
+        put("Library", Color.decode("#A5CAF7"));
+        put("Dining Room", Color.decode("#C4A3F4"));
+        put("Billiard Room", Color.decode("#F8A4E0"));
+        put("Conservatory", Color.decode("#D0A39E"));
+        put("Ballroom", Color.decode("#FC443A"));
+        put("Kitchen", Color.decode("#807B77"));
+        put("Hallway", Color.decode("#66BA5C"));
+    }};
 
     private JLabel messageBox;
     private ImagePanel cardBox, diceBox, die1, die2, playerBox, boardBox, infoBox;
@@ -503,8 +517,6 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     	Graphics boardGraphics = boardImage.getGraphics();
     	int cellSize = 10;
     	
-    	boardGraphics.setColor(Color.white);
-    	
     	for(int r=0; r<board.BOARD_HEIGHT; r++) {
     		for(int c=0; c<board.BOARD_WIDTH; c++) {
     			
@@ -512,7 +524,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
                 Cell cell = board.getCell(pos);
 
                 if(cell == null) continue; // Skip empty cells
-                
+
+                boardGraphics.setColor(roomColors.get(cell.getRoom().getName()));
+
     			boardGraphics.drawRect(pos.x*cellSize, pos.y*cellSize, cellSize, cellSize);
     		}
     	}
