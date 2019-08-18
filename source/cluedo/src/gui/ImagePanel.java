@@ -7,7 +7,7 @@ import java.awt.*;
  * Jpanel that draws tiled background image.
  */
 public class ImagePanel extends JPanel {
-    private Image backtroundImage;
+    private Image backgroundImage;
     private Image borderTL, borderTR, borderBL, borderBR, borderTop, borderBottom, borderLeft, borderRight;
     private boolean drawBorder, tile;
     private int borderSize;
@@ -19,7 +19,7 @@ public class ImagePanel extends JPanel {
      * @param borderSize
      */
     public ImagePanel(Image backgroundImage, boolean tile, int borderSize) {
-        this.backtroundImage = backgroundImage;
+        this.backgroundImage = backgroundImage;
         drawBorder = false;
         this.tile = tile;
         this.borderSize = borderSize;
@@ -39,7 +39,7 @@ public class ImagePanel extends JPanel {
      * @param borderSize
      */
     public ImagePanel(Image backgroundImage, Image borderTL, Image borderTR, Image borderBL, Image borderBR, Image borderTop, Image borderBottom, Image borderLeft, Image borderRight, int borderSize) {
-        this.backtroundImage = backgroundImage;
+        this.backgroundImage = backgroundImage;
         this.borderTL = borderTL;
         this.borderTR = borderTR;
         this.borderBL = borderBL;
@@ -53,8 +53,8 @@ public class ImagePanel extends JPanel {
         this.borderSize = borderSize;
     }
 
-    public void setBacktroundImage(Image image) {
-        this.backtroundImage = image;
+    public void setBackgroundImage(Image image) {
+        this.backgroundImage = image;
     }
 
     /**
@@ -72,21 +72,21 @@ public class ImagePanel extends JPanel {
     }
 
     private void drawBackgroundStretched(Graphics g) {
-        if (backtroundImage == null ) return;
+        if (backgroundImage == null ) return;
 
         // Draw tiled image
         Dimension dimensions = getSize();
-        g.drawImage( backtroundImage, 0, 0, dimensions.width, dimensions.height, null, null);
+        g.drawImage(backgroundImage, 0, 0, dimensions.width, dimensions.height, null, null);
     }
 
     private void drawBackgroundTiled(Graphics g) {
-        if (backtroundImage == null ) return;
+        if (backgroundImage == null ) return;
 
         // Draw tiled image
         Dimension dimensions = getSize();
-        for (int x = 0; x < dimensions.width; x += backtroundImage.getWidth(null)) {
-            for (int y = 0; y < dimensions.height; y += backtroundImage.getHeight(null)) {
-                g.drawImage( backtroundImage, x, y, null, null);
+        for (int x = 0; x < dimensions.width; x += backgroundImage.getWidth(null)) {
+            for (int y = 0; y < dimensions.height; y += backgroundImage.getHeight(null)) {
+                g.drawImage(backgroundImage, x, y, null, null);
             }
         }
     }

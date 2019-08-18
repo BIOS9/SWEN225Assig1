@@ -1,12 +1,12 @@
 package gui;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import game.CluedoGame;
 import game.Player;
 import game.board.Board;
 import game.board.Cell;
 import game.board.Position;
 import game.cards.Card;
-import game.cards.Room;
 import gui.Update.*;
 import gui.request.PlayerBeginTurnRequest;
 import gui.request.PlayerCountRequest;
@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.List;
 
 /**
  * 
@@ -127,17 +126,19 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         put("Dining Room", Color.decode("#C4A3F4"));
         put("Billiard Room", Color.decode("#F8A4E0"));
         put("Conservatory", Color.decode("#D0A39E"));
-        put("Ballroom", Color.decode("#FC443A"));
+        put("Ball Room", Color.decode("#e3554b"));
         put("Kitchen", Color.decode("#807B77"));
         put("Hallway", Color.decode("#66BA5C"));
     }};
 
     private JLabel messageBox;
-    private ImagePanel cardBox, diceBox, die1, die2, playerBox, boardBox, infoBox;
+    private ImagePanel cardBox, diceBox, die1, die2, playerBox, infoBox;
+    private JPanel boardBox;
     private JScrollPane cardScollBox;
     
     //Game window associations
     private CluedoGame game = null;
+    private Board board;
     
     /**
      * Constructs a new game window.
@@ -325,7 +326,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         c.gridy = 1;
         boardContainer.add(messageBox, c);
 
-        boardBox = new ImagePanel(images.get("darkFelt"), true, BORDER_WIDTH);
+        boardBox = new JPanel() {
+            @Override
+            public void paint(Graphics g) {
+                boardPaint(g);
+            }
+        };
 
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
@@ -422,9 +428,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         final Random rng = new Random();
         final Timer timer = new Timer(100, e -> {
             diceBox.repaint();
-            die1.setBacktroundImage(images.get("die" + (rng.nextInt(6) + 1)));
+            die1.setBackgroundImage(images.get("die" + (rng.nextInt(6) + 1)));
             die1.repaint();
-            die2.setBacktroundImage(images.get("die" + (rng.nextInt(6) + 1)));
+            die2.setBackgroundImage(images.get("die" + (rng.nextInt(6) + 1)));
             die2.repaint();
         });
         timer.setRepeats(true);
@@ -434,9 +440,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
         Timer stopTimer = new Timer(1500, e -> {
             timer.stop();
             diceBox.repaint();
-            die1.setBacktroundImage(images.get("die" + update.FirstDie));
+            die1.setBackgroundImage(images.get("die" + update.FirstDie));
             die1.repaint();
-            die2.setBacktroundImage(images.get("die" + update.SecondDie));
+            die2.setBackgroundImage(images.get("die" + update.SecondDie));
             die2.repaint();
         });
         stopTimer.setRepeats(false);
@@ -510,28 +516,54 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     }
     
     private void updateBoard(BoardUpdate update) {
-    	
-    	Board board = update.board;
-    	
-    	BufferedImage boardImage = new BufferedImage(boardBox.getWidth(), boardBox.getHeight(), BufferedImage.TYPE_INT_RGB);
-    	Graphics boardGraphics = boardImage.getGraphics();
-    	int cellSize = 10;
-    	
-    	for(int r=0; r<board.BOARD_HEIGHT; r++) {
-    		for(int c=0; c<board.BOARD_WIDTH; c++) {
-    			
-    			Position pos = new Position(r, c);
+    	board = update.board;
+    	boardBox.repaint();
+    }
+
+    private void boardPaint(Graphics g) {
+        int width = boardBox.getWidth();
+        int height = boardBox.getHeight();
+
+        Image backgroundImage = images.get("darkFelt");
+
+        // Draw the background image tiled
+        for (int x = 0; x < width; x += backgroundImage.getWidth(null)) {
+            for (int y = 0; y < height; y += backgroundImage.getHeight(null)) {
+                g.drawImage(backgroundImage, x, y, null, null);
+            }
+        }
+
+        if(board == null) return; // Dont draw the board if its null
+
+        int cellSize;
+        int leftOffset = 0;
+        int topOffset = 0;
+
+        // base the size on the smallest dimension
+        if(width < height) { // if width is smaller than height, we must base the size on the width
+            cellSize = width / board.BOARD_WIDTH;
+            topOffset = (height / 2) - (cellSize * board.BOARD_HEIGHT / 2); // Center vertically
+        } else { // base the size on the height
+            cellSize = height / board.BOARD_HEIGHT;
+            leftOffset = (width / 2) - (cellSize * board.BOARD_WIDTH / 2); // Center horizontally
+        }
+
+
+
+        for(int r=0; r<board.BOARD_HEIGHT; r++) {
+            for(int c=0; c<board.BOARD_WIDTH; c++) {
+
+                Position pos = new Position(r, c);
                 Cell cell = board.getCell(pos);
 
                 if(cell == null) continue; // Skip empty cells
 
-                boardGraphics.setColor(roomColors.get(cell.getRoom().getName()));
-
-    			boardGraphics.drawRect(pos.x*cellSize, pos.y*cellSize, cellSize, cellSize);
-    		}
-    	}
-    	boardBox.setBacktroundImage(boardImage);
-    	boardBox.repaint();
+                g.setColor(roomColors.get(cell.getRoom().getName()));
+                g.fillRect(leftOffset + pos.x*cellSize, topOffset + pos.y*cellSize, cellSize, cellSize);
+                g.setColor(Color.black);
+                g.drawRect(leftOffset + pos.x*cellSize, topOffset + pos.y*cellSize, cellSize, cellSize);
+            }
+        }
     }
 
     @Override
