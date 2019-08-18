@@ -461,13 +461,15 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     	
     	BufferedImage boardImage = new BufferedImage(boardBox.getWidth(), boardBox.getHeight(), BufferedImage.TYPE_INT_RGB);
     	Graphics boardGraphics = boardImage.getGraphics();
+    	int cellSize = 50;
     	
+    	boardGraphics.setColor(Color.black);
     	
     	for(int r=0; r<board.BOARD_HEIGHT; r++) {
     		for(int c=0; c<board.BOARD_WIDTH; c++) {
+    			
     			Position pos = new Position(r, c);
-    			boardGraphics.setColor(Color.black);
-    			boardGraphics.drawRect(pos.x, pos.y, 1, 1);
+    			boardGraphics.drawRect(pos.x*cellSize, pos.y*cellSize, 1, 1);
     		}
     	}
     	boardBox.setBacktroundImage(boardImage);
