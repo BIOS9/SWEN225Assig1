@@ -1,6 +1,7 @@
 
 package game;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -51,12 +52,12 @@ public class CluedoGame extends Observable {
 
 	// Characters used in card generation
 	private final game.cards.Character[] characters = { 
-			new game.cards.Character("Miss Scarlett", 1),
-			new game.cards.Character("Mr Green", 2),
-			new game.cards.Character("Colonel Mustard", 3),
-			new game.cards.Character("Professor Plum", 4),
-			new game.cards.Character("Mrs. Peacock", 5),
-			new game.cards.Character("Mrs. White", 6) };
+			new game.cards.Character("Miss Scarlett", 1, Color.decode("#F80300")),
+			new game.cards.Character("Mr Green", 2, Color.decode("#7AAF09")),
+			new game.cards.Character("Colonel Mustard", 3, Color.decode("#F7F004")),
+			new game.cards.Character("Professor Plum", 4, Color.decode("#77016F")),
+			new game.cards.Character("Mrs. Peacock", 5, Color.decode("#51AACC")),
+			new game.cards.Character("Mrs. White", 6, Color.white) };
 
 	// Rooms used in card generation
 	private final game.cards.Room[] rooms = {
@@ -131,6 +132,8 @@ public class CluedoGame extends Observable {
 			chosenNames.add(player.getPlayerName());
 			players.add(player);
 		}
+
+		updateGui(new PlayersUpdate(players));
 	}
 
 	/**
