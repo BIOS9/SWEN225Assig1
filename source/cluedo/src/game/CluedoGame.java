@@ -119,14 +119,16 @@ public class CluedoGame extends Observable {
 		int playerCount = makeRequest(new PlayerCountRequest()).waitResponse();
 
 		// Chosen characters that cant be chosen by next players
-		List<game.cards.Character> chosenCharacters = new ArrayList<>();
+		Set<game.cards.Character> chosenCharacters = new HashSet<>();
+		Set<String> chosenNames = new HashSet<>();
 
 		// Add new players
 		for(int i = 0; i < playerCount; ++i) {
 			// Ask user for player info
-			Player player = makeRequest(new PlayerSetupRequest(Arrays.asList(characters), chosenCharacters)).waitResponse();
+			Player player = makeRequest(new PlayerSetupRequest(Arrays.asList(characters), chosenCharacters, chosenNames)).waitResponse();
 			// Add character to list of used characters
 			chosenCharacters.add(player.getCharacter());
+			chosenNames.add(player.getPlayerName());
 			players.add(player);
 		}
 	}
