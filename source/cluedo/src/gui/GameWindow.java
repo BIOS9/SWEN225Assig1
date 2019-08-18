@@ -140,6 +140,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     private ImagePanel cardBox, diceBox, die1, die2, playerBox, infoBox;
     private JPanel boardBox;
     private JScrollPane cardScollBox;
+    private String toolTipText = null;
     
     //Game window associations
     private CluedoGame game = null;
@@ -156,7 +157,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     private Set<Cell> visitedCells = new HashSet<>();
     private Set<Room> visitedRooms = new HashSet<>();
     private List<Cell.Direction> validMoveDirections = new ArrayList<>(); // Path of valid moves
-    
+    int cursorX, cursorY;
+
     /**
      * Constructs a new game window.
      */
@@ -523,7 +525,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 g2D.setColor(Color.decode("#49de23"));
                 g2D.drawRect(leftOffset + c.position.x * cellSize, topOffset + c.position.y * cellSize, cellSize, cellSize);
             }
-        } else if(isSelectedVisited) {
+        } else if(isSelectedVisited && selectedCell != null) {
             // Draw current cell as visited
             g2D.setColor(roomColors.get(selectedCell.getRoom().getName()).darker());
             g2D.fillRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
@@ -541,7 +543,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             g2D.drawRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
         }
 
-        // Draw players last to ensure player tokens are always on top
+        // Draw players last to ensure player tokens are always on top (Except for tooltips)
         for(Cell c : occupiedCells) {
             int characterSize = (int)(cellSize * 0.8);
             int cellX = leftOffset + c.position.x*cellSize;
@@ -558,12 +560,38 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             g2D.setColor(Color.black);
             g2D.drawOval(circleX, circleY, characterSize, characterSize);
         }
+
+        if(toolTipText != null) {
+            g2D.setComposite(AlphaComposite.SrcOver.derive(0.8f));
+            g2D.setColor(Color.black);
+
+            int stringWidth = g2D.getFontMetrics().stringWidth(toolTipText); // Measure the string
+            int boxWidth = stringWidth + 20;
+            int boxHeight = g2D.getFontMetrics().getHeight() + 5;
+
+            int xPos = cursorX - boxWidth / 2;
+            int yPos = cursorY - boxHeight - 10;
+
+            if(xPos < 0)
+                xPos -= xPos;
+            if(yPos < 0)
+                yPos = cursorY + 20;
+
+            g2D.fillRect(xPos, yPos, boxWidth, boxHeight);
+
+            g2D.setColor(Color.white);
+            g2D.drawString(toolTipText, xPos + 10, yPos + 15);
+
+            g2D.setComposite(AlphaComposite.SrcOver);
+        }
     }
 
     /**
      * Uses path finding algorithm to find a route from the player to the specified cell
      */
     private void findPlayerRoute() {
+        if(isPlayerMoving) return;
+
         isSelectedVisited = false;
         validMoveCells.clear();
         validMoveDirections.clear();
@@ -665,6 +693,21 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 //            gameTimeString = d.toHours() + ":" + d.toMinutes() + ":" + d.toMillis() / 1000;
 //        }
 //        gameTimerLabel.setText("Game Time: " + gameTimeString);
+    }
+
+    private void updateToolTip() {
+        if(board == null || selectedCell == null) {
+            toolTipText = null;
+            return;
+        }
+
+        if(selectedCell.isOccupied()) {
+            toolTipText = "Character: " + selectedCell.getOccupant().getName();
+        } else if(isSelectedVisited) {
+            toolTipText = "Already visited!";
+        } else {
+            toolTipText = null;
+        }
     }
 
     /**
@@ -889,21 +932,27 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if(board == null || isPlayerMoving) return;
-
         int x = e.getX();
         int y = e.getY();
+        cursorX = x;
+        cursorY = y;
+
+        if(board == null) return;
+
+        updateToolTip();
 
         Cell cell = getCellAtPos(x, y);
-        if(cell == null || cell.equals(selectedCell)) return;
+        if(cell != null && !cell.equals(selectedCell)) {
+            selectedCell = cell;
 
-        selectedCell = cell;
+            findPlayerRoute();
+            attemptedMoveCount = validMoveCells.size();
+            updateGameInfoBox();
+        } else if(cell == null) {
+            selectedCell = null;
+        }
 
-        findPlayerRoute();
-        attemptedMoveCount = validMoveCells.size();
-        updateGameInfoBox();
-
-        boardBox.repaint();
+        boardBox.repaint(); // Repaint to draw tool tips and board changes
     }
 
     @Override
