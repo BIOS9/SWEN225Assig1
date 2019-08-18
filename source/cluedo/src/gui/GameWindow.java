@@ -3,6 +3,7 @@ package gui;
 import game.CluedoGame;
 import game.Player;
 import game.board.Board;
+import game.board.Cell;
 import game.board.Position;
 import game.cards.Card;
 import gui.Update.*;
@@ -500,18 +501,23 @@ public class GameWindow extends JFrame implements Observer, ActionListener {
     	
     	BufferedImage boardImage = new BufferedImage(boardBox.getWidth(), boardBox.getHeight(), BufferedImage.TYPE_INT_RGB);
     	Graphics boardGraphics = boardImage.getGraphics();
-    	int cellSize = 50;
+    	int cellSize = 10;
     	
-    	boardGraphics.setColor(Color.black);
+    	boardGraphics.setColor(Color.white);
     	
     	for(int r=0; r<board.BOARD_HEIGHT; r++) {
     		for(int c=0; c<board.BOARD_WIDTH; c++) {
     			
     			Position pos = new Position(r, c);
-    			boardGraphics.drawRect(pos.x*cellSize, pos.y*cellSize, 1, 1);
+                Cell cell = board.getCell(pos);
+
+                if(cell == null) continue; // Skip empty cells
+                
+    			boardGraphics.drawRect(pos.x*cellSize, pos.y*cellSize, cellSize, cellSize);
     		}
     	}
     	boardBox.setBacktroundImage(boardImage);
+    	boardBox.repaint();
     }
 
     @Override

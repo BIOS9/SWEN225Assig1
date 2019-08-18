@@ -40,7 +40,7 @@ public class CluedoGame extends Observable {
 	// CluedoGame Associations
 	private Board board;
 	private Suggestion solutionCards;
-    private int round = 0;
+    private int round = -1; // Start at -1 because the first round will increment
     private int movesLeft;
     private Player currentPlayer;
     private boolean gameWon = false;
