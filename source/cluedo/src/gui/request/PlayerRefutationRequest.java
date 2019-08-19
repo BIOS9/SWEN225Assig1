@@ -3,10 +3,7 @@ package gui.request;
 import game.Player;
 import game.Suggestion;
 import game.cards.Card;
-import game.cards.Room;
-import game.cards.Weapon;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

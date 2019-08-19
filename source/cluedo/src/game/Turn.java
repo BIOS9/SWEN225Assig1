@@ -2,9 +2,7 @@ package game;
 
 import javafx.util.Pair;
 
-import java.util.*;
-
-import gui.Update.MessageUpdate;
+import java.util.Random;
 /** 
  * 
  * Processes the players turn, checking validity and delegating any suggestions or assumptions

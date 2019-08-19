@@ -1,13 +1,6 @@
 
 package game;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.*;
-
 import game.board.Board;
 import game.board.Cell;
 import game.cards.Card;
@@ -18,6 +11,10 @@ import gui.GameWindow;
 import gui.Update.*;
 import gui.request.*;
 import javafx.util.Pair;
+
+import java.awt.*;
+import java.util.List;
+import java.util.*;
 
 
 /**

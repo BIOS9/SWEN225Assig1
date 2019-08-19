@@ -2,15 +2,15 @@ package tests;
 
 import game.CluedoGame;
 import game.Player;
-import static org.junit.jupiter.api.Assertions.*;
-
 import game.cards.Card;
-
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class GameTests {
 	

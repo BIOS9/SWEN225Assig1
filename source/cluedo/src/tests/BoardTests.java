@@ -1,13 +1,12 @@
 package tests;
 
 import game.board.Board;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import game.board.Cell;
 import game.board.Position;
 import game.cards.Room;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTests {
 

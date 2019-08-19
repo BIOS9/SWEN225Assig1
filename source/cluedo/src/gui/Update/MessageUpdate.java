@@ -1,7 +1,5 @@
 package gui.Update;
 
-import game.Player;
-
 /**
  * Represents a message update in the game.
  * @author abbey

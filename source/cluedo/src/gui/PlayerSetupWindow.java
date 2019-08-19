@@ -9,8 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class PlayerSetupWindow extends JDialog implements KeyListener {
     public static final String WINDOW_TITLE = "Cluedo";

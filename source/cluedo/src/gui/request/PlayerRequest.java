@@ -1,7 +1,5 @@
 package gui.request;
 
-import game.Player;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 

@@ -13,8 +13,8 @@ import gui.request.*;
 import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * 

@@ -5,7 +5,6 @@ import game.Suggestion;
 import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
-import sun.java2d.SunGraphicsEnvironment;
 
 import javax.swing.*;
 import java.awt.*;

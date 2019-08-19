@@ -2,7 +2,6 @@ package gui.request;
 
 
 import game.Player;
-import game.cards.Character;
 
 import java.util.Collection;
 import java.util.Collections;
