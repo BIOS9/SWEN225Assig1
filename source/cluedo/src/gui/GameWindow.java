@@ -11,6 +11,8 @@ import game.cards.Room;
 import gui.Update.*;
 import gui.request.*;
 import javafx.util.Pair;
+import jdk.nashorn.internal.scripts.JO;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
@@ -894,8 +896,15 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         request.setResponse(null);
     }
 
+    /**
+     * Asks the player for accusation cards and generates a suggestion object
+     */
     private Suggestion askPlayerAccusation(PlayerAccusationRequest request) {
-        return new Suggestion(request.rooms.iterator().next(), request.characters.iterator().next(), request.weapons.iterator().next());
+        SuggestionWindow window = new SuggestionWindow(request.characters, request.rooms, request.weapons, request.player, this);
+        Suggestion suggestion = window.getSuggestion();
+        window.setVisible(false);
+        window.dispose();
+        return suggestion;
     }
 
     /**
@@ -1070,7 +1079,25 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * @param update
      */
     private void showWrongAccusationMessage(WrongAccusationUpdate update) {
-        JOptionPane.showMessageDialog(this, "Your accusation was incorrect! You are now disqualified from the game!\nThe correct solution cards were:\n\nCharacter: " + update.solution.getCharacter().getName() + "\nRoom: " + update.solution.getRoom().getName() + "\nWeapon: " + update.solution.getWeapon().getName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Your accusation was incorrect! You are now disqualified from the game!\nThe correct solution cards were:\n\nCharacter: " + update.solution.getCharacter().getName() + "\nRoom: " + update.solution.getRoom().getName() + "\nWeapon: " + update.solution.getWeapon().getName(), "Cluedo", JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Show game won message and ask if the players would like to play a new game
+     */
+    private void showGameWonMessage(GameWonUpdate update) {
+        if(!update.winByDefault)
+            JOptionPane.showMessageDialog(this, "Your accusation was correct! " + update.winner.getPlayerName() + " you are the winner!\nThe correct solution cards were:\n\nCharacter: " + update.solution.getCharacter().getName() + "\nRoom: " + update.solution.getRoom().getName() + "\nWeapon: " + update.solution.getWeapon().getName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+        else
+            JOptionPane.showMessageDialog(this, update.winner.getPlayerName() + " you are the winner by default!\nThe correct solution cards were:\n\nCharacter: " + update.solution.getCharacter().getName() + "\nRoom: " + update.solution.getRoom().getName() + "\nWeapon: " + update.solution.getWeapon().getName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+
+        int result = JOptionPane.showConfirmDialog(this, "Would you like to start a new game?", "Cluedo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(result == JOptionPane.YES_OPTION) {
+            newGame();
+        } else {
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }
     }
 
     @Override
@@ -1105,6 +1132,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 updateAllowedActions((AllowedActionsUpdate)arg);
             else if (arg instanceof WrongAccusationUpdate)
                 showWrongAccusationMessage((WrongAccusationUpdate)arg);
+            else if (arg instanceof GameWonUpdate)
+                showGameWonMessage((GameWonUpdate)arg);
         }
     }
 

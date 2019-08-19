@@ -81,7 +81,7 @@ public class PlayerSetupWindow extends JDialog implements KeyListener {
         ButtonGroup charButtonGroup = new ButtonGroup();
         for(game.cards.Character c : characters) {
             JRadioButton charButton = new JRadioButton(c.getName());
-            nameField.setAlignmentX(Component.LEFT_ALIGNMENT);
+            charButton.setAlignmentX(Component.LEFT_ALIGNMENT);
             charButton.addActionListener(this::characterButtonListener);
             charButtonGroup.add(charButton);
 

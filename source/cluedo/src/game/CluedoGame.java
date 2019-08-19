@@ -243,11 +243,10 @@ public class CluedoGame extends Observable {
     public void makeAccusation() {
 		if(currentPlayer == null || gameWon || !allowAccusation) return;
 
-
-		Suggestion suggestion = makeRequest(new PlayerAccusationRequest(Arrays.asList(characters), Arrays.asList(rooms), Arrays.asList(weapons))).waitResponse();
+		Suggestion suggestion = makeRequest(new PlayerAccusationRequest(Arrays.asList(characters), Arrays.asList(rooms), Arrays.asList(weapons), currentPlayer)).waitResponse();
 
 		if(suggestion.equals(solutionCards)) {
-			winGame();
+			winGame(false);
 			return;
 		}
 
@@ -255,6 +254,7 @@ public class CluedoGame extends Observable {
 		updateGui(new PlayersUpdate(players)); // Update players
 		updateGui(new MessageUpdate("Sorry " + currentPlayer.getPlayerName() + ", your suggestion was incorrect! You have been disqualified."));
 		updateGui(new WrongAccusationUpdate(currentPlayer, solutionCards));
+
 		nextTurn();
 	}
 
@@ -275,6 +275,11 @@ public class CluedoGame extends Observable {
             nextTurn();
             return;
         }
+
+		if(players.stream().filter(x -> !x.getHasAcused()).count() == 1) {
+			winGame(true);
+			return;
+		}
 
         game.cards.Character character = currentPlayer.getCharacter();
 
@@ -316,9 +321,9 @@ public class CluedoGame extends Observable {
         //updateGui(new HandUpdate(new ArrayList<>())); // Clear hand
     }
 
-    public void winGame() {
+    public void winGame(boolean winByDefault) {
 		gameWon = true;
-
+		updateGui(new GameWonUpdate(currentPlayer, solutionCards, winByDefault));
 	}
 
 	/**
