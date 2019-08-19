@@ -38,37 +38,38 @@ import java.util.List;
  */
 public class GameWindow extends JFrame implements Observer, ActionListener, MouseMotionListener, MouseListener {
 	
-			//GameWindow attributes
-            public static final String WINDOW_TITLE = "Cluedo";
-            public static final int
-                    WINDOW_MIN_WIDTH = 800,
-                    WINDOW_MIN_HEIGHT = 800,
-                    DEFAULT_FONT_SIZE = 12,
-                    ROOM_LABEL_FONT_SIZE = 15,
+    //GameWindow attributes
+    public static final String WINDOW_TITLE = "Cluedo";
+    public static final int
+            WINDOW_MIN_WIDTH = 800,
+            WINDOW_MIN_HEIGHT = 800,
+            DEFAULT_FONT_SIZE = 12,
+            ROOM_LABEL_FONT_SIZE = 15,
 
-                    DICE_BOX_HEIGHT = 100,
-                    DICE_SIZE = 60,
-                    DICE_GAP = 20,
-                    DICE_PADDING_TOP = 15,
+            DICE_BOX_HEIGHT = 100,
+            DICE_SIZE = 60,
+            DICE_GAP = 20,
+            DICE_PADDING_TOP = 15,
 
-                    PLAYER_HEIGHT = 20,
-                    PLAYER_COLOR_SIZE = 10,
-                    PLAYER_PADDING = 5,
+            PLAYER_HEIGHT = 20,
+            PLAYER_COLOR_SIZE = 10,
+            PLAYER_PADDING = 5,
 
-                    SIDEBAR_WIDTH = 200,
-                    BOTTOMBAR_HEIGHT = 200,
-                    BORDER_WIDTH = 7,
+            SIDEBAR_WIDTH = 200,
+            BOTTOMBAR_HEIGHT = 200,
+            BORDER_WIDTH = 7,
 
-                    INFO_BOX_WIDTH = 150,
+            INFO_BOX_WIDTH = 150,
 
-                    CARD_WIDTH = 100,
-                    CARD_HEIGHT = 170,
-                    CARD_GAP = 10,
-                    CARD_PADDING_TOP = 10;
-            public static final float
-                    CELL_BORDER_OPACITY = 0.10f;
+            CARD_WIDTH = 100,
+            CARD_HEIGHT = 170,
+            CARD_GAP = 10,
+            CARD_PADDING_TOP = 10;
+    public static final float
+            CELL_BORDER_OPACITY = 0.10f;
+
             // Map of image names to file locations to make the drawing of the board easier.
-            public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
+    public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
             	//backgrounds
                 put("felt", "images/texture/felt.jpg");
                 put("darkFelt", "images/texture/darkFelt.jpg");
@@ -146,10 +147,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     }};
 
     private JLabel messageBox, roundNumberLabel, turnNumberLabel, movesLeftLabel, gameTimerLabel, attemptedMoveLabel;
-    private ImagePanel cardBox, diceBox, die1, die2, playerBox, infoBox;
+    private ImagePanel cardBox, diceBox, die1, die2, playerBox, infoBox, turnActionBox;
     private JPanel boardBox;
     private JScrollPane cardScollBox;
     private String toolTipText = null;
+    private JButton finishTurnButton, suggestButton, accuseButton;
     
     //Game window associations
     private CluedoGame game = null;
@@ -217,6 +219,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         buildCardBox(container);
         buildBoardBox(container);
         buildPlayerBox(container);
+        buildTurnActionBox(container);
         buildInfoBox(container);
 
         add(container);
@@ -307,6 +310,39 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     }
 
     /**
+     * Constructs the turn action box used to display the turn action buttons (suggest, skip and accuse) to the player
+     * @param container
+     */
+    private void buildTurnActionBox(JPanel container) {
+        turnActionBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
+        turnActionBox.setPreferredSize(new Dimension(SIDEBAR_WIDTH, 100));
+
+        turnActionBox.setLayout(new FlowLayout());
+
+        finishTurnButton = new JButton("Finish Turn");
+        finishTurnButton.setEnabled(false);
+        finishTurnButton.addActionListener(e -> {
+            game.nextTurn();
+        });
+        turnActionBox.add(finishTurnButton);
+
+        suggestButton = new JButton("Suggest");
+        suggestButton.setEnabled(false);
+        turnActionBox.add(suggestButton);
+
+        accuseButton = new JButton("Accuse");
+        accuseButton.setEnabled(false);
+        turnActionBox.add(accuseButton);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.NONE;
+        c.gridx = 2;
+        c.gridy = 1;
+
+        container.add(turnActionBox, c);
+    }
+
+    /**
      * Constructs the dice box used for displaying the dice and total number rolled by a player during thier turn.
      * @param container
      */
@@ -330,7 +366,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.NONE;
         c.gridx = 2;
-        c.gridy = 1;
+        c.gridy = 2;
 
         container.add(diceBox, c);
     }
@@ -404,7 +440,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.weighty = 1;
-        c.gridheight = 2;
+        c.gridheight = 3;
         c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 0;
@@ -1001,6 +1037,17 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you have "+ movesLeft + " moves left!"));
     }
 
+    /**
+     * Updates the enabled state of the action buttons depending on the actions that are allowed
+     * @param update
+     */
+    private void updateAllowedActions(AllowedActionsUpdate update) {
+        finishTurnButton.setEnabled(update.allowFinishTurn);
+        suggestButton.setEnabled(update.allowSuggestion);
+        accuseButton.setEnabled(update.allowAccusation);
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -1029,6 +1076,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 updatePlayerTurn((PlayerTurnUpdate) arg);
             else if (arg instanceof MovesLeftUpdate)
                 updateMovesLeft((MovesLeftUpdate) arg);
+            else if(arg instanceof AllowedActionsUpdate)
+                updateAllowedActions((AllowedActionsUpdate)arg);
         }
     }
 

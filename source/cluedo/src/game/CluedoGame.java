@@ -223,17 +223,22 @@ public class CluedoGame extends Observable {
         }
 
         // If the player is out of moves, they can accuse or finish their turn
-        if(movesLeft <= 0) {
-        	allowFinishTurn = true;
-        	allowAccusation = true;
-		}
 
-        // If the player is in a room they can skip, accuse or suggest
-        if(!character.getLocation().isRoom(hallway)) {
+		if(!character.getLocation().isRoom(hallway)) {
 			allowSuggestion = true;
 			allowFinishTurn = true;
 			allowAccusation = true;
+		} else if(movesLeft <= 0) {
+        	allowFinishTurn = true;
+        	allowAccusation = true;
+		} else { // Room is hallway but still have moves left
+			allowSuggestion = false;
+			allowFinishTurn = false;
+			allowAccusation = false;
 		}
+
+        // If the player is in a room they can skip, accuse or suggest
+
 		updateGui(new AllowedActionsUpdate(allowFinishTurn, allowSuggestion, allowAccusation));
         // Check if run out of moves, update suggestion, accusation and skip buttons
     }
