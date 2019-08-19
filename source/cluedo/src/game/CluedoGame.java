@@ -42,6 +42,7 @@ public class CluedoGame extends Observable {
     private Player currentPlayer;
     private boolean gameWon = false;
     private boolean allowMove = false;
+    private boolean hasSuggestedThisTurn = false;
 	private boolean allowFinishTurn = false;
 	private boolean allowAccusation = false;
 	private boolean allowSuggestion = false;
@@ -234,7 +235,23 @@ public class CluedoGame extends Observable {
 			allowAccusation = false;
 		}
 
-        // If the player is in a room they can skip, accuse or suggest
+		if(hasSuggestedThisTurn) // Only allow one suggestion per turn
+			allowSuggestion = false;
+
+		// If player is stuck, allow them to skip the rest of their turn
+		boolean canMove = false;
+		for(Cell.Direction d : Cell.Direction.getList()) {
+			Cell neighbour = character.getLocation().getNeighbour(d);
+			if(neighbour != null && !visitedCells.contains(neighbour) && !neighbour.isOccupied() && (!visitedRooms.contains(newCell) || newCell.isRoom(hallway))) {
+				canMove = true;
+				break;
+			}
+		}
+
+		if(!canMove) {
+			allowFinishTurn = true;
+			updateGui(new MessageUpdate("It appears that you're stuck! You can skip the rest of your turn."));
+		}
 
 		updateGui(new AllowedActionsUpdate(allowFinishTurn, allowSuggestion, allowAccusation));
         // Check if run out of moves, update suggestion, accusation and skip buttons
@@ -243,19 +260,30 @@ public class CluedoGame extends Observable {
     public void makeAccusation() {
 		if(currentPlayer == null || gameWon || !allowAccusation) return;
 
-		Suggestion suggestion = makeRequest(new PlayerAccusationRequest(Arrays.asList(characters), Arrays.asList(rooms), Arrays.asList(weapons), currentPlayer)).waitResponse();
+		Suggestion accusation = makeRequest(new PlayerAccusationRequest(Arrays.asList(characters), Arrays.asList(rooms), Arrays.asList(weapons), currentPlayer)).waitResponse();
 
-		if(suggestion.equals(solutionCards)) {
+		if(accusation.equals(solutionCards)) {
 			winGame(false);
 			return;
 		}
 
 		currentPlayer.setHasAcused();
 		updateGui(new PlayersUpdate(players)); // Update players
-		updateGui(new MessageUpdate("Sorry " + currentPlayer.getPlayerName() + ", your suggestion was incorrect! You have been disqualified."));
+		updateGui(new MessageUpdate("Sorry " + currentPlayer.getPlayerName() + ", your accusation was incorrect! You have been disqualified."));
 		updateGui(new WrongAccusationUpdate(currentPlayer, solutionCards));
 
 		nextTurn();
+	}
+
+	public void makeSuggestion() {
+		if(currentPlayer == null || gameWon || !allowSuggestion) return;
+
+		Suggestion suggestion = makeRequest(new PlayerSuggestionRequest(Arrays.asList(characters), Arrays.asList(rooms), Arrays.asList(weapons), currentPlayer.getCharacter().getLocation().getRoom(), currentPlayer)).waitResponse();
+		allowSuggestion = false;
+		hasSuggestedThisTurn = true;
+		updateGui(new AllowedActionsUpdate(allowFinishTurn, allowSuggestion, allowAccusation));
+
+		System.out.println(suggestion.printCards());
 	}
 
     public void nextTurn() {
@@ -265,6 +293,7 @@ public class CluedoGame extends Observable {
 	    allowFinishTurn = false;
 	    allowAccusation = false;
 	    allowSuggestion = false;
+	    hasSuggestedThisTurn = false;
 		updateGui(new AllowedActionsUpdate(allowFinishTurn, allowSuggestion, allowAccusation));
 
 	    ++round;

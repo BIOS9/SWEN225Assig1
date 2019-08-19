@@ -329,6 +329,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
         suggestButton = new JButton("Suggest");
         suggestButton.setEnabled(false);
+        suggestButton.addActionListener(e -> {
+            if(game == null) return;
+            game.makeSuggestion();
+        });
         turnActionBox.add(suggestButton);
 
         accuseButton = new JButton("Accuse");
@@ -849,10 +853,16 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             PlayerCountRequest playerCountRequest = (PlayerCountRequest)request;
             int count = askPlayerCount();
             playerCountRequest.setResponse(count);
+
         } else if (request instanceof PlayerAccusationRequest) {
             PlayerAccusationRequest playerAccusationRequest = (PlayerAccusationRequest)request;
             Suggestion accusation = askPlayerAccusation(playerAccusationRequest);
             playerAccusationRequest.setResponse(accusation);
+
+        } else if (request instanceof PlayerSuggestionRequest) {
+            PlayerSuggestionRequest playerSuggestionRequest = (PlayerSuggestionRequest)request;
+            Suggestion suggestion = askPlayerSuggestion(playerSuggestionRequest);
+            playerSuggestionRequest.setResponse(suggestion);
         }
     }
 
@@ -901,6 +911,17 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      */
     private Suggestion askPlayerAccusation(PlayerAccusationRequest request) {
         SuggestionWindow window = new SuggestionWindow(request.characters, request.rooms, request.weapons, request.player, this);
+        Suggestion accusation = window.getSuggestion();
+        window.setVisible(false);
+        window.dispose();
+        return accusation;
+    }
+
+    /**
+     * Asks the player for suggestion cards and generates a suggestion object
+     */
+    private Suggestion askPlayerSuggestion(PlayerSuggestionRequest request) {
+        SuggestionWindow window = new SuggestionWindow(request.characters, request.rooms, request.weapons, request.player, request.suggestedRoom, this);
         Suggestion suggestion = window.getSuggestion();
         window.setVisible(false);
         window.dispose();
