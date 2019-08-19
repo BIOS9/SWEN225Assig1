@@ -929,6 +929,18 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
         for(Player p : request.playerList) {
             JOptionPane.showMessageDialog(this, p.getPlayerName() + " continue when you are ready to make your refutation.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+
+            RefutationWindow window = new RefutationWindow(p, request.suggestion, this);
+            Card refutation = window.refutation;
+            window.setVisible(false);
+            window.dispose();
+
+            // Finish refutations
+            if(refutation != null) {
+                card = refutation;
+                refuter = p;
+                break;
+            }
         }
 
         JOptionPane.showMessageDialog(this, "Refutations are finished.\n" + request.player.getPlayerName() + " continue when you are ready to see the result of the refutations.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
@@ -1153,7 +1165,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             roundNumberLabel.setText("Round: 1");
         else
             roundNumberLabel.setText("Round: " + (roundNumber / playerCount + 1));
-        
+
         turnNumberLabel.setText("Turn: " + (roundNumber + 1));
         movesLeftLabel.setText("Moves Left: " + movesLeft);
         attemptedMoveLabel.setText("Next Moves: " + attemptedMoveCount);

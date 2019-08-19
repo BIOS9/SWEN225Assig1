@@ -1,25 +1,24 @@
 package game;
 
+import game.cards.Card;
 import game.cards.Character;
 import game.cards.Room;
 import game.cards.Weapon;
 
 /**
- *
  * Responsible for taking a players 3 suggestion or accusation cards and checking that they are 1 of each
  * type (Room, Character, Weapon).
- *
+ * <p>
  * Collaborates with Turn, Card and Player
  *
  * @author abbey
- *
  */
 public class Suggestion {
 
-	//Suggestion Attributes
-	private boolean isAcusation = false;
+    //Suggestion Attributes
+    private boolean isAcusation = false;
 
-	//Suggestion Associations
+    //Suggestion Associations
     private game.cards.Room room;
     private game.cards.Character character;
     private game.cards.Weapon weapon;
@@ -35,69 +34,77 @@ public class Suggestion {
      * @param player
      * @param isAcusation
      */
-    public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon, Player player, boolean isAcusation) {
-    	this.room = room;
-    	this.character = character;
-    	this.weapon = weapon;
-    	this.player = player;
-    	this.isAcusation = isAcusation;
+    public Suggestion(game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon, Player player, boolean isAcusation) {
+        this.room = room;
+        this.character = character;
+        this.weapon = weapon;
+        this.player = player;
+        this.isAcusation = isAcusation;
     }
 
     /**
      * Constructs a new Suggestion object with only the three required cards (Room, Character, Weapon), useful for making the soloution.
-  	 *
+     *
      * @param room
      * @param character
      * @param weapon
      */
-    public Suggestion (game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon) {
-    	this.room = room;
-    	this.character = character;
-    	this.weapon = weapon;
+    public Suggestion(game.cards.Room room, game.cards.Character character, game.cards.Weapon weapon) {
+        this.room = room;
+        this.character = character;
+        this.weapon = weapon;
     }
 
-	public String printCards() {
-		return "Suggestion: [" + room.getName() + "] [" + weapon.getName() + "] [" + character.getName() + "]";
-	}
+    public String printCards() {
+        return "Suggestion: [" + room.getName() + "] [" + weapon.getName() + "] [" + character.getName() + "]";
+    }
 
-	public Character getCharacter() {
-		return character;
-	}
+    public Character getCharacter() {
+        return character;
+    }
 
-	public Room getRoom() {
-		return room;
-	}
+    public Room getRoom() {
+        return room;
+    }
 
-	public Weapon getWeapon() {
-		return weapon;
-	}
+    public Weapon getWeapon() {
+        return weapon;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(obj.getClass() != getClass())
-			return false;
-		if(obj == this)
-			return true;
+    public boolean containsCard(Card card) {
+    	if(weapon != null && weapon.equals(card))
+    	    return true;
+        if(room != null && room.equals(card))
+            return true;
+        return character != null && character.equals(card);
+    }
 
-		Suggestion suggestion = (Suggestion)obj;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj.getClass() != getClass())
+            return false;
+        if (obj == this)
+            return true;
 
-		if(!room.equals(suggestion.room))
-			return false;
+        Suggestion suggestion = (Suggestion) obj;
 
-		if(!character.equals(suggestion.character))
-			return false;
+        if (!room.equals(suggestion.room))
+            return false;
 
-		return weapon.equals(suggestion.weapon);
-	}
+        if (!character.equals(suggestion.character))
+            return false;
 
-	public boolean isAcusation() {
-		return isAcusation;
-	}
+        return weapon.equals(suggestion.weapon);
+    }
 
-	@Override
-	public String toString() {
-		return printCards();
-	}
+    public boolean isAcusation() {
+        return isAcusation;
+    }
+
+    @Override
+    public String toString() {
+        return printCards();
+    }
 }
