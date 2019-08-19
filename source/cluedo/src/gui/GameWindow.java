@@ -1,7 +1,5 @@
 package gui;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import game.CluedoGame;
 import game.Player;
 import game.board.Board;
@@ -15,20 +13,16 @@ import gui.request.PlayerCountRequest;
 import gui.request.PlayerSetupRequest;
 import gui.request.PlayerRequest;
 import javafx.util.Pair;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.List;
@@ -616,7 +610,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             return;
 
         //cant revisit cells or re enter rooms in one turn.
-        if(visitedCells.contains(selectedCell) || visitedRooms.contains(selectedCell.getRoom())) {
+        if(visitedCells.contains(selectedCell) || (visitedRooms.contains(selectedCell.getRoom()) && !selectedCell.getRoom().equals(start.getRoom()))) {
             isSelectedVisited = true;
             return;
         }
@@ -636,7 +630,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 if(nextCell.equals(end) && (bestRoute == null || bestRoute.size() > route.size())) { // is a better route
                     route.add(new Pair<>(nextCell, direction));
                     bestRoute = route;
-                } else if(!nextCell.isOccupied() && route.stream().noneMatch(x -> x.getKey().equals(nextCell))){
+                } else if(!nextCell.isOccupied() && route.stream().noneMatch(x -> x.getKey().equals(nextCell)) && !visitedCells.contains(nextCell)){
                     List<Pair<Cell, Cell.Direction>> newRoute = new ArrayList<>(route);
                     newRoute.add(new Pair<>(nextCell, direction));
 

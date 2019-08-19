@@ -53,7 +53,7 @@ class Turn {
         int roll1 = rng.nextInt(6) + 1; // Add 1 because rng gives 0-exclusive 6, dice don't have 0
         int roll2 = rng.nextInt(6) + 1;
 
-        diceRoll = roll1 + roll2;
+        diceRoll = roll1 + roll2 + 10;
         return new Pair<>(roll1, roll2);
     }
 }
