@@ -494,8 +494,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 g2D.fillRect(cellX, cellY, cellSize, cellSize);
 
                 // Draw border
-                g2D.setColor(Color.decode("#5c5c5c"));
+                g2D.setComposite(AlphaComposite.SrcOver.derive(0.15f));
+                g2D.setColor(Color.black);
                 g2D.drawRect(cellX, cellY, cellSize, cellSize);
+                g2D.setComposite(AlphaComposite.SrcOver);
 
                 if(cell.isOccupied()) {
                     occupiedCells.add(cell);
@@ -684,12 +686,6 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
         // Timer to animate movement
         final Timer t = new Timer(100, e -> {
-            if(validMoveDirections.isEmpty()) {
-                ((Timer)e.getSource()).stop();
-                isPlayerMoving = false;
-                return;
-            }
-            
             // Get where to move
             Cell.Direction d = validMoveDirections.get(0);
             validMoveDirections.remove(0);
@@ -702,6 +698,14 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 visitedRooms.add(playerCell.getRoom());
 
             validMoveCells.remove(playerCell); // Remove the cells as they are moved over
+
+            if(validMoveDirections.isEmpty()) {
+                ((Timer)e.getSource()).stop();
+                isPlayerMoving = false;
+                // Find new route from landing position
+                findPlayerRoute();
+            }
+
             boardBox.repaint();
         });
         t.setRepeats(true);
