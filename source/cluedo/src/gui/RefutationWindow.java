@@ -29,17 +29,22 @@ public class RefutationWindow extends JDialog {
         container.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
+        constraints.anchor = GridBagConstraints.WEST;
+
         constraints.gridy = 0;
+        constraints.insets = new Insets(5, 5, 10, 5);
+        container.add(new JLabel("The suggested cards were: " + suggestion.getCharacter().getName() + ", " + suggestion.getWeapon().getName() + ", " + suggestion.getRoom().getName()), constraints);
+
+        constraints.gridy = 1;
         constraints.insets = new Insets(5, 5, 0, 5);
         container.add(new JLabel(playerRefutableCards.isEmpty() ? player.getPlayerName() + " you have no refutation cards, continue when you're ready." : player.getPlayerName() + " please choose a refutation card."), constraints);
 
-        constraints.anchor = GridBagConstraints.WEST;
-        constraints.gridwidth = 1;
-        constraints.insets = new Insets(10, 5, 0, 0);
-        constraints.gridy = 1;
-        container.add(new JLabel("Valid refutation cards:"), constraints);
-
-        int currentY = 2;
+        if(!playerRefutableCards.isEmpty()) {
+            constraints.insets = new Insets(10, 5, 0, 0);
+            constraints.gridy = 2;
+            container.add(new JLabel("Valid refutation cards:"), constraints);
+        }
+        int currentY = 3;
         boolean selected = false;
 
         // Add the card buttons

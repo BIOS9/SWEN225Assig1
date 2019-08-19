@@ -930,10 +930,14 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         for(Player p : request.playerList) {
             JOptionPane.showMessageDialog(this, p.getPlayerName() + " continue when you are ready to make your refutation.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
 
+            updateHand(new HandUpdate(p.getHand())); // Show the player's hand
+
             RefutationWindow window = new RefutationWindow(p, request.suggestion, this);
             Card refutation = window.refutation;
             window.setVisible(false);
             window.dispose();
+
+            updateHand(new HandUpdate(new ArrayList<>())); // Hide the player's hand
 
             // Finish refutations
             if(refutation != null) {
@@ -975,7 +979,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         timer.start();
 
         // Stops the dice rolling and sets the value
-        Timer stopTimer = new Timer(1500, e -> {
+        Timer stopTimer = new Timer(1000, e -> {
             timer.stop();
             diceBox.repaint();
             die1.setBackgroundImage(images.get("die" + update.FirstDie));
