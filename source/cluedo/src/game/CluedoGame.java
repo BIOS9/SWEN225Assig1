@@ -128,12 +128,12 @@ public class CluedoGame extends Observable {
 		for(int i = 0; i < playerCount; ++i) {
 			// Ask user for player info
 			Player player = makeRequest(new PlayerSetupRequest(Arrays.asList(characters), chosenCharacters, chosenNames)).waitResponse();
+			
 			// Add character to list of used characters
 			chosenCharacters.add(player.getCharacter());
 			chosenNames.add(player.getPlayerName());
 			players.add(player);
 		}
-
 		updateGui(new PlayersUpdate(players));
 	}
 
@@ -243,9 +243,9 @@ public class CluedoGame extends Observable {
             visitedRooms.add(character.getLocation().getRoom());
         }
 
+        //Beginning of turn updates
         updateGui(new PlayerTurnUpdate(currentPlayer, round));
         updateGui(new MessageUpdate(currentPlayer.getPlayerName() + " / " + character.getName() + " you're up!"));
-        
         updateGui(new BoardUpdate(board)); 
 
         makeRequest(new PlayerBeginTurnRequest(currentPlayer)).waitResponse(); // Waits for player to begin turn
@@ -257,6 +257,7 @@ public class CluedoGame extends Observable {
         updateGui(new MovesLeftUpdate(movesLeft));
         updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
         updateGui(new HandUpdate(currentPlayer.getHand()));
+
 		allowMove = true;
 
 
