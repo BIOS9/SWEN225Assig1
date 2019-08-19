@@ -494,12 +494,35 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 g2D.fillRect(cellX, cellY, cellSize, cellSize);
 
                 // Draw border
-                g2D.setColor(Color.black);
+                g2D.setColor(Color.decode("#5c5c5c"));
                 g2D.drawRect(cellX, cellY, cellSize, cellSize);
 
                 if(cell.isOccupied()) {
                     occupiedCells.add(cell);
                 }
+
+                // Draw the borders between walls
+                g2D.setColor(Color.black);
+                g2D.setStroke(new BasicStroke(2));
+                Cell.Direction.getStream().forEach(d -> {
+                    Cell neighbour = cell.getNeighbour(d);
+                    if(neighbour == null) {
+                        switch (d) {
+                            case EAST:
+                                g2D.drawLine(cellX + cellSize, cellY, cellX + cellSize, cellY + cellSize);
+                                break;
+                            case WEST:
+                                g2D.drawLine(cellX, cellY, cellX, cellY + cellSize);
+                                break;
+                            case NORTH:
+                                g2D.drawLine(cellX, cellY, cellX + cellSize, cellY);
+                                break;
+                            case SOUTH:
+                                g2D.drawLine(cellX, cellY + cellSize, cellX + cellSize, cellY + cellSize);
+                                break;
+                        }
+                    }
+                });
             }
         }
 
@@ -807,7 +830,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             die1.repaint();
             die2.setBackgroundImage(images.get("die" + update.SecondDie));
             die2.repaint();
-            updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you rolled a "+ movesLeft + " !"));
+            updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you rolled a "+ movesLeft + "!"));
         });
         stopTimer.setRepeats(false);
         stopTimer.start();

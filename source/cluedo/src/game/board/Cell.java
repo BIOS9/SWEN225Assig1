@@ -3,6 +3,9 @@ package game.board;
 import java.util.*;
 import java.util.Collections;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import game.cards.Room;
 
 /**
@@ -19,7 +22,29 @@ public class Cell {
 	
 	//Cell Attributes
 	public enum Direction {
-		NORTH, SOUTH, EAST, WEST
+		NORTH, SOUTH, EAST, WEST;
+
+		public Direction next() {
+			switch (this) {
+				case NORTH:
+					return EAST;
+				case EAST:
+					return SOUTH;
+				case SOUTH:
+					return WEST;
+				case WEST:
+					return NORTH;
+			}
+			return null;
+		}
+
+		public static Stream<Direction> getStream() {
+			return Stream.of(NORTH, EAST, SOUTH, WEST);
+		}
+
+		public static List<Direction> getList() {
+			return  getStream().collect(Collectors.toList());
+		}
 	}
 	public final boolean isDoor;
 

@@ -217,6 +217,10 @@ public class CluedoGame extends Observable {
         } else {
             updateGui(new MessageUpdate("You can't move there!"));
         }
+
+        if(movesLeft <= 0)
+        	nextTurn();
+        // Check if run out of moves, update suggestion, accusation and skip buttons
     }
 
     public void nextTurn() {
@@ -259,7 +263,6 @@ public class CluedoGame extends Observable {
         updateGui(new HandUpdate(currentPlayer.getHand()));
 
 		allowMove = true;
-
 
         //updateGui(new HandUpdate(new ArrayList<>())); // Clear hand
     }
