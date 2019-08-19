@@ -924,7 +924,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     private void updateMovesLeft(MovesLeftUpdate update) {
         movesLeft = update.movesLeft;
         updateGameInfoBox();
-        updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you have "+ movesLeft + " !"));
+        updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you have "+ movesLeft + " moves left!"));
     }
 
     @Override
