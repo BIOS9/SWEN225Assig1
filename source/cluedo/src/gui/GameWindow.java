@@ -11,6 +11,7 @@ import game.cards.Room;
 import gui.Update.*;
 import gui.request.*;
 import javafx.util.Pair;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -921,7 +922,22 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * @return Refutation card or null if no players have a valid card
      */
     private Card askPlayerRefutations(PlayerRefutationRequest request) {
-        return null;
+        Card card = null;
+        Player refuter = null;
+
+        JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " has made a suggestion, refutations will now begin starting with " + request.playerList.get(0).getPlayerName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+
+        for(Player p : request.playerList) {
+            JOptionPane.showMessageDialog(this, p.getPlayerName() + " continue when you are ready to make your refutation.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        JOptionPane.showMessageDialog(this, "Refutations are finished.\n" + request.player.getPlayerName() + " continue when you are ready to see the result of the refutations.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+        if(card == null)
+            JOptionPane.showMessageDialog(this, "Your suggestion was not refuted.\nYou may now make an accusation or finish your turn.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+        else
+            JOptionPane.showMessageDialog(this, "Your suggestion was refuted by " + refuter.getPlayerName() + " using the " + card.getName() + " card.\nYou may now make an accusation or finish your turn.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+
+        return card;
     }
 
     //endregion
@@ -1133,7 +1149,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Updates the game info box; round number, moves left and next moves
      */
     private void updateGameInfoBox() {
-        roundNumberLabel.setText("Round: " + (roundNumber / (playerCount + 1) + 1));
+        if(playerCount == 0)
+            roundNumberLabel.setText("Round: 1");
+        else
+            roundNumberLabel.setText("Round: " + (roundNumber / playerCount + 1));
+        
         turnNumberLabel.setText("Turn: " + (roundNumber + 1));
         movesLeftLabel.setText("Moves Left: " + movesLeft);
         attemptedMoveLabel.setText("Next Moves: " + attemptedMoveCount);

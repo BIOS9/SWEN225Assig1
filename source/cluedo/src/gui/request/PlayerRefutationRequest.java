@@ -4,6 +4,7 @@ import game.Player;
 import game.Suggestion;
 import game.cards.Card;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,10 +14,16 @@ import java.util.List;
  */
 public class PlayerRefutationRequest extends PlayerRequest<Card> {
     public final Suggestion suggestion;
+    public final Player player;
     public final List<Player> playerList;
 
-    public PlayerRefutationRequest(Suggestion suggestion, List<Player> playerList) {
+    public PlayerRefutationRequest(Suggestion suggestion, Player player, List<Player> playerList) {
         this.suggestion = suggestion;
-        this.playerList = Collections.unmodifiableList(playerList);
+        this.player = player;
+        this.playerList = new ArrayList<>(playerList);
+
+        // Ensures the player list does not contain the player because a player cannot refute their own suggestion
+        if(this.playerList.contains(player))
+            this.playerList.remove(player);
     }
 }

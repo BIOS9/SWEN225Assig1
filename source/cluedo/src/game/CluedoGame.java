@@ -286,11 +286,16 @@ public class CluedoGame extends Observable {
 		if(!board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom))
 			updateGui(new MessageUpdate("Failed to move the suggested player into the room! Are there available spaces away from any door?"));
 
-		Card refutationCard = makeRequest(new PlayerRefutationRequest(suggestion, players)).waitResponse();
+		updateGui(new BoardUpdate(board)); // Update board to display character/weapon movement
+		updateGui(new HandUpdate(new ArrayList<>())); // Hide the hand from players during the refutations
+
+		Card refutationCard = makeRequest(new PlayerRefutationRequest(suggestion, currentPlayer, players)).waitResponse();
 		if(refutationCard == null)
 			updateGui(new MessageUpdate("Refutations are over, no refutations were made. You may finish your turn or make an accusation."));
 		else
 			updateGui(new MessageUpdate("Refutations are over."));
+
+		updateGui(new HandUpdate(currentPlayer.getHand())); // Restore the hand
 	}
 
     public void nextTurn() {
