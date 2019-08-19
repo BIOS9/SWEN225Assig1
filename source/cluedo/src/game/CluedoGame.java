@@ -16,10 +16,7 @@ import game.cards.Room;
 import game.cards.Weapon;
 import gui.GameWindow;
 import gui.Update.*;
-import gui.request.PlayerBeginTurnRequest;
-import gui.request.PlayerCountRequest;
-import gui.request.PlayerSetupRequest;
-import gui.request.PlayerRequest;
+import gui.request.*;
 import javafx.util.Pair;
 
 
@@ -243,6 +240,24 @@ public class CluedoGame extends Observable {
         // Check if run out of moves, update suggestion, accusation and skip buttons
     }
 
+    public void makeAccusation() {
+		if(currentPlayer == null || gameWon || !allowAccusation) return;
+
+
+		Suggestion suggestion = makeRequest(new PlayerAccusationRequest(Arrays.asList(characters), Arrays.asList(rooms), Arrays.asList(weapons))).waitResponse();
+
+		if(suggestion.equals(solutionCards)) {
+			winGame();
+			return;
+		}
+
+		currentPlayer.setHasAcused();
+		updateGui(new PlayersUpdate(players)); // Update players
+		updateGui(new MessageUpdate("Sorry " + currentPlayer.getPlayerName() + ", your suggestion was incorrect! You have been disqualified."));
+		updateGui(new WrongAccusationUpdate(currentPlayer, solutionCards));
+		nextTurn();
+	}
+
     public void nextTurn() {
 	    if(gameWon) return;
 
@@ -257,6 +272,7 @@ public class CluedoGame extends Observable {
 
         if(currentPlayer.getHasAcused()) { // If player has accused, skip them
             updateGui(new PlayerTurnSkipUpdate(currentPlayer));
+            nextTurn();
             return;
         }
 
@@ -281,8 +297,10 @@ public class CluedoGame extends Observable {
         //Beginning of turn updates
         updateGui(new PlayerTurnUpdate(currentPlayer, round));
         updateGui(new MessageUpdate(currentPlayer.getPlayerName() + " / " + character.getName() + " you're up!"));
-        updateGui(new BoardUpdate(board)); 
+        updateGui(new BoardUpdate(board));
 
+
+		updateGui(new HandUpdate(new ArrayList<>()));
         makeRequest(new PlayerBeginTurnRequest(currentPlayer)).waitResponse(); // Waits for player to begin turn
 
         Turn turn = new Turn(currentPlayer);
@@ -298,6 +316,11 @@ public class CluedoGame extends Observable {
         //updateGui(new HandUpdate(new ArrayList<>())); // Clear hand
     }
 
+    public void winGame() {
+		gameWon = true;
+
+	}
+
 	/**
 	 * Runs game, main loop for turns and user input
 	 */
@@ -305,21 +328,6 @@ public class CluedoGame extends Observable {
 		Player winner;
 
 		//while (true) {
-
-            //System.out.println("Your character is number " + character.getNumber() + " and is located at " + character.getLocation().position.toString());
-
-			// Move player until they run out of moves or skip
-//			while(moves > 0) {
-//				System.out.println("You have " + moves + " moves remaining.");
-//				System.out.print("Where would you like to move? ");
-//
-//
-//				if(move == null) // Skip rest of moves is user skips
-//					break;
-//
-//
-//			}
-
 			// Ask player for suggestion
 //			Suggestion suggestion = askSuggestion(player, character.getLocation().getRoom(), character.getLocation().isRoom(hallway)); // Get suggestion, forcing accusation if in hallway
 //

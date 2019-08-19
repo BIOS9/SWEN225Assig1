@@ -2,16 +2,14 @@ package gui;
 
 import game.CluedoGame;
 import game.Player;
+import game.Suggestion;
 import game.board.Board;
 import game.board.Cell;
 import game.board.Position;
 import game.cards.Card;
 import game.cards.Room;
 import gui.Update.*;
-import gui.request.PlayerBeginTurnRequest;
-import gui.request.PlayerCountRequest;
-import gui.request.PlayerSetupRequest;
-import gui.request.PlayerRequest;
+import gui.request.*;
 import javafx.util.Pair;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -322,6 +320,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         finishTurnButton = new JButton("Finish Turn");
         finishTurnButton.setEnabled(false);
         finishTurnButton.addActionListener(e -> {
+            if(game == null) return;
             game.nextTurn();
         });
         turnActionBox.add(finishTurnButton);
@@ -332,6 +331,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
         accuseButton = new JButton("Accuse");
         accuseButton.setEnabled(false);
+        accuseButton.addActionListener(e -> {
+            if(game == null) return;
+            int result = JOptionPane.showConfirmDialog(this, "A wrong accusation will cause you to be disqualified from the game!\nAre you sure you want to make an accusation?", "Cluedo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if(result == JOptionPane.YES_OPTION) {
+                game.makeAccusation();
+            }
+        });
         turnActionBox.add(accuseButton);
 
         GridBagConstraints c = new GridBagConstraints();
@@ -841,6 +847,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             PlayerCountRequest playerCountRequest = (PlayerCountRequest)request;
             int count = askPlayerCount();
             playerCountRequest.setResponse(count);
+        } else if (request instanceof PlayerAccusationRequest) {
+            PlayerAccusationRequest playerAccusationRequest = (PlayerAccusationRequest)request;
+            Suggestion accusation = askPlayerAccusation(playerAccusationRequest);
+            playerAccusationRequest.setResponse(accusation);
         }
     }
 
@@ -882,6 +892,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     private void askPlayerBeginTurn(PlayerBeginTurnRequest request) {
         JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " you're up!\nPress ok when you're ready to start.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
         request.setResponse(null);
+    }
+
+    private Suggestion askPlayerAccusation(PlayerAccusationRequest request) {
+        return new Suggestion(request.rooms.iterator().next(), request.characters.iterator().next(), request.weapons.iterator().next());
     }
 
     /**
@@ -970,7 +984,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
             // Add player's name
             JLabel playerLabel = new JLabel(p.getPlayerName());
-            playerLabel.setForeground(Color.white);
+            if(p.getHasAcused())
+                playerLabel.setForeground(Color.gray);
+            else
+                playerLabel.setForeground(Color.white);
             playerLabel.setOpaque(false);
             playerPanel.add(playerLabel);
 
@@ -1048,6 +1065,14 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     }
 
+    /**
+     * Shows a message telling the user that their accusation was wrong and shows them the solution
+     * @param update
+     */
+    private void showWrongAccusationMessage(WrongAccusationUpdate update) {
+        JOptionPane.showMessageDialog(this, "Your accusation was incorrect! You are now disqualified from the game!\nThe correct solution cards were:\n\nCharacter: " + update.solution.getCharacter().getName() + "\nRoom: " + update.solution.getRoom().getName() + "\nWeapon: " + update.solution.getWeapon().getName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -1076,8 +1101,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 updatePlayerTurn((PlayerTurnUpdate) arg);
             else if (arg instanceof MovesLeftUpdate)
                 updateMovesLeft((MovesLeftUpdate) arg);
-            else if(arg instanceof AllowedActionsUpdate)
+            else if (arg instanceof AllowedActionsUpdate)
                 updateAllowedActions((AllowedActionsUpdate)arg);
+            else if (arg instanceof WrongAccusationUpdate)
+                showWrongAccusationMessage((WrongAccusationUpdate)arg);
         }
     }
 
