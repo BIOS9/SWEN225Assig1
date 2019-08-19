@@ -19,6 +19,7 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -42,6 +43,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             public static final int
                     WINDOW_MIN_WIDTH = 800,
                     WINDOW_MIN_HEIGHT = 800,
+                    DEFAULT_FONT_SIZE = 12,
+                    ROOM_LABEL_FONT_SIZE = 15,
 
                     DICE_BOX_HEIGHT = 100,
                     DICE_SIZE = 60,
@@ -62,7 +65,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                     CARD_HEIGHT = 170,
                     CARD_GAP = 10,
                     CARD_PADDING_TOP = 10;
-
+            public static final float
+                    CELL_BORDER_OPACITY = 0.10f;
             // Map of image names to file locations to make the drawing of the board easier.
             public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
             	//backgrounds
@@ -129,7 +133,19 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         put("Hallway", Color.decode("#66BA5C"));
     }};
 
-    private JLabel messageBox, roundNumberLabel, movesLeftLabel, gameTimerLabel, attemptedMoveLabel;
+    private Map<Point2D, String> roomLabels = new HashMap<Point2D, String>() {{
+        put(new Point2D.Float(3f, 4f), "Kitchen");
+        put(new Point2D.Float(12f, 5f), "Ball Room");
+        put(new Point2D.Float(21f, 3.5f), "Conservatory");
+        put(new Point2D.Float(4f, 12.5f), "Dining Room");
+        put(new Point2D.Float(21f, 10.5f), "Billiard Room");
+        put(new Point2D.Float(3.5f, 22f), "Lounge");
+        put(new Point2D.Float(12f, 21.5f), "Hall");
+        put(new Point2D.Float(20.5f, 23f), "Study");
+        put(new Point2D.Float(20.5f, 16.5f), "Library");
+    }};
+
+    private JLabel messageBox, roundNumberLabel, turnNumberLabel, movesLeftLabel, gameTimerLabel, attemptedMoveLabel;
     private ImagePanel cardBox, diceBox, die1, die2, playerBox, infoBox;
     private JPanel boardBox;
     private JScrollPane cardScollBox;
@@ -139,6 +155,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     private CluedoGame game = null;
     private Board board;
     private Player currentPlayer;
+    private int playerCount;
     private int roundNumber;
     private int attemptedMoveCount;
     private int movesLeft;
@@ -237,6 +254,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         roundNumberLabel = new JLabel();
         roundNumberLabel.setForeground(Color.white);
 
+        turnNumberLabel = new JLabel();
+        turnNumberLabel.setForeground(Color.white);
+
         movesLeftLabel = new JLabel();
         movesLeftLabel.setForeground(Color.white);
 
@@ -247,6 +267,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         gameTimerLabel.setForeground(Color.white);
 
         infoBox.add(roundNumberLabel);
+        infoBox.add(turnNumberLabel);
         infoBox.add(movesLeftLabel);
         infoBox.add(attemptedMoveLabel);
         infoBox.add(gameTimerLabel);
@@ -440,6 +461,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      */
     private void boardPaint(Graphics g) {
         Graphics2D g2D = (Graphics2D)g;
+        g2D.setFont(new Font(g2D.getFont().toString(), 0, DEFAULT_FONT_SIZE));
         // Set rendering settings
         RenderingHints hints = new RenderingHints(new HashMap<RenderingHints.Key, Object>() {{
             put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -494,7 +516,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 g2D.fillRect(cellX, cellY, cellSize, cellSize);
 
                 // Draw border
-                g2D.setComposite(AlphaComposite.SrcOver.derive(0.15f));
+                g2D.setComposite(AlphaComposite.SrcOver.derive(CELL_BORDER_OPACITY));
                 g2D.setColor(Color.black);
                 g2D.drawRect(cellX, cellY, cellSize, cellSize);
                 g2D.setComposite(AlphaComposite.SrcOver);
@@ -564,6 +586,22 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             g2D.setColor(Color.decode("#de3923"));
             g2D.drawRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
         }
+
+        g2D.setFont(new Font(g2D.getFont().toString(), 0, ROOM_LABEL_FONT_SIZE));
+        g2D.setColor(Color.black);
+        for(Map.Entry<Point2D, String> roomLabel : roomLabels.entrySet()) {
+            int textWidth = g2D.getFontMetrics().stringWidth(roomLabel.getValue());
+            int textHeight = g2D.getFontMetrics().getHeight();
+
+            double cellX = leftOffset + roomLabel.getKey().getX()*cellSize;
+            double cellY = topOffset + roomLabel.getKey().getY()*cellSize;
+
+            double textPosX = cellX - textWidth / 2.0;
+            double textPosY = cellY + textHeight / 3.0;
+
+            g2D.drawString(roomLabel.getValue(), (int)textPosX, (int)textPosY);
+        }
+        g2D.setFont(new Font(g2D.getFont().toString(), 0, DEFAULT_FONT_SIZE));
 
         // Draw players last to ensure player tokens are always on top (Except for tooltips)
         for(Cell c : occupiedCells) {
@@ -716,7 +754,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Updates the game info box; round number, moves left and next moves
      */
     private void updateGameInfoBox() {
-        roundNumberLabel.setText("Round: " + (roundNumber + 1));
+        roundNumberLabel.setText("Round: " + (roundNumber / (playerCount + 1) + 1));
+        turnNumberLabel.setText("Turn: " + (roundNumber + 1));
         movesLeftLabel.setText("Moves Left: " + movesLeft);
         attemptedMoveLabel.setText("Next Moves: " + attemptedMoveCount);
 
@@ -873,6 +912,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         playerBox.removeAll();
         playerBox.repaint();
 
+        playerCount = update.players.size();
         for(Player p : update.players) {
             JPanel playerPanel = new JPanel();
             playerPanel.setOpaque(false);

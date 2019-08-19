@@ -45,6 +45,10 @@ public class CluedoGame extends Observable {
     private Player currentPlayer;
     private boolean gameWon = false;
     private boolean allowMove = false;
+	private boolean allowFinishTurn = false;
+	private boolean allowAccusation = false;
+	private boolean allowSuggestion = false;
+
 
     // Sets of visited places to prevent players going back on them
     private Set<Cell> visitedCells = new HashSet<>();
@@ -218,8 +222,19 @@ public class CluedoGame extends Observable {
             updateGui(new MessageUpdate("You can't move there!"));
         }
 
-        if(movesLeft <= 0)
-        	nextTurn();
+        // If the player is out of moves, they can accuse or finish their turn
+        if(movesLeft <= 0) {
+        	allowFinishTurn = true;
+        	allowAccusation = true;
+		}
+
+        // If the player is in a room they can skip, accuse or suggest
+        if(!character.getLocation().isRoom(hallway)) {
+			allowSuggestion = true;
+			allowFinishTurn = true;
+			allowAccusation = true;
+		}
+		updateGui(new AllowedActionsUpdate(allowFinishTurn, allowSuggestion, allowAccusation));
         // Check if run out of moves, update suggestion, accusation and skip buttons
     }
 
@@ -227,6 +242,10 @@ public class CluedoGame extends Observable {
 	    if(gameWon) return;
 
 	    allowMove = false;
+	    allowFinishTurn = false;
+	    allowAccusation = false;
+	    allowSuggestion = false;
+		updateGui(new AllowedActionsUpdate(allowFinishTurn, allowSuggestion, allowAccusation));
 
 	    ++round;
         currentPlayer = players.get(round % players.size());
@@ -245,6 +264,13 @@ public class CluedoGame extends Observable {
 
         if(!character.getLocation().isRoom(hallway)) { // Check if room is hallway
             visitedRooms.add(character.getLocation().getRoom());
+
+            // If the player is in a room they can skip their turn, accuse or suggest
+            allowFinishTurn = true;
+            allowAccusation = true;
+            allowSuggestion = true;
+
+            updateGui(new AllowedActionsUpdate(allowFinishTurn, allowSuggestion, allowAccusation));
         }
 
         //Beginning of turn updates
