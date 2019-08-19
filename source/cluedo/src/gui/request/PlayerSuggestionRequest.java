@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Represents a request to ask the user how many players are playing
+ * Represents a request to ask the player for a suggestion
  */
 public class PlayerSuggestionRequest extends PlayerRequest<Suggestion> {
     public final Collection<game.cards.Character> characters;

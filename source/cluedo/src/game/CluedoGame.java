@@ -283,7 +283,17 @@ public class CluedoGame extends Observable {
 		hasSuggestedThisTurn = true;
 		updateGui(new AllowedActionsUpdate(allowFinishTurn, allowSuggestion, allowAccusation));
 
-		System.out.println(suggestion.printCards());
+		Room moveRoom = currentPlayer.getCharacter().getLocation().getRoom();
+		updateGui(new MessageUpdate("Moving " + suggestion.getCharacter().getName() + " to the " + moveRoom.getName()));
+
+		if(!board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom))
+			updateGui(new MessageUpdate("Failed to move the suggested player into the room! Are there available spaces away from any door?"));
+
+		Card refutationCard = makeRequest(new PlayerRefutationRequest(suggestion, players)).waitResponse();
+		if(refutationCard == null)
+			updateGui(new MessageUpdate("Refutations are over, no refutations were made. You may finish your turn or make an accusation."));
+		else
+			updateGui(new MessageUpdate("Refutations are over."));
 	}
 
     public void nextTurn() {
@@ -353,49 +363,6 @@ public class CluedoGame extends Observable {
     public void winGame(boolean winByDefault) {
 		gameWon = true;
 		updateGui(new GameWonUpdate(currentPlayer, solutionCards, winByDefault));
-	}
-
-	/**
-	 * Runs game, main loop for turns and user input
-	 */
-	private void runGame() {
-		Player winner;
-
-		//while (true) {
-			// Ask player for suggestion
-//			Suggestion suggestion = askSuggestion(player, character.getLocation().getRoom(), character.getLocation().isRoom(hallway)); // Get suggestion, forcing accusation if in hallway
-//
-//			if(suggestion != null) {
-//				// Checks if suggestion is accusation, and if it is correct
-//				if (suggestion.isAcusation() && suggestion.equals(solutionCards)) {
-//					System.out.println("The solution cards are: " + solutionCards.toString());
-//					System.out.println("Congratulations you won the game!");
-//					winner = player;
-//					break;
-//				}
-//				// If the acusation is wrong this player can no longer make suggestions/acusations
-//				else if (suggestion.isAcusation()) {
-//					player.setHasAcused();
-//					System.out.println("Your accusation was incorrect! You are now a spectator of the game.");
-//					System.out.println("The solution cards are: " + solutionCards.toString());
-//				}
-//				// If the suggestion isnt an accusation ask other players for refutations.
-//				else {
-//					// Move the suggested player into a random spot in the room
-//					Room moveRoom = player.getCharacter().getLocation().getRoom();
-//					System.out.println("Moving " + suggestion.getCharacter().getName() + " to the " + moveRoom.getName());
-//
-//					if(!board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom))
-//						System.out.println("Failed to move the suggested player into the room! Are there available spaces away from any door?");
-//
-//					askRefutations(suggestion);
-//				}
-//			}
-
-            //++round;
-        //}
-
-		//System.out.println(winner.getCharacter().getName() + " has won the game in " + round + " rounds!");
 	}
 
 	/**

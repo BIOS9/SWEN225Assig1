@@ -11,7 +11,6 @@ import game.cards.Room;
 import gui.Update.*;
 import gui.request.*;
 import javafx.util.Pair;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,7 +36,9 @@ import java.util.List;
  *
  */
 public class GameWindow extends JFrame implements Observer, ActionListener, MouseMotionListener, MouseListener {
-	
+
+    //region FIELDS
+
     //GameWindow attributes
     public static final String WINDOW_TITLE = "Cluedo";
     public static final int
@@ -171,6 +172,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     private List<Cell.Direction> validMoveDirections = new ArrayList<>(); // Path of valid moves
     int cursorX, cursorY;
 
+    //endregion
+
     /**
      * Constructs a new game window.
      */
@@ -189,6 +192,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
         newGame();
     }
+
+    //region GUI SETUP
 
     /**
      * Loads images from files into image map
@@ -460,6 +465,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
         container.add(boardContainer, c);
     }
+
+    //endregion
+
+    //region UTILITY METHODS
 
     /**
      * Constructs a new game, removing the observer links of any old games to ensure there is not multiple game
@@ -798,41 +807,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         t.start();
     }
 
-    /**
-     * Updates the game info box; round number, moves left and next moves
-     */
-    private void updateGameInfoBox() {
-        roundNumberLabel.setText("Round: " + (roundNumber / (playerCount + 1) + 1));
-        turnNumberLabel.setText("Turn: " + (roundNumber + 1));
-        movesLeftLabel.setText("Moves Left: " + movesLeft);
-        attemptedMoveLabel.setText("Next Moves: " + attemptedMoveCount);
+    //endregion
 
-//        String gameTimeString = "";
-//        if(gameStart != null) {
-//            Duration d = Duration.between(Instant.now(), gameStart);
-//
-//            gameTimeString = d.toHours() + ":" + d.toMinutes() + ":" + d.toMillis() / 1000;
-//        }
-//        gameTimerLabel.setText("Game Time: " + gameTimeString);
-    }
-    
-    /**
-     * Updates the tool tip text that is displayed when a cell or player is hovered by the mouse.
-     */
-    private void updateToolTip() {
-        if(board == null || selectedCell == null) {
-            toolTipText = null;
-            return;
-        }
-
-        if(selectedCell.isOccupied()) {
-            toolTipText = "Character: " + selectedCell.getOccupant().getName();
-        } else if(isSelectedVisited) {
-            toolTipText = "Already visited!";
-        } else {
-            toolTipText = null;
-        }
-    }
+    //region REQUESTS
 
     /**
      * Creates a new request from a player request checking if it is a count request or a 
@@ -863,6 +840,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             PlayerSuggestionRequest playerSuggestionRequest = (PlayerSuggestionRequest)request;
             Suggestion suggestion = askPlayerSuggestion(playerSuggestionRequest);
             playerSuggestionRequest.setResponse(suggestion);
+        } else if (request instanceof PlayerRefutationRequest) {
+            PlayerRefutationRequest playerRefutationRequest = (PlayerRefutationRequest)request;
+            Card refutation = askPlayerRefutations(playerRefutationRequest);
+            playerRefutationRequest.setResponse(refutation);
         }
     }
 
@@ -927,6 +908,18 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         window.dispose();
         return suggestion;
     }
+
+    /**
+     * Asks players for a refutation card, stops when any player presents a valid card
+     * @return Refutation card or null if no players have a valid card
+     */
+    private Card askPlayerRefutations(PlayerRefutationRequest request) {
+        return null;
+    }
+
+    //endregion
+
+    //region UPDATES
 
     /**
      * Changes the dice to reflect the dice rolled in the game
@@ -1121,6 +1114,46 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         }
     }
 
+    /**
+     * Updates the game info box; round number, moves left and next moves
+     */
+    private void updateGameInfoBox() {
+        roundNumberLabel.setText("Round: " + (roundNumber / (playerCount + 1) + 1));
+        turnNumberLabel.setText("Turn: " + (roundNumber + 1));
+        movesLeftLabel.setText("Moves Left: " + movesLeft);
+        attemptedMoveLabel.setText("Next Moves: " + attemptedMoveCount);
+
+//        String gameTimeString = "";
+//        if(gameStart != null) {
+//            Duration d = Duration.between(Instant.now(), gameStart);
+//
+//            gameTimeString = d.toHours() + ":" + d.toMinutes() + ":" + d.toMillis() / 1000;
+//        }
+//        gameTimerLabel.setText("Game Time: " + gameTimeString);
+    }
+
+    /**
+     * Updates the tool tip text that is displayed when a cell or player is hovered by the mouse.
+     */
+    private void updateToolTip() {
+        if(board == null || selectedCell == null) {
+            toolTipText = null;
+            return;
+        }
+
+        if(selectedCell.isOccupied()) {
+            toolTipText = "Character: " + selectedCell.getOccupant().getName();
+        } else if(isSelectedVisited) {
+            toolTipText = "Already visited!";
+        } else {
+            toolTipText = null;
+        }
+    }
+
+    //endregion
+
+    //region IMPLEMENT METHODS
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -1223,4 +1256,6 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     public void mouseExited(MouseEvent e) {
 
     }
+
+    //endregion
 }
