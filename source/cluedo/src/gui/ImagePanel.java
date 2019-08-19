@@ -53,12 +53,15 @@ public class ImagePanel extends JPanel {
         this.borderSize = borderSize;
     }
 
+    /**
+     * Sets the background image to the specified image
+     */
     public void setBackgroundImage(Image image) {
         this.backgroundImage = image;
     }
 
     /**
-     * Paints background image
+     * Draws the necessary images and borders
      * @param g
      */
     @Override
@@ -71,6 +74,9 @@ public class ImagePanel extends JPanel {
         }
     }
 
+    /**
+     * Draws the background stretched. Uses one image and stretches it over the whole panel
+     */
     private void drawBackgroundStretched(Graphics g) {
         if (backgroundImage == null ) return;
 
@@ -79,6 +85,9 @@ public class ImagePanel extends JPanel {
         g.drawImage(backgroundImage, 0, 0, dimensions.width, dimensions.height, null, null);
     }
 
+    /**
+     * Draws the background as tiled, repeating the image until it fills the box
+     */
     private void drawBackgroundTiled(Graphics g) {
         if (backgroundImage == null ) return;
 
@@ -91,6 +100,9 @@ public class ImagePanel extends JPanel {
         }
     }
 
+    /**
+     * Draws a border around the panel using the specified border images
+     */
     private void drawBorder(Graphics g) {
         if(!drawBorder) return;
 

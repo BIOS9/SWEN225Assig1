@@ -2,7 +2,6 @@ package gui;
 
 import game.Player;
 import game.cards.Character;
-import javafx.scene.control.RadioButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,10 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
-import java.text.CollationElementIterator;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PlayerSetupWindow extends JDialog implements KeyListener {
     public static final String WINDOW_TITLE = "Cluedo";
@@ -36,6 +33,13 @@ public class PlayerSetupWindow extends JDialog implements KeyListener {
         add("Sarabi");
     }};
 
+    /**
+     * Constructor for the player setup window
+     * @param characters Characters to let the player choose from
+     * @param chosenCharacters Character that have already been chosen that a player cannot choose
+     * @param chosenNames Names that have already been chosen so that a player cannot choose
+     * @param parent The parent window of the JDialog
+     */
     public PlayerSetupWindow(Collection<game.cards.Character> characters, Set<game.cards.Character> chosenCharacters, Set<String> chosenNames, JFrame parent) {
         super(parent, WINDOW_TITLE, ModalityType.DOCUMENT_MODAL);
 
@@ -110,11 +114,17 @@ public class PlayerSetupWindow extends JDialog implements KeyListener {
         setVisible(true);
     }
 
+    /**
+     * Listener for when the player clicks a character radio button
+     */
     private void characterButtonListener(ActionEvent e) {
         JRadioButton charButton = (JRadioButton)e.getSource();
         chosenCharacterName = charButton.getText();
     }
 
+    /**
+     * Listener for when the player clicks the OK button
+     */
     private void okButtonListener(ActionEvent e) {
         String playerName = nameField.getText();
 
@@ -142,6 +152,11 @@ public class PlayerSetupWindow extends JDialog implements KeyListener {
         }
     }
 
+    /**
+     * Closes the window, doesn't dispose of the object but hides the window from the player
+     * The window is not disposed so that other parts of the program can retrieve the generated player
+     * object before disposing of the window after it closes.
+     */
     private void close() {
         setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
@@ -154,7 +169,7 @@ public class PlayerSetupWindow extends JDialog implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ENTER)
+        if(e.getKeyCode() == KeyEvent.VK_ENTER) // Handles enter pressed
             okButtonListener(null);
     }
 

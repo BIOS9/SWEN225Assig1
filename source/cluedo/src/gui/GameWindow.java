@@ -71,7 +71,6 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
             // Map of image names to file locations to make the drawing of the board easier.
             public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
-            	
             	//backgrounds
                 put("felt", "images/texture/felt.jpg");
                 put("darkFelt", "images/texture/darkFelt.jpg");
@@ -441,6 +440,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         return board.getCell(pos);
     }
 
+    /**
+     * Renders the board, players, and tooltips in the board box on screen
+     * @param g Graphics object passed from the paint event of the board
+     */
     private void boardPaint(Graphics g) {
         Graphics2D g2D = (Graphics2D)g;
         // Set rendering settings
@@ -561,8 +564,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             g2D.drawOval(circleX, circleY, characterSize, characterSize);
         }
 
+        // Draw tooltips
         if(toolTipText != null) {
-            g2D.setComposite(AlphaComposite.SrcOver.derive(0.8f));
+            g2D.setComposite(AlphaComposite.SrcOver.derive(0.7f));
             g2D.setColor(Color.black);
 
             int stringWidth = g2D.getFontMetrics().stringWidth(toolTipText); // Measure the string
@@ -572,13 +576,17 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             int xPos = cursorX - boxWidth / 2;
             int yPos = cursorY - boxHeight - 10;
 
-            if(xPos < 0)
+            if(xPos < 0) // Prevents tooltip going off left edge of screen
                 xPos -= xPos;
-            if(yPos < 0)
+            if(xPos > width - boxWidth) // Prevents tooltip going off right edge of screen
+                xPos = width - boxWidth;
+            if(yPos < 0) // Prevents tooltip going off top of screen
                 yPos = cursorY + 20;
 
+            // Draw the box
             g2D.fillRect(xPos, yPos, boxWidth, boxHeight);
 
+            // Draw the text
             g2D.setColor(Color.white);
             g2D.drawString(toolTipText, xPos + 10, yPos + 15);
 
@@ -681,6 +689,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         t.start();
     }
 
+    /**
+     * Updates the on-screen information in the info box
+     */
     private void updateGameInfoBox() {
         roundNumberLabel.setText("Round: " + (roundNumber + 1));
         movesLeftLabel.setText("Moves Left: " + movesLeft);
@@ -695,6 +706,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 //        gameTimerLabel.setText("Game Time: " + gameTimeString);
     }
 
+    /**
+     * Changes the tooltip text depending on what the player is hovering over
+     */
     private void updateToolTip() {
         if(board == null || selectedCell == null) {
             toolTipText = null;
@@ -732,6 +746,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         }
     }
 
+    /**
+     * Uses a PlayerSetupWindow to ask the player for their name and what character they would like
+     */
     private Player askPlayerInfo(PlayerSetupRequest request) {
         PlayerSetupWindow window = new PlayerSetupWindow(request.characters, request.chosenCharacters, request.chosenNames,this);
         Player player = window.player;
@@ -740,6 +757,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         return player;
     }
 
+    /**
+     * Uses JOptionPane to ask the user how many players are playing
+     */
     private int askPlayerCount() {
         while (true) {
             try {
@@ -858,10 +878,17 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         playerBox.revalidate();
     }
 
+    /**
+     * Updates the small message displayed to the user under the board box
+     */
     private void updateMessage(MessageUpdate update) {
         messageBox.setText(update.message);
     }
-    
+
+    /**
+     * Updates the board information and redraws the board box
+     * @param update
+     */
     private void updateBoard(BoardUpdate update) {
     	board = update.board;
     	validMoveCells.clear();
@@ -870,6 +897,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     	boardBox.repaint();
     }
 
+    /**
+     * Updates the current player and round number
+     * Clears routes found for the last player
+     * Updates the game info box and redraws the board
+     * @param update
+     */
     private void updatePlayerTurn(PlayerTurnUpdate update) {
         currentPlayer = update.player;
         roundNumber = update.round;
@@ -893,6 +926,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         boardBox.repaint();
     }
 
+    /**
+     * Updates the number of turns left and re-displays the info box
+     */
     private void updateMovesLeft(MovesLeftUpdate update) {
         movesLeft = update.movesLeft;
         updateGameInfoBox();
