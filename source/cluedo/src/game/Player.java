@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * Represents the actual players in the game (1-6) and links the character they are playing as to the Player object.
  * Manages the cards the player has been dealt and executes the players turns.
- * Also keeps track of where the player is on the board and if the player has made thier one acusation.
+ * Also keeps track of where the player is on the board and if the player has made their one accusation.
  * 
- * Colaborates directly with Character, Card, Turn and Cell.
+ * Collaborates directly with Character, Card, Turn and Cell.
  * 
  * @author abbey
  */
@@ -66,8 +66,7 @@ public class Player {
 	
 	//do we use this??
 	public game.cards.Card getHand(int index) {
-		game.cards.Card aHand = hand.get(index);
-		return aHand;
+		return hand.get(index);
 	}
 	
 	/**
@@ -75,8 +74,7 @@ public class Player {
 	 * @return unmodifiable list of cards in players hand.
 	 */
 	public List<game.cards.Card> getHand() {
-		List<game.cards.Card> newHand = Collections.unmodifiableList(hand);
-		return newHand;
+		return Collections.unmodifiableList(hand);
 	}
 	
 	public String getPlayerName() {

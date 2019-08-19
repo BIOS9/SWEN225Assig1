@@ -15,7 +15,7 @@ public class Position {
     
     /**
      * Constructor
-     * @param x positon
+     * @param x position
      * @param y position
      */
     public Position(int x, int y) {
@@ -33,10 +33,8 @@ public class Position {
     public static boolean areNeighbours(Position pos1, Position pos2) {
         if(Math.abs(pos1.x - pos2.x) == 0 && Math.abs(pos1.y - pos2.y) == 1)
             return true;
-        if(Math.abs(pos1.x - pos2.x) == 1 && Math.abs(pos1.y - pos2.y) == 0)
-            return true;
+        return Math.abs(pos1.x - pos2.x) == 1 && Math.abs(pos1.y - pos2.y) == 0;
 
-        return false;
     }
 
     /**

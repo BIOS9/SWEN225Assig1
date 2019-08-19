@@ -6,7 +6,7 @@ import game.cards.Weapon;
 
 /**
  *
- * Responsible for taking a pplayers 3 suggestion or acusation cards and checking that they are 1 of each
+ * Responsible for taking a players 3 suggestion or accusation cards and checking that they are 1 of each
  * type (Room, Character, Weapon).
  *
  * Collaborates with Turn, Card and Player
@@ -57,8 +57,7 @@ public class Suggestion {
     }
 
 	public String printCards() {
-		String s = "Suggestion: [" + room.getName() + "] [" + weapon.getName() + "] [" + character.getName() + "]";
-		return s;
+		return "Suggestion: [" + room.getName() + "] [" + weapon.getName() + "] [" + character.getName() + "]";
 	}
 
 	public Character getCharacter() {
@@ -90,10 +89,7 @@ public class Suggestion {
 		if(!character.equals(suggestion.character))
 			return false;
 
-		if(!weapon.equals(suggestion.weapon))
-			return false;
-
-		return true;
+		return weapon.equals(suggestion.weapon);
 	}
 
 	public boolean isAcusation() {

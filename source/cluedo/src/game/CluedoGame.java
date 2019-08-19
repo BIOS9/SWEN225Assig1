@@ -442,7 +442,7 @@ public class CluedoGame extends Observable {
 					case "X":
 						return null;
 				}
-			} catch (InputMismatchException ex) {}
+			} catch (InputMismatchException ignored) {}
 
 			System.out.println("Invalid input.");
 		}
@@ -468,7 +468,7 @@ public class CluedoGame extends Observable {
 					continue;
 
 				return cards[input - 1];
-			} catch (InputMismatchException ex) {} // Error occurs when player does not enter integer
+			} catch (InputMismatchException ignored) {} // Error occurs when player does not enter integer
 
 			System.out.println("Invalid input.");
 		}
@@ -505,7 +505,7 @@ public class CluedoGame extends Observable {
 							continue;
 						}
 				}
-			} catch (InputMismatchException ex) {} // Error occurs if input format is wrong, just asks again
+			} catch (InputMismatchException ignored) {} // Error occurs if input format is wrong, just asks again
 
 			System.out.println("Invalid input.");
 		}

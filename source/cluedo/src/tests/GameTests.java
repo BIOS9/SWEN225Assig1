@@ -30,6 +30,7 @@ public class GameTests {
 		try {
 			Field playersField = game.getClass().getDeclaredField("players");
 			playersField.setAccessible(true);
+			//noinspection unchecked
 			List<game.Player> playerList = (List<Player>)playersField.get(game);
 
 			playerList.add(new game.Player(new game.cards.Character("Miss Scarlett", 1)));

@@ -11,7 +11,6 @@ public class BoardUpdate extends GameUpdate{
 	
 	/**
 	 * Constructs a new board update
-	 * @param updated board
 	 */
 	public BoardUpdate (Board board) {
 		this.board = board;

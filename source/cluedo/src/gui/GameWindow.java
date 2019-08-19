@@ -28,12 +28,10 @@ import java.util.List;
 import java.util.*;
 
 /**
- * 
  * Creates the game window using Jpanels, setting backgrounds and allocating the different spaces on the board.
  * Game panel is the observer, contains the buttons that allow the player to interact with the game elements
- * 
- * @author abbey
  *
+ * @author abbey
  */
 public class GameWindow extends JFrame implements Observer, ActionListener, MouseMotionListener, MouseListener {
 
@@ -69,56 +67,56 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     public static final float
             CELL_BORDER_OPACITY = 0.10f;
 
-            // Map of image names to file locations to make the drawing of the board easier.
+    // Map of image names to file locations to make the drawing of the board easier.
     public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
-            	//backgrounds
-                put("felt", "images/texture/felt.jpg");
-                put("darkFelt", "images/texture/darkFelt.jpg");
-                
-                //boarders
-                put("borderTL", "images/texture/TopLeftBorderCorner.png");
-                put("borderTR", "images/texture/TopRightBorderCorner.png");
-                put("borderBL", "images/texture/BottomLeftBorderCorner.png");
-                put("borderBR", "images/texture/BottomRightBorderCorner.png");
-                put("borderTop", "images/texture/TopBorderTile.png");
-                put("borderBottom", "images/texture/BottomBorderTile.png");
-                put("borderLeft", "images/texture/LeftBorderTile.png");
-                put("borderRight", "images/texture/RightBorderTile.png");
-                
-                //dice
-                put("die1", "images/dice/die1.png");
-                put("die2", "images/dice/die2.png");
-                put("die3", "images/dice/die3.png");
-                put("die4", "images/dice/die4.png");
-                put("die5", "images/dice/die5.png");
-                put("die6", "images/dice/die6.png");
-                
-                //player cards
-                put("Miss Scarlett", "images/cards/Miss_scarlet.png");
-                put("Mr Green", "images/cards/Mr_green.png");
-                put("Colonel Mustard", "images/cards/Colonel_mustard.png");
-                put("Professor Plum", "images/cards/Prof_plum.png");
-                put("Mrs. Peacock", "images/cards/Mrs_peacock.png");
-                put("Mrs. White", "images/cards/Mrs_White.png");
-                
-                //room cards
-                put("Kitchen", "images/cards/Kitchen.png");
-                put("Ball Room", "images/cards/Ballroom.png");
-                put("Conservatory", "images/cards/Conservatory.png");
-                put("Billiard Room", "images/cards/Billard_room.png");
-                put("Dining Room", "images/cards/Dining_room.png");
-                put("Library", "images/cards/Library.png");
-                put("Hall", "images/cards/Hall.png");
-                put("Lounge", "images/cards/Lounge.png");
-                put("Study", "images/cards/Study.png");
-                
-                //weapon cards
-                put("Candlestick", "images/cards/Candlestick.png");
-                put("Knife", "images/cards/Knife.png");
-                put("Lead Pipe", "images/cards/Pipe.png");
-                put("Revolver", "images/cards/Revolver.png");
-                put("Rope", "images/cards/Rope.png");
-                put("Wrench", "images/cards/Wrench.png");
+        //backgrounds
+        put("felt", "images/texture/felt.jpg");
+        put("darkFelt", "images/texture/darkFelt.jpg");
+
+        //boarders
+        put("borderTL", "images/texture/TopLeftBorderCorner.png");
+        put("borderTR", "images/texture/TopRightBorderCorner.png");
+        put("borderBL", "images/texture/BottomLeftBorderCorner.png");
+        put("borderBR", "images/texture/BottomRightBorderCorner.png");
+        put("borderTop", "images/texture/TopBorderTile.png");
+        put("borderBottom", "images/texture/BottomBorderTile.png");
+        put("borderLeft", "images/texture/LeftBorderTile.png");
+        put("borderRight", "images/texture/RightBorderTile.png");
+
+        //dice
+        put("die1", "images/dice/die1.png");
+        put("die2", "images/dice/die2.png");
+        put("die3", "images/dice/die3.png");
+        put("die4", "images/dice/die4.png");
+        put("die5", "images/dice/die5.png");
+        put("die6", "images/dice/die6.png");
+
+        //player cards
+        put("Miss Scarlett", "images/cards/Miss_scarlet.png");
+        put("Mr Green", "images/cards/Mr_green.png");
+        put("Colonel Mustard", "images/cards/Colonel_mustard.png");
+        put("Professor Plum", "images/cards/Prof_plum.png");
+        put("Mrs. Peacock", "images/cards/Mrs_peacock.png");
+        put("Mrs. White", "images/cards/Mrs_White.png");
+
+        //room cards
+        put("Kitchen", "images/cards/Kitchen.png");
+        put("Ball Room", "images/cards/Ballroom.png");
+        put("Conservatory", "images/cards/Conservatory.png");
+        put("Billiard Room", "images/cards/Billard_room.png");
+        put("Dining Room", "images/cards/Dining_room.png");
+        put("Library", "images/cards/Library.png");
+        put("Hall", "images/cards/Hall.png");
+        put("Lounge", "images/cards/Lounge.png");
+        put("Study", "images/cards/Study.png");
+
+        //weapon cards
+        put("Candlestick", "images/cards/Candlestick.png");
+        put("Knife", "images/cards/Knife.png");
+        put("Lead Pipe", "images/cards/Pipe.png");
+        put("Revolver", "images/cards/Revolver.png");
+        put("Rope", "images/cards/Rope.png");
+        put("Wrench", "images/cards/Wrench.png");
     }};
     private Map<String, Image> images = new HashMap<>();
 
@@ -150,10 +148,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     private JLabel messageBox, roundNumberLabel, turnNumberLabel, movesLeftLabel, gameTimerLabel, attemptedMoveLabel;
     private ImagePanel cardBox, diceBox, die1, die2, playerBox, infoBox, turnActionBox;
     private JPanel boardBox;
-    private JScrollPane cardScollBox;
     private String toolTipText = null;
     private JButton finishTurnButton, suggestButton, accuseButton;
-    
+
     //Game window associations
     private CluedoGame game = null;
     private Board board;
@@ -199,12 +196,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Loads images from files into image map
      */
     private void loadImages() {
-        for(Map.Entry<String, String> image : IMAGE_FILES.entrySet()) {
+        for (Map.Entry<String, String> image : IMAGE_FILES.entrySet()) {
             try {
                 images.put(image.getKey(), ImageIO.read(new File(image.getValue())));
             } catch (IOException ex) {
                 Path currentRelativePath = Paths.get("");
-                String s = currentRelativePath.toAbsolutePath().toString().replace('\\','/');
+                String s = currentRelativePath.toAbsolutePath().toString().replace('\\', '/');
                 System.out.println("ERROR LOADING IMAGE: " + ex + " " + s + "/" + image.getValue());
             }
         }
@@ -215,10 +212,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      */
     private void buildWindow() {
         buildMenuBar();
-        
+
         // The main container that holds all the elements
-        JPanel container = new JPanel(new GridBagLayout()); 
-        
+        JPanel container = new JPanel(new GridBagLayout());
+
         // Individual elements of the board.
         buildDiceBox(container);
         buildCardBox(container);
@@ -248,13 +245,14 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         menuBar.add(menu);
         setJMenuBar(menuBar);
     }
-    
+
     /**
      * Constructs the info box, have forgotten what it does .... sorra chewed my plan.
+     *
      * @param container
      */
     private void buildInfoBox(JPanel container) {
-        infoBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);;
+        infoBox = new ImagePanel(images.get("darkFelt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
         infoBox.setPreferredSize(new Dimension(INFO_BOX_WIDTH, BOTTOMBAR_HEIGHT));
         infoBox.setLayout(new BoxLayout(infoBox, BoxLayout.Y_AXIS));
         infoBox.setBorder(new EmptyBorder(BORDER_WIDTH * 2, BORDER_WIDTH * 2, BORDER_WIDTH * 2, BORDER_WIDTH * 2));
@@ -289,14 +287,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         updateGameInfoBox();
 
         // Update timer every second
-        Timer timer = new Timer(1000, e -> {
-            updateGameInfoBox();
-        });
+        Timer timer = new Timer(1000, e -> updateGameInfoBox());
         timer.setRepeats(true);
     }
-    
+
     /**
      * Constructs the player box, used to display the players who are in the game and who's turn it is currently.
+     *
      * @param container
      */
     private void buildPlayerBox(JPanel container) {
@@ -316,6 +313,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Constructs the turn action box used to display the turn action buttons (suggest, skip and accuse) to the player
+     *
      * @param container
      */
     private void buildTurnActionBox(JPanel container) {
@@ -327,7 +325,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         finishTurnButton = new JButton("Finish Turn");
         finishTurnButton.setEnabled(false);
         finishTurnButton.addActionListener(e -> {
-            if(game == null) return;
+            if (game == null) return;
             game.nextTurn();
         });
         turnActionBox.add(finishTurnButton);
@@ -335,7 +333,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         suggestButton = new JButton("Suggest");
         suggestButton.setEnabled(false);
         suggestButton.addActionListener(e -> {
-            if(game == null) return;
+            if (game == null) return;
             game.makeSuggestion();
         });
         turnActionBox.add(suggestButton);
@@ -343,9 +341,9 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         accuseButton = new JButton("Accuse");
         accuseButton.setEnabled(false);
         accuseButton.addActionListener(e -> {
-            if(game == null) return;
+            if (game == null) return;
             int result = JOptionPane.showConfirmDialog(this, "A wrong accusation will cause you to be disqualified from the game!\nAre you sure you want to make an accusation?", "Cluedo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if(result == JOptionPane.YES_OPTION) {
+            if (result == JOptionPane.YES_OPTION) {
                 game.makeAccusation();
             }
         });
@@ -361,6 +359,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Constructs the dice box used for displaying the dice and total number rolled by a player during thier turn.
+     *
      * @param container
      */
     private void buildDiceBox(JPanel container) {
@@ -390,6 +389,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Constructs the card box used for displaying the players hand.
+     *
      * @param container
      */
     private void buildCardBox(JPanel container) {
@@ -401,7 +401,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         cardBox.setBorder(new EmptyBorder(CARD_PADDING_TOP, CARD_GAP, 0, 0));
         cardBox.setLayout(layout);
 
-        cardScollBox = new JScrollPane(cardBox, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane cardScollBox = new JScrollPane(cardBox, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         cardScollBox.setPreferredSize(new Dimension(0, BOTTOMBAR_HEIGHT));
         cardScollBox.setBorder(new EmptyBorder(0, 0, 0, 0));
 
@@ -419,6 +419,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Constructs the board box used for displaying the game board.
+     *
      * @param container
      */
     private void buildBoardBox(JPanel container) {
@@ -476,7 +477,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      */
     private void newGame() {
         gameStart = Instant.now();
-        if(game != null)
+        if (game != null)
             game.deleteObserver(this);
         game = new CluedoGame();
         game.addObserver(this);
@@ -487,7 +488,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Gets a cell at the specified graphical position on the boardBox
      */
     private Cell getCellAtPos(int x, int y) {
-        if(board == null) return null;
+        if (board == null) return null;
 
         int width = boardBox.getWidth();
         int height = boardBox.getHeight();
@@ -495,7 +496,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         int cellSize;
 
         // base the size on the smallest dimension
-        if(width < height) { // if width is smaller than height, we must base the size on the width
+        if (width < height) { // if width is smaller than height, we must base the size on the width
             cellSize = width / board.BOARD_WIDTH;
         } else { // base the size on the height
             cellSize = height / board.BOARD_HEIGHT;
@@ -514,10 +515,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Renders the board, players, and tooltips in the board box on screen
+     *
      * @param g Graphics object passed from the paint event of the board
      */
     private void boardPaint(Graphics g) {
-        Graphics2D g2D = (Graphics2D)g;
+        Graphics2D g2D = (Graphics2D) g;
         g2D.setFont(new Font(g2D.getFont().toString(), 0, DEFAULT_FONT_SIZE));
         // Set rendering settings
         RenderingHints hints = new RenderingHints(new HashMap<RenderingHints.Key, Object>() {{
@@ -539,12 +541,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             }
         }
 
-        if(board == null) return; // Dont draw the board if its null
+        if (board == null) return; // Dont draw the board if its null
 
         int cellSize;
 
         // base the size on the smallest dimension
-        if(width < height) { // if width is smaller than height, we must base the size on the width
+        if (width < height) { // if width is smaller than height, we must base the size on the width
             cellSize = width / board.BOARD_WIDTH;
         } else { // base the size on the height
             cellSize = height / board.BOARD_HEIGHT;
@@ -555,16 +557,16 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
         Set<Cell> occupiedCells = new HashSet<>();
 
-        for(int r=0; r<board.BOARD_HEIGHT; r++) {
-            for(int c=0; c<board.BOARD_WIDTH; c++) {
+        for (int r = 0; r < board.BOARD_HEIGHT; r++) {
+            for (int c = 0; c < board.BOARD_WIDTH; c++) {
 
                 Position pos = new Position(c, r);
                 Cell cell = board.getCell(pos);
 
-                if(cell == null) continue; // Skip empty cells
+                if (cell == null) continue; // Skip empty cells
 
-                int cellX = leftOffset + pos.x*cellSize;
-                int cellY = topOffset + pos.y*cellSize;
+                int cellX = leftOffset + pos.x * cellSize;
+                int cellY = topOffset + pos.y * cellSize;
 
                 g2D.setStroke(new BasicStroke(1));
 
@@ -578,7 +580,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 g2D.drawRect(cellX, cellY, cellSize, cellSize);
                 g2D.setComposite(AlphaComposite.SrcOver);
 
-                if(cell.isOccupied()) {
+                if (cell.isOccupied()) {
                     occupiedCells.add(cell);
                 }
 
@@ -587,7 +589,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 g2D.setStroke(new BasicStroke(2));
                 Cell.Direction.getStream().forEach(d -> {
                     Cell neighbour = cell.getNeighbour(d);
-                    if(neighbour == null) {
+                    if (neighbour == null) {
                         switch (d) {
                             case EAST:
                                 g2D.drawLine(cellX + cellSize, cellY, cellX + cellSize, cellY + cellSize);
@@ -608,11 +610,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         }
 
         // Draw the valid move cells
-        if(!validMoveCells.isEmpty()) {
+        if (!validMoveCells.isEmpty()) {
             List<Cell> validCells = new ArrayList<>(validMoveCells);
 
             // Add current player pos to cells to draw
-            if(currentPlayer != null) {
+            if (currentPlayer != null) {
                 Cell c = currentPlayer.getCharacter().getLocation();
                 validCells.add(c);
             }
@@ -626,7 +628,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 g2D.setColor(Color.decode("#49de23"));
                 g2D.drawRect(leftOffset + c.position.x * cellSize, topOffset + c.position.y * cellSize, cellSize, cellSize);
             }
-        } else if(isSelectedVisited && selectedCell != null) {
+        } else if (isSelectedVisited && selectedCell != null) {
             // Draw current cell as visited
             g2D.setColor(roomColors.get(selectedCell.getRoom().getName()).darker());
             g2D.fillRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
@@ -634,7 +636,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             g2D.setStroke(new BasicStroke(2));
             g2D.setColor(Color.decode("#fca40a"));
             g2D.drawRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
-        } else if(selectedCell != null) {
+        } else if (selectedCell != null) {
             // Draw current cell as invalid
             g2D.setColor(roomColors.get(selectedCell.getRoom().getName()).darker());
             g2D.fillRect(leftOffset + selectedCell.position.x * cellSize, topOffset + selectedCell.position.y * cellSize, cellSize, cellSize);
@@ -646,25 +648,25 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
         g2D.setFont(new Font(g2D.getFont().toString(), 0, ROOM_LABEL_FONT_SIZE));
         g2D.setColor(Color.black);
-        for(Map.Entry<Point2D, String> roomLabel : roomLabels.entrySet()) {
+        for (Map.Entry<Point2D, String> roomLabel : roomLabels.entrySet()) {
             int textWidth = g2D.getFontMetrics().stringWidth(roomLabel.getValue());
             int textHeight = g2D.getFontMetrics().getHeight();
 
-            double cellX = leftOffset + roomLabel.getKey().getX()*cellSize;
-            double cellY = topOffset + roomLabel.getKey().getY()*cellSize;
+            double cellX = leftOffset + roomLabel.getKey().getX() * cellSize;
+            double cellY = topOffset + roomLabel.getKey().getY() * cellSize;
 
             double textPosX = cellX - textWidth / 2.0;
             double textPosY = cellY + textHeight / 3.0;
 
-            g2D.drawString(roomLabel.getValue(), (int)textPosX, (int)textPosY);
+            g2D.drawString(roomLabel.getValue(), (int) textPosX, (int) textPosY);
         }
         g2D.setFont(new Font(g2D.getFont().toString(), 0, DEFAULT_FONT_SIZE));
 
         // Draw players last to ensure player tokens are always on top (Except for tooltips)
-        for(Cell c : occupiedCells) {
-            int characterSize = (int)(cellSize * 0.8);
-            int cellX = leftOffset + c.position.x*cellSize;
-            int cellY = topOffset + c.position.y*cellSize;
+        for (Cell c : occupiedCells) {
+            int characterSize = (int) (cellSize * 0.8);
+            int cellX = leftOffset + c.position.x * cellSize;
+            int cellY = topOffset + c.position.y * cellSize;
             int circleX = cellX + (cellSize - characterSize) / 2;
             int circleY = cellY + (cellSize - characterSize) / 2;
 
@@ -679,7 +681,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         }
 
         // Draw tooltips
-        if(toolTipText != null) {
+        if (toolTipText != null) {
             g2D.setComposite(AlphaComposite.SrcOver.derive(0.7f));
             g2D.setColor(Color.black);
 
@@ -690,11 +692,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             int xPos = cursorX - boxWidth / 2;
             int yPos = cursorY - boxHeight - 10;
 
-            if(xPos < 0) // Prevents tooltip going off left edge of screen
+            if (xPos < 0) // Prevents tooltip going off left edge of screen
                 xPos -= xPos;
-            if(xPos > width - boxWidth) // Prevents tooltip going off right edge of screen
+            if (xPos > width - boxWidth) // Prevents tooltip going off right edge of screen
                 xPos = width - boxWidth;
-            if(yPos < 0) // Prevents tooltip going off top of screen
+            if (yPos < 0) // Prevents tooltip going off top of screen
                 yPos = cursorY + 20;
 
             // Draw the box
@@ -712,13 +714,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Uses path finding algorithm to find a route from the player to the specified cell
      */
     private void findPlayerRoute() {
-        if(isPlayerMoving) return;
+        if (isPlayerMoving) return;
 
         isSelectedVisited = false;
         validMoveCells.clear();
         validMoveDirections.clear();
 
-        if(selectedCell == null || currentPlayer == null || movesLeft == 0) return;
+        if (selectedCell == null || currentPlayer == null || movesLeft == 0) return;
 
         List<Pair<Cell, Cell.Direction>> bestRoute = null;
         PriorityQueue<List<Pair<Cell, Cell.Direction>>> routes = new PriorityQueue<>(Comparator.comparingInt(List::size));
@@ -726,40 +728,42 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         Cell start = currentPlayer.getCharacter().getLocation();
         Cell end = selectedCell;
 
-        if(start == end || end.isOccupied())
+        if (start == end || end.isOccupied())
             return;
 
         //cant revisit cells or re enter rooms in one turn.
-        if(visitedCells.contains(selectedCell) || (visitedRooms.contains(selectedCell.getRoom()) && !selectedCell.getRoom().equals(start.getRoom()))) {
+        if (visitedCells.contains(selectedCell) || (visitedRooms.contains(selectedCell.getRoom()) && !selectedCell.getRoom().equals(start.getRoom()))) {
             isSelectedVisited = true;
             return;
         }
-        
+
         //add the initial route (starting cell)
-        List<Pair<Cell, Cell.Direction>> initialRoute = new ArrayList<Pair<Cell, Cell.Direction>>() {{ add(new Pair<>(start, null)); }};
+        List<Pair<Cell, Cell.Direction>> initialRoute = new ArrayList<Pair<Cell, Cell.Direction>>() {{
+            add(new Pair<>(start, null));
+        }};
         routes.offer(initialRoute);
 
         while (!routes.isEmpty()) {
             List<Pair<Cell, Cell.Direction>> route = routes.poll(); // Get lowest cost route
             Cell tailCell = route.get(route.size() - 1).getKey(); // Get the cell at the end of the route
 
-            for(Map.Entry<Cell.Direction, Cell> neighbour : tailCell.getNeighbours().entrySet()) {
+            for (Map.Entry<Cell.Direction, Cell> neighbour : tailCell.getNeighbours().entrySet()) {
                 Cell.Direction direction = neighbour.getKey();
                 Cell nextCell = neighbour.getValue();
 
-                if(nextCell.equals(end) && (bestRoute == null || bestRoute.size() > route.size())) { // is a better route
+                if (nextCell.equals(end) && (bestRoute == null || bestRoute.size() > route.size())) { // is a better route
                     route.add(new Pair<>(nextCell, direction));
                     bestRoute = route;
-                } else if(!nextCell.isOccupied() && route.stream().noneMatch(x -> x.getKey().equals(nextCell)) && !visitedCells.contains(nextCell)){
+                } else if (!nextCell.isOccupied() && route.stream().noneMatch(x -> x.getKey().equals(nextCell)) && !visitedCells.contains(nextCell)) {
                     List<Pair<Cell, Cell.Direction>> newRoute = new ArrayList<>(route);
                     newRoute.add(new Pair<>(nextCell, direction));
 
-                    if(newRoute.size() <= movesLeft)
+                    if (newRoute.size() <= movesLeft)
                         routes.offer(newRoute);
                 }
             }
         }
-        if(bestRoute != null) {
+        if (bestRoute != null) {
             bestRoute.remove(0); // Remove start position from the route
             for (Pair<Cell, Cell.Direction> move : bestRoute) {
                 validMoveCells.add(move.getKey());
@@ -772,11 +776,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Uses the list of valid moves to move the player on the board
      */
     private void executeMoves() {
-        if(isSelectedVisited) { //cant revist cells
+        if (isSelectedVisited) { //cant revist cells
             updateMessage(new MessageUpdate("You have already been there!"));
         }
 
-        if(isPlayerMoving || validMoveCells.isEmpty() || currentPlayer == null || board == null) return;
+        if (isPlayerMoving || validMoveCells.isEmpty() || currentPlayer == null || board == null) return;
         isPlayerMoving = true;
 
         // Timer to animate movement
@@ -789,13 +793,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             game.moveCurrentPlayer(d);
             Cell playerCell = currentPlayer.getCharacter().getLocation();
             visitedCells.add(playerCell);
-            if(!playerCell.getRoom().getName().equals("Hallway"))
+            if (!playerCell.getRoom().getName().equals("Hallway"))
                 visitedRooms.add(playerCell.getRoom());
 
             validMoveCells.remove(playerCell); // Remove the cells as they are moved over
 
-            if(validMoveDirections.isEmpty()) {
-                ((Timer)e.getSource()).stop();
+            if (validMoveDirections.isEmpty()) {
+                ((Timer) e.getSource()).stop();
                 isPlayerMoving = false;
                 // Find new route from landing position
                 findPlayerRoute();
@@ -812,36 +816,37 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     //region REQUESTS
 
     /**
-     * Creates a new request from a player request checking if it is a count request or a 
+     * Creates a new request from a player request checking if it is a count request or a
      * begin turn request processing the request accordingly.
+     *
      * @param request
      */
     private void request(PlayerRequest request) {
-        if(request instanceof PlayerSetupRequest) {
-            PlayerSetupRequest playerSetupRequest = (PlayerSetupRequest)request;
+        if (request instanceof PlayerSetupRequest) {
+            PlayerSetupRequest playerSetupRequest = (PlayerSetupRequest) request;
             Player result = askPlayerInfo(playerSetupRequest);
             playerSetupRequest.setResponse(result); // Return the result to the game
 
         } else if (request instanceof PlayerBeginTurnRequest) {
-            PlayerBeginTurnRequest playerBeginTurnRequest = (PlayerBeginTurnRequest)request;
+            PlayerBeginTurnRequest playerBeginTurnRequest = (PlayerBeginTurnRequest) request;
             askPlayerBeginTurn(playerBeginTurnRequest);
 
-        } else if(request instanceof PlayerCountRequest) {
-            PlayerCountRequest playerCountRequest = (PlayerCountRequest)request;
+        } else if (request instanceof PlayerCountRequest) {
+            PlayerCountRequest playerCountRequest = (PlayerCountRequest) request;
             int count = askPlayerCount();
             playerCountRequest.setResponse(count);
 
         } else if (request instanceof PlayerAccusationRequest) {
-            PlayerAccusationRequest playerAccusationRequest = (PlayerAccusationRequest)request;
+            PlayerAccusationRequest playerAccusationRequest = (PlayerAccusationRequest) request;
             Suggestion accusation = askPlayerAccusation(playerAccusationRequest);
             playerAccusationRequest.setResponse(accusation);
 
         } else if (request instanceof PlayerSuggestionRequest) {
-            PlayerSuggestionRequest playerSuggestionRequest = (PlayerSuggestionRequest)request;
+            PlayerSuggestionRequest playerSuggestionRequest = (PlayerSuggestionRequest) request;
             Suggestion suggestion = askPlayerSuggestion(playerSuggestionRequest);
             playerSuggestionRequest.setResponse(suggestion);
         } else if (request instanceof PlayerRefutationRequest) {
-            PlayerRefutationRequest playerRefutationRequest = (PlayerRefutationRequest)request;
+            PlayerRefutationRequest playerRefutationRequest = (PlayerRefutationRequest) request;
             Card refutation = askPlayerRefutations(playerRefutationRequest);
             playerRefutationRequest.setResponse(refutation);
         }
@@ -851,7 +856,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Uses a PlayerSetupWindow to ask the player for their name and what character they would like
      */
     private Player askPlayerInfo(PlayerSetupRequest request) {
-        PlayerSetupWindow window = new PlayerSetupWindow(request.characters, request.chosenCharacters, request.chosenNames,this);
+        PlayerSetupWindow window = new PlayerSetupWindow(request.characters, request.chosenCharacters, request.chosenNames, this);
         Player player = window.player;
         window.setVisible(false);
         window.dispose();
@@ -866,7 +871,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             try {
                 int response = Integer.parseInt(JOptionPane.showInputDialog(this, "How many players are playing? (3-6)", "Cluedo", JOptionPane.INFORMATION_MESSAGE));
 
-                if(response > 6)
+                if (response > 6)
                     JOptionPane.showMessageDialog(this, "The maximum number of players is 6", "Cluedo", JOptionPane.WARNING_MESSAGE);
                 else if (response < 3)
                     JOptionPane.showMessageDialog(this, "The minimum number of players is 3", "Cluedo", JOptionPane.WARNING_MESSAGE);
@@ -877,10 +882,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             }
         }
     }
-    
+
     /**
      * Updates the board to let a player know their turn is starting requiring them to acknowledge this.
-     * @param request 
+     *
+     * @param request
      */
     private void askPlayerBeginTurn(PlayerBeginTurnRequest request) {
         JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " you're up!\nPress ok when you're ready to start.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
@@ -911,6 +917,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Asks players for a refutation card, stops when any player presents a valid card
+     *
      * @return Refutation card or null if no players have a valid card
      */
     private Card askPlayerRefutations(PlayerRefutationRequest request) {
@@ -923,6 +930,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Changes the dice to reflect the dice rolled in the game
+     *
      * @param update Holds the dice values from the roll
      */
     private void updateDice(DiceUpdate update) {
@@ -946,16 +954,17 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             die1.repaint();
             die2.setBackgroundImage(images.get("die" + update.SecondDie));
             die2.repaint();
-            updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you rolled a "+ movesLeft + "!"));
+            updateMessage(new MessageUpdate(currentPlayer.getPlayerName() + " you rolled a " + movesLeft + "!"));
         });
         stopTimer.setRepeats(false);
         stopTimer.start();
-        
+
         //updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you have "+ movesLeft +" moves left!"));
     }
-    
+
     /**
      * Redisplays the cardBox.
+     *
      * @param update
      */
     private void updateHand(HandUpdate update) {
@@ -963,7 +972,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         cardBox.repaint();
 
         int delay = 100;
-        for(Card c : update.hand) {
+        for (Card c : update.hand) {
             ImagePanel cardPanel = new ImagePanel(images.get(c.getName()), false, BORDER_WIDTH);
             cardPanel.setPreferredSize(new Dimension(CARD_WIDTH, CARD_HEIGHT));
 
@@ -979,6 +988,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Updates the list of players in the sidebar
+     *
      * @param update
      */
     private void updatePlayers(PlayersUpdate update) {
@@ -986,7 +996,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         playerBox.repaint();
 
         playerCount = update.players.size();
-        for(Player p : update.players) {
+        for (Player p : update.players) {
             JPanel playerPanel = new JPanel();
             playerPanel.setOpaque(false);
             playerPanel.setLayout(new BoxLayout(playerPanel, BoxLayout.X_AXIS));
@@ -1007,7 +1017,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
             // Add player's name
             JLabel playerLabel = new JLabel(p.getPlayerName());
-            if(p.getHasAcused())
+            if (p.getHasAcused())
                 playerLabel.setForeground(Color.gray);
             else
                 playerLabel.setForeground(Color.white);
@@ -1025,23 +1035,25 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     private void updateMessage(MessageUpdate update) {
         messageBox.setText(update.message);
     }
-    
+
     /**
      * Updates the board object in the GUI, repainting the gui to display the new board.
+     *
      * @param update object containing the new board.
      */
     private void updateBoard(BoardUpdate update) {
-    	board = update.board;
-    	validMoveCells.clear();
-    	validMoveDirections.clear();
-    	selectedCell = null;
-    	boardBox.repaint();
+        board = update.board;
+        validMoveCells.clear();
+        validMoveDirections.clear();
+        selectedCell = null;
+        boardBox.repaint();
     }
-    
+
     /**
      * Updates the player turn, updating the current player and incrementing the round number
-     * Clears all routes and visited areas ands updates current player pos into visited sets 
+     * Clears all routes and visited areas ands updates current player pos into visited sets
      * and updates and repaints the relevant panels.
+     *
      * @param update
      */
     private void updatePlayerTurn(PlayerTurnUpdate update) {
@@ -1055,10 +1067,10 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         validMoveDirections.clear();
 
         // Add current player pos to visited sets
-        if(currentPlayer != null) {
+        if (currentPlayer != null) {
             visitedCells.add(currentPlayer.getCharacter().getLocation());
 
-            if(!currentPlayer.getCharacter().getLocation().getRoom().getName().equals("Hallway")) {
+            if (!currentPlayer.getCharacter().getLocation().getRoom().getName().equals("Hallway")) {
                 visitedRooms.add(currentPlayer.getCharacter().getLocation().getRoom());
             }
         }
@@ -1069,16 +1081,18 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Updates the moves left field and the game info box.
+     *
      * @param update
      */
     private void updateMovesLeft(MovesLeftUpdate update) {
         movesLeft = update.movesLeft;
         updateGameInfoBox();
-        updateMessage(new MessageUpdate(currentPlayer.getPlayerName() +" you have "+ movesLeft + " moves left!"));
+        updateMessage(new MessageUpdate(currentPlayer.getPlayerName() + " you have " + movesLeft + " moves left!"));
     }
 
     /**
      * Updates the enabled state of the action buttons depending on the actions that are allowed
+     *
      * @param update
      */
     private void updateAllowedActions(AllowedActionsUpdate update) {
@@ -1090,6 +1104,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     /**
      * Shows a message telling the user that their accusation was wrong and shows them the solution
+     *
      * @param update
      */
     private void showWrongAccusationMessage(WrongAccusationUpdate update) {
@@ -1100,13 +1115,13 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Show game won message and ask if the players would like to play a new game
      */
     private void showGameWonMessage(GameWonUpdate update) {
-        if(!update.winByDefault)
+        if (!update.winByDefault)
             JOptionPane.showMessageDialog(this, "Your accusation was correct! " + update.winner.getPlayerName() + " you are the winner!\nThe correct solution cards were:\n\nCharacter: " + update.solution.getCharacter().getName() + "\nRoom: " + update.solution.getRoom().getName() + "\nWeapon: " + update.solution.getWeapon().getName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
         else
             JOptionPane.showMessageDialog(this, update.winner.getPlayerName() + " you are the winner by default!\nThe correct solution cards were:\n\nCharacter: " + update.solution.getCharacter().getName() + "\nRoom: " + update.solution.getRoom().getName() + "\nWeapon: " + update.solution.getWeapon().getName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
 
         int result = JOptionPane.showConfirmDialog(this, "Would you like to start a new game?", "Cluedo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if(result == JOptionPane.YES_OPTION) {
+        if (result == JOptionPane.YES_OPTION) {
             newGame();
         } else {
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -1136,14 +1151,14 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      * Updates the tool tip text that is displayed when a cell or player is hovered by the mouse.
      */
     private void updateToolTip() {
-        if(board == null || selectedCell == null) {
+        if (board == null || selectedCell == null) {
             toolTipText = null;
             return;
         }
 
-        if(selectedCell.isOccupied()) {
+        if (selectedCell.isOccupied()) {
             toolTipText = "Character: " + selectedCell.getOccupant().getName();
-        } else if(isSelectedVisited) {
+        } else if (isSelectedVisited) {
             toolTipText = "Already visited!";
         } else {
             toolTipText = null;
@@ -1165,7 +1180,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      */
     @Override
     public void update(Observable o, Object arg) {
-        if(arg != null) {
+        if (arg != null) {
             if (arg instanceof PlayerRequest)
                 request((PlayerRequest) arg);
             else if (arg instanceof DiceUpdate)
@@ -1183,11 +1198,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             else if (arg instanceof MovesLeftUpdate)
                 updateMovesLeft((MovesLeftUpdate) arg);
             else if (arg instanceof AllowedActionsUpdate)
-                updateAllowedActions((AllowedActionsUpdate)arg);
+                updateAllowedActions((AllowedActionsUpdate) arg);
             else if (arg instanceof WrongAccusationUpdate)
-                showWrongAccusationMessage((WrongAccusationUpdate)arg);
+                showWrongAccusationMessage((WrongAccusationUpdate) arg);
             else if (arg instanceof GameWonUpdate)
-                showGameWonMessage((GameWonUpdate)arg);
+                showGameWonMessage((GameWonUpdate) arg);
         }
     }
 
@@ -1206,19 +1221,19 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         cursorX = x;
         cursorY = y;
 
-        if(board == null) return;
+        if (board == null) return;
 
         updateToolTip();
 
         Cell cell = getCellAtPos(x, y);
-        
-        if(cell != null && !cell.equals(selectedCell)) {
+
+        if (cell != null && !cell.equals(selectedCell)) {
             selectedCell = cell;
             findPlayerRoute();
             attemptedMoveCount = validMoveCells.size();
             updateGameInfoBox();
-            
-        } else if(cell == null) {
+
+        } else if (cell == null) {
             selectedCell = null;
         }
 
@@ -1232,18 +1247,18 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(currentPlayer == null || board == null) return;
+        if (currentPlayer == null || board == null) return;
 
         selectedCell = getCellAtPos(e.getX(), e.getY());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(currentPlayer == null || board == null) return;
+        if (currentPlayer == null || board == null) return;
 
         // Execute moves if the mouse is released in the same cell it was pressed in
         Cell currentCell = getCellAtPos(e.getX(), e.getY());
-        if(currentCell != null && currentCell.equals(selectedCell))
+        if (currentCell != null && currentCell.equals(selectedCell))
             executeMoves();
     }
 

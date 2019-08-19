@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 /**
  * 
- * Represents the cells that make up the board, Cells can acess neighbours
+ * Represents the cells that make up the board, Cells can access neighbours
  * through a mapping of direction to cell
  * 
  * Associated with Room, and Position.
@@ -19,6 +19,7 @@ import java.util.stream.Stream;
  * @author abbey
  *
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class Cell {
 	
 	//Cell Attributes

@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.*;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class PlayerSetupWindow extends JDialog implements KeyListener {
     public static final String WINDOW_TITLE = "Cluedo";
     public static final int MIN_NAME_LENGTH = 2;

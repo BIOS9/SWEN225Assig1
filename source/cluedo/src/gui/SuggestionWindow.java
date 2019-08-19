@@ -26,10 +26,7 @@ public class SuggestionWindow extends JDialog {
 
     public SuggestionWindow(Collection<game.cards.Character> characters, Collection<Room> rooms, Collection<Weapon> weapons, Player player, Room forceRoom, JFrame parent) {
         super(parent, WINDOW_TITLE, Dialog.ModalityType.DOCUMENT_MODAL);
-        if(forceRoom == null)
-            isAccusation = true;
-        else
-            isAccusation = false;
+        isAccusation = forceRoom == null;
 
         this.characters = characters;
         this.rooms = rooms;
@@ -62,16 +59,16 @@ public class SuggestionWindow extends JDialog {
         // Add the character buttons
         constraints.insets = new Insets(0, 0, 0, 20);
         ButtonGroup charButtonGroup = new ButtonGroup();
-        for(game.cards.Character c : characters) {
+        for (game.cards.Character c : characters) {
             JRadioButton charButton = new JRadioButton(c.getName());
             charButton.setAlignmentX(Component.LEFT_ALIGNMENT);
             charButton.addActionListener(e -> {
-                Optional<Character> character  = characters.stream().filter(x -> x.getName().equals(charButton.getText())).findFirst();
+                Optional<Character> character = characters.stream().filter(x -> x.getName().equals(charButton.getText())).findFirst();
                 selectedCharacter = character.orElse(null);
             });
             charButtonGroup.add(charButton);
 
-            if(!selected) {
+            if (!selected) {
                 charButton.setSelected(true);
                 selectedCharacter = c;
                 selected = true;
@@ -95,16 +92,16 @@ public class SuggestionWindow extends JDialog {
         // Add the character buttons
         constraints.insets = new Insets(0, 20, 0, 20);
         ButtonGroup weaponButtonGroup = new ButtonGroup();
-        for(game.cards.Weapon w : weapons) {
+        for (game.cards.Weapon w : weapons) {
             JRadioButton weaponButton = new JRadioButton(w.getName());
             weaponButton.setAlignmentX(Component.LEFT_ALIGNMENT);
             weaponButton.addActionListener(e -> {
-                Optional<Weapon> weapon  = weapons.stream().filter(x -> x.getName().equals(weaponButton.getText())).findFirst();
+                Optional<Weapon> weapon = weapons.stream().filter(x -> x.getName().equals(weaponButton.getText())).findFirst();
                 selectedWeapon = weapon.orElse(null);
             });
             weaponButtonGroup.add(weaponButton);
 
-            if(!selected) {
+            if (!selected) {
                 weaponButton.setSelected(true);
                 selectedWeapon = w;
                 selected = true;
@@ -127,22 +124,22 @@ public class SuggestionWindow extends JDialog {
         // Add rooms
         constraints.insets = new Insets(0, 20, 0, 10);
         ButtonGroup roomButtonGroup = new ButtonGroup();
-        for(game.cards.Room r : rooms) {
+        for (game.cards.Room r : rooms) {
             JRadioButton roomButton = new JRadioButton(r.getName());
             roomButton.setAlignmentX(Component.LEFT_ALIGNMENT);
             roomButton.addActionListener(e -> {
-                Optional<Room> room  = rooms.stream().filter(x -> x.getName().equals(roomButton.getText())).findFirst();
+                Optional<Room> room = rooms.stream().filter(x -> x.getName().equals(roomButton.getText())).findFirst();
                 selectedRoom = room.orElse(null);
             });
             roomButtonGroup.add(roomButton);
 
             // Force selection of the current room if this is a suggestion
-            if(!isAccusation) {
+            if (!isAccusation) {
                 selectedRoom = forceRoom;
-                if(r.equals(forceRoom))
+                if (r.equals(forceRoom))
                     roomButton.setSelected(true);
                 roomButton.setEnabled(false);
-            } else if(!selected) {
+            } else if (!selected) {
                 roomButton.setSelected(true);
                 selectedRoom = r;
                 selected = true;

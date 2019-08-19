@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  * Collaborates directs with Cell.
  * @author abbey
  */
+@SuppressWarnings({"SpellCheckingInspection", "Convert2Diamond"})
 public class Board {
 	
 	//Board Attributes
@@ -63,6 +64,7 @@ public class Board {
 
     // Board layout definition
     // Capital letters represent doorways CAREFUL OF DOUBLE WIDTH DOORWAYS
+    @SuppressWarnings("SpellCheckingInspection")
     private static final char[][] BOARD = {
             "         h    h         ".toCharArray(),
             "kkkkkk hhhbbbbhhh cccccc".toCharArray(),
@@ -288,7 +290,7 @@ public class Board {
     }
     
     /**
-     * Geneerates a string representation of the board.
+     * Generates a string representation of the board.
      */
     @Override
     public String toString() {
