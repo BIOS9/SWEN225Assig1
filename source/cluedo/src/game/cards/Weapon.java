@@ -10,6 +10,10 @@ public class Weapon implements Card {
 	//Weapon Attributes
     private final String name;
 
+    /**
+     * Constructor
+     * @param name
+     */
     public Weapon(String name) {
         this.name = name;
     }
