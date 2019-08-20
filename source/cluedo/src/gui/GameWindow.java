@@ -10,6 +10,7 @@ import game.cards.Card;
 import game.cards.Room;
 import gui.Update.*;
 import gui.request.*;
+import javafx.scene.input.KeyCode;
 import javafx.util.Pair;
 import jdk.nashorn.internal.scripts.JO;
 
@@ -34,7 +35,7 @@ import java.util.*;
  *
  * @author abbey
  */
-public class GameWindow extends JFrame implements Observer, ActionListener, MouseMotionListener, MouseListener {
+public class GameWindow extends JFrame implements Observer, ActionListener, MouseMotionListener, MouseListener, KeyListener {
 
     //region FIELDS
 
@@ -215,6 +216,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     private void buildWindow() {
         buildMenuBar();
 
+        addKeyListener(this);
         // The main container that holds all the elements
         JPanel container = new JPanel(new GridBagLayout());
 
@@ -236,11 +238,11 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Menu");
 
-        JMenuItem newGameItem = new JMenuItem("New Game");
+        JMenuItem newGameItem = new JMenuItem("New Game ( N )");
         newGameItem.addActionListener((e) -> newGame());
         menu.add(newGameItem);
 
-        JMenuItem exitItem = new JMenuItem("Exit");
+        JMenuItem exitItem = new JMenuItem("Exit ( ESC )");
         exitItem.addActionListener((e) -> dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)));
         menu.add(exitItem);
 
@@ -825,6 +827,14 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         t.start();
     }
 
+    /**
+     * CLoses the window
+     */
+    private void close() {
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
+
     //endregion
 
     //region REQUESTS
@@ -1326,6 +1336,61 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     @Override
     public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int result;
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_N:
+                if (game == null) return;
+                result = JOptionPane.showConfirmDialog(this, "Are you sure you want to start a new game?\nYou will lose all your current progress!", "Cluedo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    newGame();
+                }
+                break;
+
+            case KeyEvent.VK_ESCAPE:
+                result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?\nYou will lose all your current progress!", "Cluedo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
+                    close();
+                }
+                break;
+
+            case KeyEvent.VK_UP:
+                if (currentPlayer == null || board == null || game == null) return;
+                game.moveCurrentPlayer(Cell.Direction.NORTH);
+                updateBoard(new BoardUpdate(board));
+                break;
+
+            case KeyEvent.VK_DOWN:
+                if (currentPlayer == null || board == null || game == null) return;
+                game.moveCurrentPlayer(Cell.Direction.SOUTH);
+                updateBoard(new BoardUpdate(board));
+                break;
+
+            case KeyEvent.VK_RIGHT:
+                if (currentPlayer == null || board == null || game == null) return;
+                game.moveCurrentPlayer(Cell.Direction.EAST);
+                updateBoard(new BoardUpdate(board));
+                break;
+
+            case KeyEvent.VK_LEFT:
+                if (currentPlayer == null || board == null || game == null) return;
+                game.moveCurrentPlayer(Cell.Direction.WEST);
+                updateBoard(new BoardUpdate(board));
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
 
     }
 
