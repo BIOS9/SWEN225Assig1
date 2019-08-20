@@ -18,6 +18,12 @@ public class PlayerRefutationRequest extends PlayerRequest<Card> {
     public final Player player;
     public final List<Player> playerList;
 
+    /**
+     * Constructs a new player refutation request.
+     * @param suggestion
+     * @param player
+     * @param playerList
+     */
     public PlayerRefutationRequest(Suggestion suggestion, Player player, List<Player> playerList) {
         this.suggestion = suggestion;
         this.player = player;

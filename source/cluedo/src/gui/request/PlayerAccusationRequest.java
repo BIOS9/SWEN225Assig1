@@ -17,7 +17,13 @@ public class PlayerAccusationRequest extends PlayerRequest<Suggestion> {
     public final Collection<Weapon> weapons;
     public final Player player;
 
-
+    /**
+     * Constructs a new player acusation request.
+     * @param characters
+     * @param rooms
+     * @param weapons
+     * @param player
+     */
     public PlayerAccusationRequest(Collection<game.cards.Character> characters, Collection<Room> rooms, Collection<Weapon> weapons, Player player) {
         this.characters = Collections.unmodifiableCollection(characters);
         this.rooms = Collections.unmodifiableCollection(rooms);

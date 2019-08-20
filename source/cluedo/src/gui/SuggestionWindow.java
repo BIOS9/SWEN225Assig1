@@ -24,6 +24,15 @@ public class SuggestionWindow extends JDialog {
     game.cards.Weapon selectedWeapon;
     Player player;
 
+    /**
+     * Construts and displayes the suggestion window allowing a player to choose a selection with radio buttons.
+     * @param characters
+     * @param rooms
+     * @param weapons
+     * @param player
+     * @param forceRoom
+     * @param parent
+     */
     public SuggestionWindow(Collection<game.cards.Character> characters, Collection<Room> rooms, Collection<Weapon> weapons, Player player, Room forceRoom, JFrame parent) {
         super(parent, WINDOW_TITLE, Dialog.ModalityType.DOCUMENT_MODAL);
         isAccusation = forceRoom == null;
@@ -73,14 +82,12 @@ public class SuggestionWindow extends JDialog {
                 selectedCharacter = c;
                 selected = true;
             }
-
             constraints.gridy = currentY;
             container.add(charButton, constraints);
             ++currentY;
         }
 
         selected = false;
-
 
         constraints.insets = new Insets(10, 25, 0, 0);
         constraints.gridy = 1;
@@ -106,7 +113,6 @@ public class SuggestionWindow extends JDialog {
                 selectedWeapon = w;
                 selected = true;
             }
-
             constraints.gridy = currentY;
             container.add(weaponButton, constraints);
             ++currentY;
@@ -144,12 +150,10 @@ public class SuggestionWindow extends JDialog {
                 selectedRoom = r;
                 selected = true;
             }
-
             constraints.gridy = currentY;
             container.add(roomButton, constraints);
             ++currentY;
         }
-
         // Add submit button
         JButton submitButton = new JButton("OK");
         submitButton.addActionListener(e -> close());
@@ -167,10 +171,18 @@ public class SuggestionWindow extends JDialog {
         setVisible(true);
     }
 
+    /**
+     * Constructor for handling acusation version of a suggestion. The 4th room parameter being null identifies an acusation.
+     * @param characters
+     * @param rooms
+     * @param weapons
+     * @param player
+     * @param parent
+     */
     public SuggestionWindow(Collection<game.cards.Character> characters, Collection<Room> rooms, Collection<Weapon> weapons, Player player, JFrame parent) {
         this(characters, rooms, weapons, player, null, parent);
     }
-
+    
     public Suggestion getSuggestion() {
         return new Suggestion(selectedRoom, selectedCharacter, selectedWeapon, player, isAccusation);
     }

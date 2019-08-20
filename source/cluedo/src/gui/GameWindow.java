@@ -71,6 +71,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
     // Map of image names to file locations to make the drawing of the board easier.
     public static final Map<String, String> IMAGE_FILES = new HashMap<String, String>() {{
+    	
         //backgrounds
         put("felt", "images/texture/felt.jpg");
         put("darkFelt", "images/texture/darkFelt.jpg");
