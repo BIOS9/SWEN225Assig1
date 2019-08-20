@@ -321,7 +321,12 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         turnActionBox = new ImagePanel(images.get("felt"), images.get("borderTL"), images.get("borderTR"), images.get("borderBL"), images.get("borderBR"), images.get("borderTop"), images.get("borderBottom"), images.get("borderLeft"), images.get("borderRight"), BORDER_WIDTH);
         turnActionBox.setPreferredSize(new Dimension(SIDEBAR_WIDTH, 100));
 
-        turnActionBox.setLayout(new FlowLayout());
+        turnActionBox.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weightx = 1;
+        constraints.insets = new Insets(BORDER_WIDTH * 2, BORDER_WIDTH  * 2, 0, BORDER_WIDTH * 2);
 
         finishTurnButton = new JButton("Finish Turn");
         finishTurnButton.setEnabled(false);
@@ -329,16 +334,20 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             if (game == null) return;
             game.nextTurn();
         });
-        turnActionBox.add(finishTurnButton);
+        constraints.gridy = 0;
+        turnActionBox.add(finishTurnButton, constraints);
 
+        constraints.insets = new Insets(0, BORDER_WIDTH  * 2, 0, BORDER_WIDTH * 2);
         suggestButton = new JButton("Suggest");
         suggestButton.setEnabled(false);
         suggestButton.addActionListener(e -> {
             if (game == null) return;
             game.makeSuggestion();
         });
-        turnActionBox.add(suggestButton);
+        constraints.gridy = 1;
+        turnActionBox.add(suggestButton, constraints);
 
+        constraints.insets = new Insets(0, BORDER_WIDTH  * 2, BORDER_WIDTH  * 2, BORDER_WIDTH * 2);
         accuseButton = new JButton("Accuse");
         accuseButton.setEnabled(false);
         accuseButton.addActionListener(e -> {
@@ -348,7 +357,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
                 game.makeAccusation();
             }
         });
-        turnActionBox.add(accuseButton);
+        constraints.gridy = 2;
+        turnActionBox.add(accuseButton, constraints);
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.NONE;
@@ -925,9 +935,17 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         Card card = null;
         Player refuter = null;
 
-        JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " has made a suggestion, refutations will now begin starting with " + request.playerList.get(0).getPlayerName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+        List<Player> orderedPlayers = new ArrayList<>(); // List of players starting one position from the current player
+        int playerIndex = request.playerList.indexOf(request.player);
 
-        for(Player p : request.playerList) {
+        // Orders the players starting from and excluding current player
+        for(int i = 0; i < request.playerList.size() - 1; ++i) {
+            orderedPlayers.add(request.playerList.get((playerIndex + i + 1) % request.playerList.size()));
+        }
+
+        JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " has made a suggestion, refutations will now begin starting with " + orderedPlayers.get(0).getPlayerName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+
+        for(Player p : orderedPlayers) {
             JOptionPane.showMessageDialog(this, p.getPlayerName() + " continue when you are ready to make your refutation.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
 
             updateHand(new HandUpdate(p.getHand())); // Show the player's hand
@@ -1309,5 +1327,5 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
     }
 
     //endregion
-    
+
 }
