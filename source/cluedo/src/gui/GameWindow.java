@@ -675,6 +675,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
 
         // Draw players last to ensure player tokens are always on top (Except for tooltips)
         for (Cell c : occupiedCells) {
+            boolean currentCharacter = currentPlayer != null && currentPlayer.getCharacter().equals(c.getOccupant()); // If the current player owns this character
+
             int characterSize = (int) (cellSize * 0.8);
             int cellX = leftOffset + c.position.x * cellSize;
             int cellY = topOffset + c.position.y * cellSize;
@@ -687,7 +689,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
             g2D.fillOval(circleX, circleY, characterSize, characterSize);
             // Draw black border
             g2D.setStroke(new BasicStroke(2));
-            g2D.setColor(Color.black);
+            g2D.setColor(currentCharacter ? Color.white : Color.black);
             g2D.drawOval(circleX, circleY, characterSize, characterSize);
         }
 
