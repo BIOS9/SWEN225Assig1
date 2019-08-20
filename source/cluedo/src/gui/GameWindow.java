@@ -13,6 +13,10 @@ import gui.request.*;
 import javafx.scene.input.KeyCode;
 import javafx.util.Pair;
 import jdk.nashorn.internal.scripts.JO;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import sun.misc.IOUtils;
+import sun.nio.ch.IOUtil;
+import sun.reflect.Reflection;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -23,11 +27,17 @@ import java.awt.event.*;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
 import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 
 /**
  * Creates the game window using Jpanels, setting backgrounds and allocating the different spaces on the board.
@@ -200,13 +210,8 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
      */
     private void loadImages() {
         for (Map.Entry<String, String> image : IMAGE_FILES.entrySet()) {
-            try {
-                images.put(image.getKey(), ImageIO.read(new File(image.getValue())));
-            } catch (IOException ex) {
-                Path currentRelativePath = Paths.get("");
-                String s = currentRelativePath.toAbsolutePath().toString().replace('\\', '/');
-                System.out.println("ERROR LOADING IMAGE: " + ex + " " + s + "/" + image.getValue());
-            }
+            URL url = getClass().getResource("/" + image.getValue());
+            images.put(image.getKey(), new ImageIcon(url).getImage());
         }
     }
 
