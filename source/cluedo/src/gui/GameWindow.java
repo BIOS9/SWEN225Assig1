@@ -442,7 +442,7 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         boardContainer.setBorder(new EmptyBorder(BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH));
 
         GridBagConstraints c = new GridBagConstraints();
-        messageBox = new JLabel("Welcome to Cluedo!", SwingConstants.CENTER);
+        messageBox = new JLabel("Welcome to Cluedo! Tip: You can use the arrow keys or the mouse to move.", SwingConstants.CENTER);
         messageBox.setMinimumSize(new Dimension(0, 20));
         messageBox.setOpaque(false);
         messageBox.setForeground(Color.white);
