@@ -18,7 +18,14 @@ public class PlayerSuggestionRequest extends PlayerRequest<Suggestion> {
     public final Room suggestedRoom;
     public final Player player;
 
-
+    /**
+     * Constructs a new player suggestion request.
+     * @param characters
+     * @param rooms
+     * @param weapons
+     * @param suggestedRoom
+     * @param player
+     */
     public PlayerSuggestionRequest(Collection<game.cards.Character> characters, Collection<Room> rooms, Collection<Weapon> weapons, Room suggestedRoom, Player player) {
         this.characters = Collections.unmodifiableCollection(characters);
         this.rooms = Collections.unmodifiableCollection(rooms);

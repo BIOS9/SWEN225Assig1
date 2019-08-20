@@ -93,7 +93,6 @@ public class PlayerSetupWindow extends JDialog implements KeyListener {
                 chosenCharacterName = c.getName();
                 selected = true;
             }
-
             constraints.gridy = currentY;
             container.add(charButton, constraints);
             ++currentY;

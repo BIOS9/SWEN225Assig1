@@ -15,6 +15,13 @@ public class RefutationWindow extends JDialog {
     public static final String WINDOW_TITLE = "Cluedo";
     public Card refutation;
 
+    /**
+     * Constructor to create a new refutation window allowing the player to select the retuation from suitable cards
+     * in thier hand using radio buttons. Only allows them to select valid refutation cards.
+     * @param player
+     * @param suggestion
+     * @param parent
+     */
     public RefutationWindow(Player player, Suggestion suggestion, JFrame parent) {
         super(parent, WINDOW_TITLE, ModalityType.DOCUMENT_MODAL);
 
