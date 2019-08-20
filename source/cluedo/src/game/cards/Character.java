@@ -24,12 +24,18 @@ public class Character implements Card {
     //Card Associations
     private Cell location;
     
-    // For testing without the image string
+    // For testing without the image string (allows A1 tests to pass)
     public Character(String name, int number) {
         this.name = name;
         this.number = number;
     }
 
+    /**
+     * Constructor takign the name, number and color for the default 6 characters in the game.
+     * @param name
+     * @param number
+     * @param color
+     */
     public Character(String name, int number, Color color) {
         this.name = name;
         this.number = number;

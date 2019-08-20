@@ -9,8 +9,13 @@ package game.cards;
 public class Room implements Card {
     private final String name;
     private final char prefix;
-    
- // For testing without the image string
+ 
+    /**
+     * Constructor taking the room name and prefix that reprsents the room
+     * (could remove prefix but would stop the A1 testing from working)
+     * @param name
+     * @param prefix
+     */
     public Room(String name, char prefix) {
         this.name = name;
         this.prefix = prefix;
