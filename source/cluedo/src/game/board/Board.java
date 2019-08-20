@@ -270,8 +270,6 @@ public class Board {
     public Cell getCell(Position position) {
         return cells.get(position);
     }
-    
-    
 
     /**
      * Converts character to lower case
@@ -384,7 +382,6 @@ public class Board {
                 builder.append("  ");
             }
         }
-
         return builder.toString();
     }
 }

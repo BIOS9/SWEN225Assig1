@@ -14,6 +14,7 @@ import java.util.Random;
  */
 class Turn {
 	
+	//Turn Attributes
     private int diceRoll;
     
     //Turn Associations
@@ -27,10 +28,6 @@ class Turn {
      */
     public Turn(Player player) {
         this.player = player;
-        
-        //Tell the player how much they rolled
-        //ask them where they want to move
-        //If they move into a room they can make a suggestion/accusation
     }
 
     public Player getPlayer() {

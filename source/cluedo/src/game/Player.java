@@ -37,7 +37,7 @@ public class Player {
 		this.playerName = name;
 	}
 	
-	// For testing without the player name.
+	// For testing without the player name (allows for A1 tests to pass)
 	public Player(game.cards.Character character) {
 		this.character = character;
 		this.hand = new ArrayList<game.cards.Card>();
@@ -62,12 +62,7 @@ public class Player {
 			s += (" [" + c.getName() + "] ");
 		}
 		return s;
-	}
-	
-	//do we use this??
-	public game.cards.Card getHand(int index) {
-		return hand.get(index);
-	}
+	}	
 	
 	/**
 	 * Returns a list of cards.
