@@ -935,9 +935,17 @@ public class GameWindow extends JFrame implements Observer, ActionListener, Mous
         Card card = null;
         Player refuter = null;
 
-        JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " has made a suggestion, refutations will now begin starting with " + request.playerList.get(0).getPlayerName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+        List<Player> orderedPlayers = new ArrayList<>(); // List of players starting one position from the current player
+        int playerIndex = request.playerList.indexOf(request.player);
 
-        for(Player p : request.playerList) {
+        // Orders the players starting from and excluding current player
+        for(int i = 0; i < request.playerList.size() - 1; ++i) {
+            orderedPlayers.add(request.playerList.get((playerIndex + i + 1) % request.playerList.size()));
+        }
+
+        JOptionPane.showMessageDialog(this, request.player.getPlayerName() + " has made a suggestion, refutations will now begin starting with " + orderedPlayers.get(0).getPlayerName(), "Cluedo", JOptionPane.INFORMATION_MESSAGE);
+
+        for(Player p : orderedPlayers) {
             JOptionPane.showMessageDialog(this, p.getPlayerName() + " continue when you are ready to make your refutation.", "Cluedo", JOptionPane.INFORMATION_MESSAGE);
 
             updateHand(new HandUpdate(p.getHand())); // Show the player's hand

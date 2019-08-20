@@ -7,6 +7,7 @@ import game.cards.Card;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a request to ask the players for a refutation card
@@ -20,10 +21,6 @@ public class PlayerRefutationRequest extends PlayerRequest<Card> {
     public PlayerRefutationRequest(Suggestion suggestion, Player player, List<Player> playerList) {
         this.suggestion = suggestion;
         this.player = player;
-        this.playerList = new ArrayList<>(playerList);
-
-        // Ensures the player list does not contain the player because a player cannot refute their own suggestion
-        if(this.playerList.contains(player))
-            this.playerList.remove(player);
+        this.playerList = Collections.unmodifiableList(playerList);
     }
 }
