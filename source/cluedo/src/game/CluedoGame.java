@@ -18,10 +18,9 @@ import java.util.*;
 
 
 /**
- * CluedoGame is responsible for initiating the game board, cards and players
- * and managing the framework of the gameplay.
+ * Responsible for contrusting and initiating the game cards and board. And manages the frame of gamplay
+ * CluedoGame is ovservable
  * 
- * Collaborates directly with Board, Card, Player and Turn.
  * 
  * @author abbey
  */
@@ -100,13 +99,6 @@ public class CluedoGame extends Observable {
         initGame();
         initCards();
         nextTurn();
-//        Turn t = new Turn(null);
-//        Pair<Integer, Integer> dice = t.rollDice();
-//        System.out.println(t.getDiceRoll());
-//        updateGui(new DiceUpdate(dice.getKey(), dice.getValue()));
-//        updateGui(new HandUpdate(players.get(1).getHand()));
-
-        //runGame();
     }
 
 	/**
@@ -186,6 +178,11 @@ public class CluedoGame extends Observable {
 		}
 	}
 
+	/**
+	 * Moves the given player on the board, manages what they can do at different stages of thier turn
+	 * e.g suggestions/acusations/skip move.
+	 * @param direction
+	 */
 	public void moveCurrentPlayer(Cell.Direction direction) {
         if(currentPlayer == null || gameWon || !allowMove || movesLeft <= 0) return;
 
@@ -254,17 +251,23 @@ public class CluedoGame extends Observable {
         // Check if run out of moves, update suggestion, accusation and skip buttons
     }
 
+	/**
+	 * Evaluates a players acusation, drawing a conclusion against the soloution
+	 * cards and updating relevant objects.
+	 * 
+	 */
     public void makeAccusation() {
 		if(currentPlayer == null || gameWon || !allowAccusation) return;
 
 		Suggestion accusation = makeRequest(new PlayerAccusationRequest(Arrays.asList(characters), Arrays.asList(rooms), Arrays.asList(weapons), currentPlayer)).waitResponse();
-
+		
+		//Check against soloution cards
 		if(accusation.equals(solutionCards)) {
 			winGame(false);
 			return;
 		}
 
-		currentPlayer.setHasAcused();
+		currentPlayer.setHasAcused(); //can only make one acusation
 		updateGui(new PlayersUpdate(players)); // Update players
 		updateGui(new MessageUpdate("Sorry " + currentPlayer.getPlayerName() + ", your accusation was incorrect! You have been disqualified."));
 		updateGui(new WrongAccusationUpdate(currentPlayer, solutionCards));
@@ -272,6 +275,12 @@ public class CluedoGame extends Observable {
 		nextTurn();
 	}
 
+    /**
+     * 
+     * Manages the suggestion process:making the suggestion request and asking for refutations,
+     * updating relevant objects with results.
+     * 
+     */
 	public void makeSuggestion() {
 		if(currentPlayer == null || gameWon || !allowSuggestion) return;
 
@@ -280,7 +289,7 @@ public class CluedoGame extends Observable {
 		hasSuggestedThisTurn = true;
 		updateGui(new AllowedActionsUpdate(allowFinishTurn, allowSuggestion, allowAccusation));
 
-		Room moveRoom = currentPlayer.getCharacter().getLocation().getRoom();
+		Room moveRoom = currentPlayer.getCharacter().getLocation().getRoom(); // room to move other players too
 		updateGui(new MessageUpdate("Moving " + suggestion.getCharacter().getName() + " to the " + moveRoom.getName()));
 
 		if(!board.moveCharacterToRoom(suggestion.getCharacter(), moveRoom))
@@ -298,6 +307,12 @@ public class CluedoGame extends Observable {
 		updateGui(new HandUpdate(currentPlayer.getHand())); // Restore the hand
 	}
 
+	/**
+	 * 
+	 * Manages the next turn process incrimenting rounds, ensuring players who are disqualified are skipped
+	 * clearing information from the last players turn and updating relevant objects and display.
+	 * 
+	 */
     public void nextTurn() {
 	    if(gameWon) return;
 
@@ -358,10 +373,12 @@ public class CluedoGame extends Observable {
         updateGui(new HandUpdate(currentPlayer.getHand()));
 
 		allowMove = true;
-
-        //updateGui(new HandUpdate(new ArrayList<>())); // Clear hand
     }
 
+    /**
+     * Sets the win game boolean and updates the display
+     * @param winByDefault
+     */
     public void winGame(boolean winByDefault) {
 		gameWon = true;
 		updateGui(new GameWonUpdate(currentPlayer, solutionCards, winByDefault));

@@ -55,6 +55,10 @@ public class Suggestion {
         this.weapon = weapon;
     }
 
+    /**
+     * Prints a string representing the cards in a suggestion object.
+     * @return
+     */
     public String printCards() {
         return "Suggestion: [" + room.getName() + "] [" + weapon.getName() + "] [" + character.getName() + "]";
     }
@@ -70,7 +74,12 @@ public class Suggestion {
     public Weapon getWeapon() {
         return weapon;
     }
-
+    
+    /**
+     * Checks if the given card is part of the suggestion.
+     * @param card
+     * @return
+     */
     public boolean containsCard(Card card) {
     	if(weapon != null && weapon.equals(card))
     	    return true;
